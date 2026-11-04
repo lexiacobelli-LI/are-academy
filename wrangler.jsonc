@@ -2,6 +2,8 @@
   // Static site: Cloudflare serves the files in ./public
   "name": "fragrant-dew-8189",
   "compatibility_date": "2026-11-04",
+  // no per-version preview links: only the main address is public
+  "preview_urls": false,
   "assets": {
     "directory": "./public",
     "not_found_handling": "single-page-application"
