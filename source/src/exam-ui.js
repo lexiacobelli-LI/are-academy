@@ -116,11 +116,7 @@ function lecRender() {
 function stopSpeech() { if (canSpeak()) window.speechSynthesis.cancel(); playing = false; const b = lec && lec.querySelector("[data-l=play]"); if (b) b.textContent = "▶ Narrate"; }
 function speakSlide() {
   if (!canSpeak()) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(slides[si].h + ". " + speakText(slides[si].html));
-  u.rate = rate;
-  u.onend = () => { if (!playing) return; if (si < slides.length - 1) { si++; lecRender(); speakSlide(); } else stopSpeech(); };
-  window.speechSynthesis.speak(u);
+  ARE.VOICE.speak(slides[si].h + ". " + speakText(slides[si].html), { rate, onend: () => { if (!playing) return; if (si < slides.length - 1) { si++; lecRender(); speakSlide(); } else stopSpeech(); } });
 }
 UI.openLecture = (l, takeaways, done) => {
   slides = buildSlides(l, takeaways || []); si = 0; onDone = done || null;

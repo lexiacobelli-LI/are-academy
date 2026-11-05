@@ -266,6 +266,7 @@ function vSettings() {
 <div class="row"><span style="min-width:110px">Text size</span>${[90, 100, 115, 130].map(v => `<button class="chip ${p.text === v ? "on" : ""}" data-act="pref" data-k="text" data-v="${v}" aria-label="Text size ${v}%">${v}%</button>`).join("")}</div>
 <div class="row"><span style="min-width:110px">Motion</span>${[["auto", "Follow device"], ["reduce", "Reduce animations"]].map(([k, t]) => `<button class="chip ${p.motion === k ? "on" : ""}" data-act="pref" data-k="motion" data-v="${k}">${t}</button>`).join("")}</div></section>
 
+${voicePanel()}
 <section class="panel stack" id="ai"><h2>AI tutor &amp; video scripts</h2>
 <p>Status: <b>${act ? esc(AI.label(act)) : "not connected"}</b>. Live AI needs an internet connection. Everything else works offline.</p>
 <div class="row">${[["auto", "Automatic"], ["claude", "Claude"], ["gemini", "Gemini (free key)"], ["openai", "Ollama / OpenAI-compatible"]].map(([k, t]) => `<button class="chip ${c.provider === k ? "on" : ""}" data-act="aiprov" data-v="${k}">${t}</button>`).join("")}</div>
@@ -292,6 +293,26 @@ ${isStandalone() ? `<p><span class="lv lv4"><i></i>Installed</span> You're using
 <section class="panel stack"><h2>What needs an internet connection</h2><div class="scroll"><table class="tbl"><thead><tr><th>Feature</th><th>Offline</th></tr></thead><tbody>
 <tr><td>Lessons, questions, exams, flashcards, notes, planner, analytics</td><td>Yes</td></tr><tr><td>Video lessons (device voices)</td><td>Yes, if your device has an offline voice (iPhone/iPad do)</td></tr><tr><td>AI tutor, AI-written notes, AI video scripts, AI questions</td><td>No: needs Claude, Gemini or Ollama</td></tr><tr><td>Sync (Claude account or Gist)</td><td>Queued until you're back online; local saving never stops</td></tr><tr><td>Links to Drive, ICC, NCARB</td><td>No</td></tr></tbody></table></div></section>`;
 }
+function voicePanel() {
+  const V = ARE.VOICE;
+  if (!V.ok()) return `<section class="panel stack" id="voice"><h2>Read-aloud voice</h2><p class="muted">This browser has no speech voices. Captions still play.</p></section>`;
+  const list = V.list(), cur = V.best();
+  const tip = `<details class="elab"><summary>Get a more natural voice (free)</summary><ul class="prose">
+<li><b>iPhone / iPad:</b> Settings → Accessibility → Spoken Content → Voices → English. Download a voice marked <i>Enhanced</i> or <i>Premium</i> (for example Ava, Zoe or Evan), then reopen ARE Academy and pick it here.</li>
+<li><b>Mac:</b> System Settings → Accessibility → Spoken Content → System voice → Manage Voices, and download a Premium or Enhanced voice.</li>
+<li><b>Windows:</b> open ARE Academy in Microsoft Edge, which offers free "Natural" voices.</li>
+<li><b>Android / Chrome:</b> the "Google" voices are the most natural option there.</li></ul></details>`;
+  return `<section class="panel stack" id="voice"><h2>Read-aloud voice</h2>
+<p class="muted">Videos and narrated lessons use the voices built into your device. ARE Academy picks the most natural one it finds, reads abbreviations the way a person would (§ as "section", sf as "square feet", 29–35% as "29 to 35 percent") and pauses between sentences.</p>
+${list.length ? `<div class="row" style="align-items:flex-end"><label class="f" style="flex:1;min-width:220px">Voice<select id="vSel">${list.map(v => `<option value="${esc(v.voiceURI)}" ${cur && v.voiceURI === cur.voiceURI ? "selected" : ""}>${esc(v.name)} (${esc(v.lang)}) · ${V.quality(v)}</option>`).join("")}</select></label><button class="btn primary" data-act="vtry">Use &amp; preview</button><button class="btn" data-act="vstop">Stop</button></div>` : `<p class="muted">Voices are still loading. Reopen this page in a moment.</p>`}
+<div class="row"><span style="min-width:110px">Speaking pace</span>${[[0.9, "Relaxed"], [1, "Normal"], [1.1, "Brisk"]].map(([r, t]) => `<button class="chip ${V.cfg.rate === r ? "on" : ""}" data-act="vrate" data-v="${r}">${t}</button>`).join("")}</div>
+${list.length && !V.hasNatural() ? `<p class="cal bad">Only basic voices are installed on this device, so narration may sound robotic. The steps below add a natural voice for free.</p>` : ""}
+${tip}</section>`;
+}
+ACTS.vtry = () => { const sel = $("#vSel"); if (sel) { ARE.VOICE.cfg.uri = sel.value; ARE.VOICE.save(); } ARE.VOICE.preview(); };
+ACTS.vstop = () => { if (ARE.VOICE.ok()) speechSynthesis.cancel(); };
+ACTS.vrate = (t) => { ARE.VOICE.cfg.rate = +t.dataset.v; ARE.VOICE.save(); rer(); ARE.VOICE.preview(); };
+ARE.VOICE.onchange = () => { if (/^#settings/.test(location.hash) && !document.querySelector("#vSel")) rer(); };
 ACTS.pref = (t) => { const k = t.dataset.k; ARE.prefs[k] = k === "text" ? +t.dataset.v : t.dataset.v; savePrefs(); rer(); };
 ACTS.aiprov = (t) => { AI.cfg.provider = t.dataset.v; AI.saveCfg(); rer(); };
 ACTS.gsave = () => { AI.cfg.gemini.key = $("#gKey").value.trim(); AI.cfg.gemini.model = $("#gModel").value.trim() || "gemini-flash-latest"; AI.saveCfg(); toast("Saved on this device"); rer(); };

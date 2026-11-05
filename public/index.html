@@ -996,6 +996,51 @@ body.exam-mode .content{background:var(--bg)}
 @media (max-width:760px){ .lesson-actions .sep{display:none} }
 @media (pointer:coarse){ .chip, button.chip{min-height:36px; padding:0 12px} .btn.small{min-height:38px} .icon-btn{width:42px; height:42px} }
 
+/* ---------- phone legibility pass (v8.1) ---------- */
+.wrap{grid-template-columns:minmax(0,1fr)}
+.wrap > *{min-width:0}
+@media (max-width:760px){
+  body{font-size:16px}
+  .muted, p.muted, div.muted, span.muted{font-size:max(.875rem, 1em)}
+  .eyebrow{font-size:.75rem; letter-spacing:.06em}
+  .chip, button.chip, a.chip, span.chip{font-size:.8125rem; min-height:32px; padding:4px 11px}
+  .chip.code{font-size:.8125rem}
+  .btn.small, a.btn.small, summary.btn.small{font-size:.875rem; min-height:40px; padding:8px 12px}
+  .btn{font-size:.9375rem}
+  label.f{font-size:.875rem}
+  .status{font-size:.8125rem}
+  .lv{font-size:.8125rem}
+  .lv.lvr, .lvr{color:var(--warn)}
+  .tbl{font-size:.9375rem}
+  .tbl thead th{font-size:.75rem}
+  .tbl th, .tbl td{padding:9px 10px}
+  .empty{font-size:.9375rem; color:var(--ink)}
+  .tb-title{font-size:.9375rem; color:var(--ink)}
+  .tblock{grid-template-columns:minmax(0,1fr)}
+  .tblock .tb-side{border-left:none; border-top:1px solid var(--line2); grid-template-rows:none; grid-template-columns:1fr 1fr; min-width:0}
+  .tblock .tb-side small, .divcard .dc-side small{font-size:.75rem}
+  .divcard .dc-side b{font-size:1rem}
+  .prose{font-size:1.0625rem}
+  .prose h3 .hn{font-size:.75rem}
+  .opt .mk{width:26px; height:26px; font-size:.8125rem}
+  .opt .why{font-size:.9375rem}
+  .ring b small, .d-hero .ring b small{font-size:.625rem}
+  .sp{font-size:.75rem}
+  .kpi span{font-size:.875rem}
+  .tabs button{font-size:.9375rem; padding:12px 14px}
+  .bottomnav a{font-size:.75rem}
+  .rv-item .t{white-space:normal}
+  .formula code{font-size:.9375rem}
+  .tu-ctx, .tu-prov{font-size:.8125rem}
+  small{font-size:max(.75rem, .85em)}
+}
+@media (max-width:760px){
+  .chip, button.chip{white-space:normal; text-align:left; line-height:1.3; max-width:100%}
+  [style*="font-size:.6"], [style*="font-size:.7"], [style*="font-size:.8"]{font-size:.875rem !important}
+  .sec-h a, .rv-item .muted, .dv-code{font-size:.875rem}
+  .ring b small, .d-hero .ring b small{font-size:.6875rem}
+}
+
 </style>
 </head><body><div id="app"><p style="padding:24px">Loading ARE Academy…</p></div>
 <noscript><p style="padding:24px">ARE Academy needs JavaScript enabled.</p></noscript>
@@ -6625,6 +6670,88 @@ function flowSVG(src) {
 AI.flowSVG = flowSVG;
 })();
 
+/* ---------- read-aloud voice: pick the most natural installed voice, fix pronunciation, speak in sentence chunks ---------- */
+(function () {
+  const V = ARE.VOICE = {};
+  const KEY = "are-voice";
+  V.ok = () => typeof window.speechSynthesis !== "undefined" && typeof window.SpeechSynthesisUtterance !== "undefined";
+  V.cfg = (() => { try { return Object.assign({ uri: "", rate: 1 }, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch (e) { return { uri: "", rate: 1 }; } })();
+  V.save = () => { try { localStorage.setItem(KEY, JSON.stringify(V.cfg)); } catch (e) {} };
+
+  // Novelty and very old formant voices that sound robotic.
+  const BAD = /compact|espeak|e-speak|\bFred\b|Albert|Zarvox|Bad News|Good News|Bells|Boing|Bubbles|Cellos|Whisper|Wobble|Trinoids|Jester|Organ|Superstar|Ralph|Junior|Kathy|Princess|Hysterical|Deranged|Bahh|Grandma|Grandpa|Rocko|Shelley|Sandy|Eddy|Flo|Reed/i;
+  function score(v) {
+    let s = 0; const n = v.name || "";
+    if (!/^en/i.test(v.lang)) return -999;
+    if (/Premium/i.test(n)) s += 70;
+    if (/Neural|Natural|Online/i.test(n)) s += 65;           // Microsoft Edge natural voices
+    if (/Enhanced/i.test(n)) s += 55;
+    if (/Siri/i.test(n)) s += 50;
+    if (/^Google/i.test(n)) s += 35;                          // Chrome / Android cloud voices
+    if (/\b(Ava|Zoe|Evan|Nathan|Joelle|Noelle|Allison|Susan|Tom|Samantha|Karen|Daniel|Serena|Moira|Tessa|Aria|Jenny|Guy|Libby|Sonia|Ryan|Natasha|Clara|Liam)\b/i.test(n)) s += 15;
+    if (BAD.test(n)) s -= 200;
+    if (/en[-_](CA|US)/i.test(v.lang)) s += 8; else if (/en[-_](GB|AU|IE|NZ)/i.test(v.lang)) s += 5;
+    return s;
+  }
+  V.quality = (v) => { const s = score(v); return s >= 45 ? "Natural" : s >= 0 ? "Standard" : "Basic"; };
+  let cache = [];
+  V.list = () => {
+    if (!V.ok()) return [];
+    const vs = speechSynthesis.getVoices();
+    if (vs.length) cache = vs;
+    return cache.filter(v => /^en/i.test(v.lang)).sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name));
+  };
+  V.best = () => { const l = V.list(); return (V.cfg.uri && l.find(v => v.voiceURI === V.cfg.uri)) || l[0] || null; };
+  V.hasNatural = () => V.list().some(v => score(v) >= 45);
+  if (V.ok()) { try { speechSynthesis.addEventListener("voiceschanged", () => { V.list(); if (ARE.VOICE.onchange) ARE.VOICE.onchange(); }); } catch (e) {} V.list(); }
+
+  // Make the text sound like a person reading it, not a parser.
+  V.clean = (t) => String(t || "")
+    .replace(/\b([ABCG]\d{3})\s*[–-]\s*(\d{4})\b/g, "$1, $2 edition,")
+    .replace(/§§\s*/g, "sections ").replace(/§\s*/g, "section ")
+    .replace(/\be\.g\.,?/gi, "for example,").replace(/\bi\.e\.,?/gi, "that is,").replace(/\betc\./gi, "and so on").replace(/\bvs\.?(?=\s)/gi, "versus")
+    .replace(/(\d)\s*in\.?\s+o\.c\./gi, "$1 inches on center").replace(/\bo\.c\./gi, "on center").replace(/\bpsf\b/g, "pounds per square foot")
+    .replace(/(\d)\s*sf\b/g, "$1 square feet").replace(/\bsf\b/g, "square feet")
+    .replace(/(\d)\s*ft\b/g, "$1 feet").replace(/(\d+)\s*h\b/g, "$1 hours").replace(/(\d+)\s*min\b/g, "$1 minutes")
+    .replace(/(\d)\s*–\s*(\d)/g, "$1 to $2")
+    .replace(/%/g, " percent").replace(/\s*&\s*/g, " and ").replace(/\band\/or\b/g, "and or")
+    .replace(/\bARE\b/g, "A.R.E.").replace(/\bPcM\b/g, "P.C.M.").replace(/\bPjM\b/g, "P.J.M.").replace(/\bPPD\b/g, "P.P.D.").replace(/\bPDD\b/g, "P.D.D.").replace(/\bSM-2\b/g, "S.M. 2")
+    .replace(/÷/g, " divided by ").replace(/×/g, " times ").replace(/≈/g, " about ").replace(/≤/g, " at most ").replace(/≥/g, " at least ").replace(/→/g, ", then ")
+    .replace(/\s*[—–]\s*/g, ", ").replace(/[“”"]/g, "").replace(/\s*·\s*/g, ", ")
+    .replace(/\.\.+/g, ".").replace(/,\s*([,.;:])/g, "$1").replace(/\s+/g, " ").trim();
+
+  // Sentence-sized chunks: natural pauses, and avoids Chrome cutting off long utterances.
+  V.chunks = (t) => {
+    const s = V.clean(t).match(/[^.!?;:]+[.!?;:]+(\s|$)|[^.!?;:]+$/g) || [];
+    const out = []; let cur = "";
+    s.forEach(x => { x = x.trim(); if (!x) return; if ((cur + " " + x).length < 60) cur = (cur + " " + x).trim(); else { if (cur) out.push(cur); cur = x; } });
+    if (cur) out.push(cur);
+    return out.flatMap(c => c.length <= 220 ? [c] : c.split(/,\s+/).reduce((a, p) => { if (a.length && (a[a.length - 1] + ", " + p).length < 200) a[a.length - 1] += ", " + p; else a.push(p); return a; }, []));
+  };
+  V.utter = (text, rate) => {
+    const u = new SpeechSynthesisUtterance(V.clean(text));
+    const v = V.best(); if (v) { u.voice = v; u.lang = v.lang; }
+    u.rate = (rate || 1) * (V.cfg.rate || 1); u.pitch = 1; u.volume = 1;
+    return u;
+  };
+  // Speak a long passage chunk by chunk. Returns a cancel function.
+  V.speak = (text, opts = {}) => {
+    if (!V.ok()) { if (opts.onend) opts.onend(); return () => {}; }
+    speechSynthesis.cancel();
+    const parts = V.chunks(text); let i = 0, live = true;
+    const next = () => {
+      if (!live) return;
+      if (i >= parts.length) { live = false; if (opts.onend) opts.onend(); return; }
+      const u = V.utter(parts[i++], opts.rate);
+      u.onend = next; u.onerror = (e) => { if (e && /interrupted|canceled/.test(e.error)) return; next(); };
+      speechSynthesis.speak(u);
+    };
+    next();
+    return () => { live = false; speechSynthesis.cancel(); };
+  };
+  V.preview = () => V.speak("This is how your lessons will sound. The critical path is the longest sequence of dependent activities, and it sets the project duration.");
+})();
+
 /* ============================================================
    EXAM TOOLS & LECTURE PLAYER (body-level panels that survive re-renders)
    - Calculator (basic + √, x², 1/x, %, ±, memory-free like the ARE's)
@@ -6743,11 +6870,7 @@ function lecRender() {
 function stopSpeech() { if (canSpeak()) window.speechSynthesis.cancel(); playing = false; const b = lec && lec.querySelector("[data-l=play]"); if (b) b.textContent = "▶ Narrate"; }
 function speakSlide() {
   if (!canSpeak()) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(slides[si].h + ". " + speakText(slides[si].html));
-  u.rate = rate;
-  u.onend = () => { if (!playing) return; if (si < slides.length - 1) { si++; lecRender(); speakSlide(); } else stopSpeech(); };
-  window.speechSynthesis.speak(u);
+  ARE.VOICE.speak(slides[si].h + ". " + speakText(slides[si].html), { rate, onend: () => { if (!playing) return; if (si < slides.length - 1) { si++; lecRender(); speakSlide(); } else stopSpeech(); } });
 }
 UI.openLecture = (l, takeaways, done) => {
   slides = buildSlides(l, takeaways || []); si = 0; onDone = done || null;
@@ -7123,7 +7246,7 @@ ST.scenesFor = (rec) => rec.scenes || ST.build(rec.src, rec.fmt).scenes;
 let P = null; // { rec, scenes, si, xi, playing, timer, rate, cc, voice }
 let box = null;
 const canSpeak = () => "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
-function pickVoice() { if (!canSpeak()) return null; const vs = speechSynthesis.getVoices(); return vs.find(v => /en[-_]US/i.test(v.lang) && /Samantha|Alex|Aaron|Google US|Natural|Premium|Enhanced/i.test(v.name)) || vs.find(v => /^en/i.test(v.lang)) || null; }
+function pickVoice() { return ARE.VOICE.best(); }
 ST.play = (id) => {
   const rec = E.S.videos[id]; if (!rec) return;
   const scenes = ST.scenesFor(rec);
@@ -7233,13 +7356,10 @@ function speak() {
 }
 function say(text, done) {
   stopAudio();
-  const u = new SpeechSynthesisUtterance(text); u.rate = P.rate; const v = pickVoice(); if (v) u.voice = v;
-  const token = P.token = Math.random();
-  u.onend = () => { if (P && P.token === token && P.playing) done(); };
-  u.onerror = () => { if (P && P.token === token && P.playing) { P.voice = false; done(); } };
-  speechSynthesis.speak(u);
+  const token = P.token = Math.random(); let fired = false; const fin = () => { if (fired) return; fired = true; done(); };
+  P.cancelVoice = ARE.VOICE.speak(text, { rate: P.rate, onend: () => { if (P && P.token === token && P.playing) fin(); } });
   // watchdog: some browsers never fire onend
-  clearTimeout(P.timer); P.timer = setTimeout(() => { if (P && P.token === token && P.playing && !speechSynthesis.speaking) done(); }, words(text) / 150 * 60000 / P.rate + 4000);
+  clearTimeout(P.timer); P.timer = setTimeout(() => { if (P && P.token === token && P.playing && !speechSynthesis.speaking) fin(); }, words(text) / 150 * 60000 / P.rate + 4000);
 }
 function stopAudio() { clearTimeout(P && P.timer); if (canSpeak()) speechSynthesis.cancel(); }
 function advance() {
@@ -8957,6 +9077,7 @@ function vSettings() {
 <div class="row"><span style="min-width:110px">Text size</span>${[90, 100, 115, 130].map(v => `<button class="chip ${p.text === v ? "on" : ""}" data-act="pref" data-k="text" data-v="${v}" aria-label="Text size ${v}%">${v}%</button>`).join("")}</div>
 <div class="row"><span style="min-width:110px">Motion</span>${[["auto", "Follow device"], ["reduce", "Reduce animations"]].map(([k, t]) => `<button class="chip ${p.motion === k ? "on" : ""}" data-act="pref" data-k="motion" data-v="${k}">${t}</button>`).join("")}</div></section>
 
+${voicePanel()}
 <section class="panel stack" id="ai"><h2>AI tutor &amp; video scripts</h2>
 <p>Status: <b>${act ? esc(AI.label(act)) : "not connected"}</b>. Live AI needs an internet connection. Everything else works offline.</p>
 <div class="row">${[["auto", "Automatic"], ["claude", "Claude"], ["gemini", "Gemini (free key)"], ["openai", "Ollama / OpenAI-compatible"]].map(([k, t]) => `<button class="chip ${c.provider === k ? "on" : ""}" data-act="aiprov" data-v="${k}">${t}</button>`).join("")}</div>
@@ -8983,6 +9104,26 @@ ${isStandalone() ? `<p><span class="lv lv4"><i></i>Installed</span> You're using
 <section class="panel stack"><h2>What needs an internet connection</h2><div class="scroll"><table class="tbl"><thead><tr><th>Feature</th><th>Offline</th></tr></thead><tbody>
 <tr><td>Lessons, questions, exams, flashcards, notes, planner, analytics</td><td>Yes</td></tr><tr><td>Video lessons (device voices)</td><td>Yes, if your device has an offline voice (iPhone/iPad do)</td></tr><tr><td>AI tutor, AI-written notes, AI video scripts, AI questions</td><td>No: needs Claude, Gemini or Ollama</td></tr><tr><td>Sync (Claude account or Gist)</td><td>Queued until you're back online; local saving never stops</td></tr><tr><td>Links to Drive, ICC, NCARB</td><td>No</td></tr></tbody></table></div></section>`;
 }
+function voicePanel() {
+  const V = ARE.VOICE;
+  if (!V.ok()) return `<section class="panel stack" id="voice"><h2>Read-aloud voice</h2><p class="muted">This browser has no speech voices. Captions still play.</p></section>`;
+  const list = V.list(), cur = V.best();
+  const tip = `<details class="elab"><summary>Get a more natural voice (free)</summary><ul class="prose">
+<li><b>iPhone / iPad:</b> Settings → Accessibility → Spoken Content → Voices → English. Download a voice marked <i>Enhanced</i> or <i>Premium</i> (for example Ava, Zoe or Evan), then reopen ARE Academy and pick it here.</li>
+<li><b>Mac:</b> System Settings → Accessibility → Spoken Content → System voice → Manage Voices, and download a Premium or Enhanced voice.</li>
+<li><b>Windows:</b> open ARE Academy in Microsoft Edge, which offers free "Natural" voices.</li>
+<li><b>Android / Chrome:</b> the "Google" voices are the most natural option there.</li></ul></details>`;
+  return `<section class="panel stack" id="voice"><h2>Read-aloud voice</h2>
+<p class="muted">Videos and narrated lessons use the voices built into your device. ARE Academy picks the most natural one it finds, reads abbreviations the way a person would (§ as "section", sf as "square feet", 29–35% as "29 to 35 percent") and pauses between sentences.</p>
+${list.length ? `<div class="row" style="align-items:flex-end"><label class="f" style="flex:1;min-width:220px">Voice<select id="vSel">${list.map(v => `<option value="${esc(v.voiceURI)}" ${cur && v.voiceURI === cur.voiceURI ? "selected" : ""}>${esc(v.name)} (${esc(v.lang)}) · ${V.quality(v)}</option>`).join("")}</select></label><button class="btn primary" data-act="vtry">Use &amp; preview</button><button class="btn" data-act="vstop">Stop</button></div>` : `<p class="muted">Voices are still loading. Reopen this page in a moment.</p>`}
+<div class="row"><span style="min-width:110px">Speaking pace</span>${[[0.9, "Relaxed"], [1, "Normal"], [1.1, "Brisk"]].map(([r, t]) => `<button class="chip ${V.cfg.rate === r ? "on" : ""}" data-act="vrate" data-v="${r}">${t}</button>`).join("")}</div>
+${list.length && !V.hasNatural() ? `<p class="cal bad">Only basic voices are installed on this device, so narration may sound robotic. The steps below add a natural voice for free.</p>` : ""}
+${tip}</section>`;
+}
+ACTS.vtry = () => { const sel = $("#vSel"); if (sel) { ARE.VOICE.cfg.uri = sel.value; ARE.VOICE.save(); } ARE.VOICE.preview(); };
+ACTS.vstop = () => { if (ARE.VOICE.ok()) speechSynthesis.cancel(); };
+ACTS.vrate = (t) => { ARE.VOICE.cfg.rate = +t.dataset.v; ARE.VOICE.save(); rer(); ARE.VOICE.preview(); };
+ARE.VOICE.onchange = () => { if (/^#settings/.test(location.hash) && !document.querySelector("#vSel")) rer(); };
 ACTS.pref = (t) => { const k = t.dataset.k; ARE.prefs[k] = k === "text" ? +t.dataset.v : t.dataset.v; savePrefs(); rer(); };
 ACTS.aiprov = (t) => { AI.cfg.provider = t.dataset.v; AI.saveCfg(); rer(); };
 ACTS.gsave = () => { AI.cfg.gemini.key = $("#gKey").value.trim(); AI.cfg.gemini.model = $("#gModel").value.trim() || "gemini-flash-latest"; AI.saveCfg(); toast("Saved on this device"); rer(); };

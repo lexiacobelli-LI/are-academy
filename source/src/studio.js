@@ -212,7 +212,7 @@ ST.scenesFor = (rec) => rec.scenes || ST.build(rec.src, rec.fmt).scenes;
 let P = null; // { rec, scenes, si, xi, playing, timer, rate, cc, voice }
 let box = null;
 const canSpeak = () => "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
-function pickVoice() { if (!canSpeak()) return null; const vs = speechSynthesis.getVoices(); return vs.find(v => /en[-_]US/i.test(v.lang) && /Samantha|Alex|Aaron|Google US|Natural|Premium|Enhanced/i.test(v.name)) || vs.find(v => /^en/i.test(v.lang)) || null; }
+function pickVoice() { return ARE.VOICE.best(); }
 ST.play = (id) => {
   const rec = E.S.videos[id]; if (!rec) return;
   const scenes = ST.scenesFor(rec);
@@ -322,13 +322,10 @@ function speak() {
 }
 function say(text, done) {
   stopAudio();
-  const u = new SpeechSynthesisUtterance(text); u.rate = P.rate; const v = pickVoice(); if (v) u.voice = v;
-  const token = P.token = Math.random();
-  u.onend = () => { if (P && P.token === token && P.playing) done(); };
-  u.onerror = () => { if (P && P.token === token && P.playing) { P.voice = false; done(); } };
-  speechSynthesis.speak(u);
+  const token = P.token = Math.random(); let fired = false; const fin = () => { if (fired) return; fired = true; done(); };
+  P.cancelVoice = ARE.VOICE.speak(text, { rate: P.rate, onend: () => { if (P && P.token === token && P.playing) fin(); } });
   // watchdog: some browsers never fire onend
-  clearTimeout(P.timer); P.timer = setTimeout(() => { if (P && P.token === token && P.playing && !speechSynthesis.speaking) done(); }, words(text) / 150 * 60000 / P.rate + 4000);
+  clearTimeout(P.timer); P.timer = setTimeout(() => { if (P && P.token === token && P.playing && !speechSynthesis.speaking) fin(); }, words(text) / 150 * 60000 / P.rate + 4000);
 }
 function stopAudio() { clearTimeout(P && P.timer); if (canSpeak()) speechSynthesis.cancel(); }
 function advance() {
