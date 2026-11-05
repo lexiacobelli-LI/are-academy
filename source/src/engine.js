@@ -17,7 +17,7 @@ E.blank = () => ({
   results: [], time: [], packs: { lessons: [], questions: [], glossary: [] },
   planner: { examDate: "", divs: [], hours: 8, goals: [], sessions: [] },
   weakFlags: {}, touch: {}, fc: {},
-  lnotes: {}, game: { xp: 0, days: {}, badges: {}, bests: {}, log: [] }, cards: [], videos: {}, ailog: {}, today: null,
+  lnotes: {}, game: { xp: 0, days: {}, badges: {}, bests: {}, log: [] }, cards: [], videos: {}, ailog: {}, today: null, pod: {},
   ui: {}
 });
 E.S = E.blank();

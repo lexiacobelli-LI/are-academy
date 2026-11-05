@@ -313,6 +313,28 @@ ACTS.vtry = () => { const sel = $("#vSel"); if (sel) { ARE.VOICE.cfg.uri = sel.v
 ACTS.vstop = () => { if (ARE.VOICE.ok()) speechSynthesis.cancel(); };
 ACTS.vrate = (t) => { ARE.VOICE.cfg.rate = +t.dataset.v; ARE.VOICE.save(); rer(); ARE.VOICE.preview(); };
 ARE.VOICE.onchange = () => { if (/^#settings/.test(location.hash) && !document.querySelector("#vSel")) rer(); };
+let podF = { d: "all", q: "", left: false };
+function vPodcast() {
+  const P = ARE.PODCAST, all = P.eps;
+  const heard = all.filter(e => P.heard(e.id)).length;
+  const F = [["all", "All"], ["pcm", "PcM"], ["pjm", "PjM"], ["pa", "PA"], ["ppd", "PPD"], ["pdd", "PDD"], ["ce", "CE"], ["s", "Study strategy"], ["p", "Candidate stories"]];
+  const q = podF.q.trim().toLowerCase();
+  const list = all.filter(e => (podF.d === "all" || (podF.d === "s" || podF.d === "p" ? e.kind === podF.d : e.divs.includes(podF.d)))
+    && (!podF.left || !P.heard(e.id)) && (!q || e.t.toLowerCase().includes(q)));
+  return `<div class="stack" style="gap:6px"><span class="eyebrow">Free · ${esc(P.by)}</span><h1>${esc(P.show)}</h1></div>
+<section class="panel stack"><p>Short, single-topic episodes that turn NCARB objectives into plain explanations. Each episode is matched to the ARE divisions and the lessons in this app it supports. Episodes, articles and their free two-page study notes are Young Architect's and open on their site.</p>
+<div class="row"><a class="btn primary" href="${esc(P.apple)}" target="_blank" rel="noopener">Follow on Apple Podcasts ↗</a><a class="btn" href="${esc(P.site)}" target="_blank" rel="noopener">All episodes on Young Architect ↗</a></div>
+<div class="row between"><span class="muted">${heard} of ${all.length} listened</span><span class="muted" style="font-size:.85rem">Episode list checked ${esc(P.checked)}. New episodes appear weekly on their site.</span></div>
+<div class="bar"><span style="width:${Math.round(heard / all.length * 100)}%"></span></div></section>
+<section class="stack"><div class="row">${F.map(([k, t]) => `<button class="chip ${podF.d === k ? "on" : ""}" data-act="podfilter" data-v="${k}">${t}</button>`).join("")}</div>
+<div class="row"><div class="searchbox" style="flex:1;min-width:200px">${'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>'}<input type="search" id="podQ" placeholder="Search episodes" value="${esc(podF.q)}" aria-label="Search episodes"></div><label class="row" style="gap:6px"><input type="checkbox" id="podLeft" ${podF.left ? "checked" : ""}> Not yet listened</label></div>
+<div class="pod-list">${list.length ? list.map(e => P.row(e)).join("") : `<div class="empty">No episodes match.</div>`}</div></section>`;
+}
+ACTS.podfilter = (t) => { podF.d = t.dataset.v; if (location.hash !== "#podcast") location.hash = "#podcast"; else rer(); };
+ACTS.podopen = (t) => { ARE.E.S.pod = ARE.E.S.pod || {}; if (!ARE.E.S.pod[t.dataset.id]) { ARE.E.S.pod[t.dataset.id] = Date.now(); ARE.E.save(); setTimeout(rer, 300); } };
+ACTS.podmark = (t) => { const S = ARE.E.S; S.pod = S.pod || {}; if (S.pod[t.dataset.id]) delete S.pod[t.dataset.id]; else S.pod[t.dataset.id] = Date.now(); ARE.E.save(); rer(); };
+document.addEventListener("input", (e) => { if (e.target.id === "podQ") { podF.q = e.target.value; clearTimeout(podF.tm); podF.tm = setTimeout(() => { const pos = e.target.selectionStart; rer(); const n = document.getElementById("podQ"); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) {} } }, 250); } });
+document.addEventListener("change", (e) => { if (e.target.id === "podLeft") { podF.left = e.target.checked; rer(); } });
 ACTS.pref = (t) => { const k = t.dataset.k; ARE.prefs[k] = k === "text" ? +t.dataset.v : t.dataset.v; savePrefs(); rer(); };
 ACTS.aiprov = (t) => { AI.cfg.provider = t.dataset.v; AI.saveCfg(); rer(); };
 ACTS.gsave = () => { AI.cfg.gemini.key = $("#gKey").value.trim(); AI.cfg.gemini.model = $("#gModel").value.trim() || "gemini-flash-latest"; AI.saveCfg(); toast("Saved on this device"); rer(); };
@@ -353,6 +375,7 @@ E.merge = (a, b) => {
   m.game.xp = Math.max(m.game.xp || 0, (older.game || {}).xp || 0); Object.assign(m.game.badges, Object.assign({}, (older.game || {}).badges, m.game.badges));
   Object.entries(older.notes || {}).forEach(([k, v]) => { if (!(k in m.notes)) m.notes[k] = v; });
   (older.cards || []).forEach(c => { if (!m.cards.some(x => x.id === c.id)) m.cards.push(c); });
+  m.pod = Object.assign({}, older.pod || {}, m.pod || {});
   m.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0);
   return m;
 };
@@ -401,6 +424,7 @@ ARE.ROUTE = (h) => {
   if (h === "studio") return vStudio();
   if (h === "analytics") return vAnalytics();
   if (h === "settings") return vSettings();
+  if (h === "podcast") return vPodcast();
   return null;
 };
 ARE.AFTER = (h) => {

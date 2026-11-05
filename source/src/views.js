@@ -44,6 +44,7 @@ const IC = {
   menu: '<path d="M3 6h18M3 12h18M3 18h18"/>',
   collapse: '<path d="M4 4h16v16H4zM9 4v16M15 10l-2 2 2 2"/>',
   chev: '<path d="M6 9l6 6 6-6"/>',
+  podcast: '<path d="M9 3h6v10H9zM5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/>',
   more: '<path d="M5 12h.01M12 12h.01M19 12h.01"/>'
 };
 const icon = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`;
@@ -53,7 +54,7 @@ const NAV = [["dashboard", "Home"], ["today", "Today's Study Plan"], ["library",
 /* nav groups: [title, [[route, label], ...]] — order = priority */
 const NAVG = [
   [null, [["dashboard", "Home"], ["today", "Today's Plan"]]],
-  ["Learn", [["library", "Study Library"], ["divisions", "ARE Divisions"], ["studio", "Video Lessons"], ["flashcards", "Flashcards"], ["reference", "Reference Library"]]],
+  ["Learn", [["library", "Study Library"], ["divisions", "ARE Divisions"], ["studio", "Video Lessons"], ["podcast", "Podcast"], ["flashcards", "Flashcards"], ["reference", "Reference Library"]]],
   ["Practice", [["exams", "Practice Exams"], ["cases", "Case Studies"]]],
   ["Notes", [["lnotes", "Learning Notes"], ["notes", "My Notes"]]],
   ["Progress", [["tracker", "Competency"], ["analytics", "Analytics"], ["planner", "Study Planner"]]]
@@ -412,6 +413,7 @@ function vDivision(id) {
 <section class="stack"><h2>Lessons</h2>${lessons.length ? `<div class="grid g3">${lessons.map(lessonCard).join("")}</div>` : '<div class="empty">No lessons yet.</div>'}</section>
 <section class="stack"><h2>Official practice exam</h2>${officialCard(id, true)}</section>
 ${cases.length ? `<section class="stack"><h2>Case studies</h2><div class="grid g2">${cases.map(caseCard).join("")}</div></section>` : ""}
+${ARE.PODCAST.forDiv(id).length ? `<section class="panel stack"><div class="row between"><h2>Podcast episodes for this division</h2><a class="btn small" href="#podcast" data-act="podfilter" data-v="${id}">See all ${ARE.PODCAST.forDiv(id).length} →</a></div><p class="muted">Free episodes of the ${esc(ARE.PODCAST.show)} that match this division. ${ARE.PODCAST.forDiv(id).filter(e => ARE.PODCAST.heard(e.id)).length} listened.</p></section>` : ""}
 <section class="panel stack"><h2>Handbook topics for this division</h2><div class="row">${ARE.HANDBOOK.topics.filter(t => t.objs.some(k => k.startsWith(id + "-"))).map(t => `<button class="chip" data-act="hbopen" data-id="${t.id}">${esc(t.topic)}</button>`).join("")}</div></section>`;
 }
 
@@ -467,7 +469,7 @@ function vLesson(id) {
   const hbs = hbTopicsFor(l.obj || []);
   const check = (l.check || []).filter(q => E.QMAP[q]);
   const lastCheck = st.check;
-  const secs = [["obj", "Objectives"], ["content", "Lesson"], l.diagram ? ["fig", "Diagram"] : null, (l.quick || []).length ? ["quick", "Check yourself"] : null, (l.tryit || []).length ? ["try", "Try it"] : null, (l.formulas || []).length ? ["formulas", "Formulas"] : null, ["example", "Worked example"], ["mistakes", "Common mistakes"], ["scenario", "Practice scenario"], ["recall", "Recall it"], ["takeaways", "Key takeaways"], ["handbook", "Handbook & references"], ["check", "Knowledge check"], ["notes", "My notes"]].filter(Boolean);
+  const secs = [["obj", "Objectives"], ["content", "Lesson"], l.diagram ? ["fig", "Diagram"] : null, (l.quick || []).length ? ["quick", "Check yourself"] : null, (l.tryit || []).length ? ["try", "Try it"] : null, (l.formulas || []).length ? ["formulas", "Formulas"] : null, ["example", "Worked example"], ["mistakes", "Common mistakes"], ["scenario", "Practice scenario"], ["recall", "Recall it"], ["takeaways", "Key takeaways"], ARE.PODCAST.forLesson(id).length ? ["listen", "Listen"] : null, ["handbook", "Handbook & references"], ["check", "Knowledge check"], ["notes", "My notes"]].filter(Boolean);
   return `
 <div class="tblock"><div class="tb-main"><span class="eyebrow">${d.code} · ${esc(d.name)} · ${l.minutes} min · ${esc(l.level || "Core")}</span><h1>${esc(l.title)}</h1><p class="muted" style="max-width:70ch">${esc(l.summary)}</p>
 <div class="row">${(l.obj || []).map(k => `<a class="chip code" href="#div-${l.div}" title="${esc(ARE.OBJ[k].title)}">${objLabel(k)}</a>`).join("")}${bmBtn("lesson", id, l.title)}</div>
@@ -490,6 +492,7 @@ ${recallSection(l)}
 ${l.canada ? `<div class="note-canada"><b>Canadian practice note (not on the ARE).</b> ${esc(l.canada)}</div>` : ""}
 <section class="sec" id="s-takeaways"><h2>Key takeaways <small>Memorize</small></h2><ul class="takeaways">${takeaways.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
 ${(() => { const cards = E.glossary.filter(g => g.lesson === id); return cards.length ? `<h3 style="margin-top:8px">Flashcards <span class="muted" style="font-weight:400;font-size:.85rem">· tap to flip</span></h3><div class="cards">${cards.map(g => `<button class="fcard" data-act="flip" aria-label="Flashcard: ${esc(g.term)}"><span class="f-front">${esc(g.term)}</span><span class="f-back">${esc(g.def)}</span></button>`).join("")}</div>` : ""; })()}</section>
+${(() => { const eps = ARE.PODCAST.forLesson(id); return eps.length ? `<section class="sec" id="s-listen"><h2>Listen <small>Architect Exam Podcast · free</small></h2><p class="muted">Episodes on this topic from ${esc(ARE.PODCAST.by)}. They open on Young Architect's site.</p><div class="pod-list">${eps.map(e => ARE.PODCAST.row(e, { lessons: false })).join("")}</div></section>` : ""; })()}
 <section class="sec" id="s-handbook"><h2>Handbook &amp; references</h2>
 ${(l.obj || []).some(k => hbRefs(k).length) ? `<div class="panel stack"><span class="eyebrow">Read in your Handbook (by objective)</span>${(l.obj || []).filter(k => hbRefs(k).length).map(k => `<div><span class="chip code">${objLabel(k)}</span><ul style="margin:6px 0 0;padding-left:18px">${hbRefs(k).map(r => `<li style="font-size:.9rem">${hbRefLine(r)}</li>`).join("")}</ul></div>`).join("")}<a href="${ARE.HANDBOOK.fileUrl}" target="_blank" rel="noopener" style="font-size:.88rem">Open your Handbook PDF in Drive ↗</a></div>` : ""}
 ${hbs.length ? `<div class="panel stack"><span class="eyebrow">${esc(ARE.HANDBOOK.title)}, ${esc(ARE.HANDBOOK.edition)}</span>${hbs.map(t => `<div class="row between" style="flex-wrap:nowrap"><span style="min-width:0"><b>${esc(t.topic)}</b><br><span class="muted" style="font-size:.85rem">${t.sections.map(sn => "§" + sn + " p. " + ARE.HB_SEC[sn].p).join(" · ")}${E.S.hbLoc[t.id] ? " · Your note: " + esc(E.S.hbLoc[t.id]) : ""}</span></span><button class="btn small" data-act="hbopen" data-id="${t.id}">Open topic</button></div>`).join("")}</div>` : ""}

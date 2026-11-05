@@ -440,3 +440,12 @@ body.exam-mode .content{background:var(--bg)}
   .sec-h a, .rv-item .muted, .dv-code{font-size:.875rem}
   .ring b small, .d-hero .ring b small{font-size:.6875rem}
 }
+
+/* ---------- podcast ---------- */
+.pod-list{display:grid; gap:10px}
+.pod-ep{display:flex; gap:14px; align-items:center; justify-content:space-between; padding:14px 16px; border:1px solid var(--line); border-radius:var(--r-lg, 12px); background:var(--surface)}
+.pod-ep.heard{background:var(--bg)}
+.pod-ep.heard .pod-main > b{color:var(--muted)}
+.pod-main{display:grid; gap:8px; min-width:0}
+.pod-act{display:flex; gap:6px; flex:none; flex-wrap:wrap; justify-content:flex-end}
+@media (max-width:620px){ .pod-ep{flex-direction:column; align-items:stretch} .pod-act{justify-content:flex-start} }
