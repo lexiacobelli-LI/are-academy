@@ -14,7 +14,7 @@ ARE.CASES = [
 <tr><th>Setbacks</th><td>Front 30 ft · Side 15 ft each · Rear 25 ft</td></tr>
 <tr><th>Height</th><td>35 ft / 2 stories</td></tr>
 <tr><th>Parking</th><td>1 space per 300 sf of gross floor area</td></tr>
-<tr><th>Easement</th><td>20 ft storm sewer easement along the entire rear lot line (within the rear setback)</td></tr>
+<tr><th>Easement</th><td>20 ft storm sewer easement along the entire rear lot line (within the rear setback), held by the regional sewer authority, not the city</td></tr>
 </tbody></table>` },
     { name: "Program summary", html: `
 <table class="tbl"><thead><tr><th>Space</th><th>Net sf</th><th>Use</th></tr></thead><tbody>
@@ -37,10 +37,10 @@ ARE.CASES = [
     { id: "cs-lib-4", type: "calc", diff: 2, obj: "ppd-2.2", q: "What is the occupant load of the community meeting room?", ans: 200, tol: 0, unit: "occupants",
       explain: "1,400 ÷ 7 = 200. With more than 49 occupants the room needs two exit access doorways, and in this sprinklered building they must be at least ⅓ of the room diagonal apart. Assembly rooms with 50 or more occupants also need panic hardware on doors with latches." },
     { id: "cs-lib-5", type: "mc", diff: 2, obj: "pa-2.3", q: "The city's engineer wants to place a bioretention basin along the rear of the lot. Which statement is correct?",
-      opts: ["The basin cannot be within the setback", "Permanent structures cannot be built within the storm sewer easement; a basin may be possible only if the easement holder agrees", "The easement reduces the lot area used for FAR", "The easement must be removed before permit"],
+      opts: ["The basin cannot be built because the rear setback prohibits all improvements, including grading and stormwater features", "What may be placed in the easement depends on its terms; the basin is possible only if they allow it or the sewer authority consents in writing", "The easement area must be subtracted from the lot area before FAR is calculated", "The easement must be released by its holder before a building permit can be issued"],
       ans: 1,
-      why: ["Setbacks typically restrict buildings, not landscape or stormwater features.", "Correct. Easement terms and the holder's consent govern what may be placed there.", "Easements generally do not reduce lot area for FAR unless the ordinance says so.", "Easements can coexist with development."],
-      explain: "Always read the easement document; its terms govern." }
+      why: ["Setbacks typically restrict buildings, not landscape or stormwater features.", "Correct. The easement's terms, and the holder's written consent, govern what may be placed there.", "Easements generally do not reduce lot area for FAR unless the ordinance says so.", "Easements can coexist with development."],
+      explain: "Always read the easement document; its terms govern.", ref: "Easement instrument (case zoning data); local zoning ordinance" }
   ]
 },
 {
@@ -58,7 +58,7 @@ ARE.CASES = [
     { name: "Week 14 status (CD phase)", html: `
 <table class="tbl"><tbody>
 <tr><th>CD labor budget (BAC)</th><td>$61,200</td></tr>
-<tr><th>Planned % complete at week 14</th><td>60%</td></tr>
+<tr><th>Planned % complete at week 14</th><td>55%</td></tr>
 <tr><th>Reported % complete</th><td>45%</td></tr>
 <tr><th>Labor cost to date (AC)</th><td>$36,720</td></tr>
 <tr><th>Notes</th><td>Owner added a pharmacy and asked for two layout options in week 10 (verbal, at a site walk). No written authorization on file.</td></tr>
@@ -74,10 +74,10 @@ ARE.CASES = [
     { id: "cs-cl-4", type: "calc", diff: 3, obj: "pjm-4.1", q: "At the current CPI, what is the estimate at completion for CDs?", ans: 81600, tol: 1, unit: "$",
       explain: "EAC = 61,200 ÷ 0.75 = $81,600, a projected $20,400 overrun." },
     { id: "cs-cl-5", type: "mc", diff: 3, obj: "pjm-4.2", q: "What is the most appropriate action now?",
-      opts: ["Absorb the overrun to protect the client relationship", "Notify the owner in writing that the pharmacy and layout options are additional services, quantify fee and schedule effects, and request authorization; record the week-10 request", "Stop work until the owner pays", "Reduce CA effort to recover the fee"],
+      opts: ["Absorb the overrun this phase to protect the client relationship, and raise it at the next fee review", "Notify the owner in writing that the pharmacy and layout options are Additional Services, with fee and schedule effects, and request authorization", "Stop work on the CDs until the owner agrees in writing to pay for the extra hours", "Reduce construction administration effort later to recover the fee lost in CDs"],
       ans: 1,
-      why: ["Absorbing scope growth erodes profit and sets a precedent.", "Correct. The overrun traces to scope growth requested verbally; it should have been confirmed in writing at week 10.", "Stopping work is disproportionate and may breach the agreement.", "Cutting CA effort risks the standard of care and owner protection during construction."],
-      explain: "Scope creep is the most common cause of overruns on stipulated-sum work." }
+      why: ["Absorbing scope growth erodes profit and sets a precedent.", "Correct. The week-10 requests are a change in scope. Give prompt written notice, get written authorization before proceeding, and track this effort separately from the base CD hours.", "Stopping work is disproportionate and may breach the agreement.", "Cutting CA effort risks the standard of care and owner protection during construction."],
+      explain: "Unconfirmed verbal requests are a common cause of overruns on stipulated-sum work; confirm scope changes in writing when they are made.", ref: "AIA B101–2017, §4.2.1" }
   ]
 },
 {
@@ -90,14 +90,14 @@ ARE.CASES = [
 <li>6 mil polyethylene sheet</li>
 <li>6 in steel studs at 16 in o.c. with R-19 glass-fiber batts</li>
 <li>1/2 in exterior gypsum sheathing</li>
-<li>Self-adhered membrane, specified in Section 07 27 26 as a vapor-impermeable air and water barrier (0.05 perm)</li>
+<li>Self-adhered membrane, specified in Section 07 27 00 as a vapor-impermeable air and water barrier (0.05 perm)</li>
 <li>2 in mineral wool continuous insulation (R-8.4) on thermally broken clips</li>
 <li>1 in ventilated cavity</li>
 <li>Metal panel cladding</li>
 </ol>
 <p>Head-of-window detail 8/A-521: the head flashing membrane is applied <i>over</i> (outboard of) the WRB sheet above it.</p>` },
     { name: "Specification excerpt (paraphrased)", html: `
-<p><b>Section 07 27 26 — Fluid-Applied and Self-Adhered Membrane Air Barriers</b></p>
+<p><b>Section 07 27 00 — Air Barriers (self-adhered membrane)</b></p>
 <p>1.4 Submittals: product data; shop drawings of transitions; mock-up report.<br>
 2.1 Membrane: self-adhered, vapor permeance 0.05 perm (ASTM E96, desiccant method).<br>
 3.3 Installation: lap upper courses over lower courses a minimum of 2 in; prime substrates.</p>
@@ -105,23 +105,23 @@ ARE.CASES = [
   ],
   questions: [
     { id: "cs-rec-1", type: "mc", diff: 2, obj: "pdd-2.3", q: "What is the main moisture risk in wall W3 as specified?",
-      opts: ["Too much exterior insulation", "Two Class I (very low permeance) layers trap the stud cavity, so it cannot dry in either direction", "The cavity is too wide", "Mineral wool absorbs rain"],
+      opts: ["The exterior mineral wool keeps the sheathing so cold that moisture condenses on it", "Two Class I (very low permeance) layers trap the stud cavity, so it cannot dry in either direction", "The 1 in rainscreen cavity is too narrow to drain and vent the cladding", "The mineral wool behind the open cladding absorbs rain and holds it against the membrane"],
       ans: 1,
-      why: ["Exterior insulation helps here.", "Correct. Polyethylene inside and a 0.05 perm membrane outside sandwich the cavity.", "1 in is a normal rainscreen cavity.", "Mineral wool sheds water and dries; it is common behind rainscreens."],
+      why: ["Exterior insulation warms the sheathing; it helps here.", "Correct. Polyethylene inside and a 0.05 perm membrane outside sandwich the cavity.", "1 in is a normal rainscreen cavity.", "Mineral wool sheds water and dries; it is common behind rainscreens."],
       explain: "With 2 in of exterior mineral wool and a vapor-impermeable membrane, delete the polyethylene and use a Class III interior (latex paint), or switch to a vapor-permeable membrane after a hygrothermal check." },
     { id: "cs-rec-2", type: "mc", diff: 2, obj: "pdd-1.5", q: "What is wrong with head detail 8/A-521?",
-      opts: ["Nothing; laps can go either way with self-adhered membranes", "It is reverse-lapped: the WRB above must lap over the head flashing membrane so water is shed outward", "The membrane should stop short of the window", "The detail needs a backer rod"],
+      opts: ["Nothing; self-adhered membranes bond to each other, so lap direction does not matter", "It is reverse-lapped: the WRB above must lap over the head flashing membrane so water is shed outward", "The membrane should stop short of the window frame so that sealant alone forms the head seal", "The head joint needs a backer rod and sealant instead of a membrane flashing"],
       ans: 1,
-      why: ["Lap direction matters for every water-shedding layer.", "Correct. The spec says upper over lower. Water running down the WRB above meets the top edge of the head membrane and gets behind it.", "Discontinuity breaks the water control layer.", "Backer rods are for sealant joints."],
+      why: ["Lap direction matters for every water-shedding layer.", "Correct. The spec says upper over lower. Water running down the WRB above meets the top edge of the head membrane and gets behind it.", "Discontinuity breaks the water control layer.", "Sealant alone is not a substitute for a lapped flashing membrane."],
       explain: "Trace water down the face of each layer; it must never meet an upturned edge." },
     { id: "cs-rec-3", type: "mc", diff: 2, obj: "pdd-3.3", q: "Which documents need revision to fix the vapor problem consistently?",
-      opts: ["Only wall section W3", "Section 07 21 00 (delete the polyethylene requirement or limit its scope), wall section W3, and any wall types or details that reference the polyethylene", "Only Section 07 27 26", "None; the contractor will resolve it in a submittal"],
+      opts: ["Wall section W3 only, since the drawings govern over the specifications", "Section 07 21 00 (delete the polyethylene requirement or limit its scope), wall section W3, and any wall types or details that reference the polyethylene", "Section 07 27 00 only, by adding a note that the membrane governs over other vapor layers", "None; the contractor will resolve it in a submittal during construction"],
       ans: 1,
       why: ["The spec would still require polyethylene.", "Correct. Drawings and specs must agree, and specs should defer to wall types rather than saying 'all exterior walls'.", "The membrane is not the problem layer.", "Submittals cannot change contract documents."],
       explain: "Coordinate drawings and specs before issue; conflicts become RFIs and change orders." },
-    { id: "cs-rec-4", type: "match", diff: 1, obj: "pdd-3.1", q: "Match each requirement to where it belongs in Section 07 27 26.",
-      pairs: [["Mock-up report", "Part 1 — General"], ["Vapor permeance 0.05 perm", "Part 2 — Products"], ["Lap upper courses over lower 2 in", "Part 3 — Execution"]],
-      explain: "Submittals in Part 1, product properties in Part 2, installation in Part 3." }
+    { id: "cs-rec-4", type: "match", diff: 1, obj: "pdd-3.1", q: "Match each requirement to where it belongs in Section 07 27 00.",
+      pairs: [["Manufacturer's material warranty", "Part 1 — General"], ["Primer compatible with the membrane", "Part 2 — Products"], ["Field adhesion testing", "Part 3 — Execution"]],
+      explain: "Administrative items such as submittals and warranties go in Part 1, products and materials in Part 2, and installation and field quality control in Part 3.", ref: "CSI SectionFormat (three-part format)" }
   ]
 },
 {
@@ -132,7 +132,7 @@ ARE.CASES = [
 <table class="tbl"><tbody>
 <tr><th>Original contract sum</th><td>$4,850,000</td></tr>
 <tr><th>Net change by change orders</th><td>+$62,000</td></tr>
-<tr><th>Total completed to date (per G703)</th><td>$2,910,000</td></tr>
+<tr><th>Work completed to date, excluding stored materials (G703 columns D + E)</th><td>$2,910,000</td></tr>
 <tr><th>Materials presently stored</th><td>$85,000 — overhead doors, in contractor's yard 15 miles away; no insurance certificate or bill of sale provided; storage off-site not approved in advance</td></tr>
 <tr><th>Previous certificates for payment</th><td>$2,250,000</td></tr>
 </tbody></table>` },
@@ -146,27 +146,27 @@ ARE.CASES = [
   ],
   questions: [
     { id: "cs-fh-1", type: "calc", diff: 3, obj: "ce-3.3", q: "Excluding the stored materials that do not meet A201 conditions, what is the maximum amount the architect could certify for this application before considering any other withholding?", ans: 369000, tol: 1, unit: "$",
-      explain: "Stored materials off-site were not approved in advance and lack insurance and title documentation, so exclude them. 2,910,000 × 0.90 = 2,619,000 earned less retainage. 2,619,000 − 2,250,000 = $369,000." },
+      explain: "Stored materials off-site were not approved in advance and lack insurance and title documentation, so exclude them. 2,910,000 × 0.90 = 2,619,000 earned less retainage. 2,619,000 − 2,250,000 = $369,000.", ref: "AIA A201–2017, §9.3.1 and §9.3.2" },
     { id: "cs-fh-2", type: "mc", diff: 3, obj: "ce-3.1", q: "Which instrument should the architect prepare for RFI 41?",
       opts: ["Architect's supplemental instruction", "Change order", "Construction change directive", "Addendum"],
       ans: 2,
       why: ["An ASI cannot change the contract sum.", "A change order needs agreement on price.", "Correct. Owner and architect sign a CCD so the work proceeds while price is resolved.", "Addenda are issued during bidding."],
-      explain: "When the change is agreed but the price is not, and time is short, use a CCD." },
+      explain: "When the change is agreed but the price is not, and time is short, use a CCD.", ref: "AIA A201–2017, §7.2.1, §7.3.1 and §7.4" },
     { id: "cs-fh-3", type: "mc", diff: 1, obj: "ce-3.1", q: "How should the architect handle RFI 44?",
-      opts: ["Issue a change order", "Answer the RFI (or issue an ASI) selecting the color; no change in cost or time", "Ask the contractor to choose", "Issue a CCD"],
+      opts: ["Issue a change order recording the color selection", "Answer the RFI (or issue an ASI) selecting the color; no change in cost or time", "Ask the contractor to choose a color and submit a sample", "Issue a CCD so the painting can proceed"],
       ans: 1,
       why: ["No cost or time change.", "Correct.", "Selection is the architect's/owner's design decision.", "Unnecessary."],
-      explain: "Minor changes consistent with the intent go by ASI." },
+      explain: "Answer the RFI in writing (§4.2.11, §4.2.13). If the selection changes documented work, issue it as an ASI or minor change (§7.4). There is no cost or time change, so no change order or CCD.", ref: "AIA A201–2017, §4.2.11, §4.2.13 and §7.4" },
     { id: "cs-fh-4", type: "ms", diff: 3, obj: "ce-3.4", pick: 2, q: "Regarding the missing joint reinforcement, which two actions are appropriate? Select two.",
-      opts: ["Reject the nonconforming masonry and notify the owner and contractor in writing", "Order the masons to stop work", "Ask the structural engineer to evaluate whether removal or another remedy is required", "Accept it since it is concealed", "Instruct the foreman how to rebuild the wall"],
+      opts: ["Reject the nonconforming masonry and notify the owner and contractor in writing", "Order the masons to stop work on the hose tower until the engineer reports", "Ask the structural engineer to evaluate whether removal or another remedy is required", "Accept the masonry and note it in the field report, since the reinforcement is concealed", "Instruct the foreman how to remove and rebuild the courses"],
       ans: [0, 2],
       why: ["Correct.", "Stopping work is the owner's right.", "Correct.", "Concealed defects remain nonconforming.", "Means and methods belong to the contractor."],
-      explain: "Reject, report and get the engineer's evaluation; the contractor corrects at its cost." },
+      explain: "Reject, report and get the engineer's evaluation; the contractor corrects at its cost.", ref: "AIA A201–2017, §2.4, §4.2.6 and §12.2.1" },
     { id: "cs-fh-5", type: "mc", diff: 2, obj: "ce-3.3", q: "How should the roofing subcontractor's letter affect this certification?",
-      opts: ["It has no effect", "The architect pays the subcontractor directly", "It is a ground to withhold if there is reasonable evidence of nonpayment; request lien waivers and an explanation, certify the justified amount and notify the reasons in writing", "Withhold the entire application"],
+      opts: ["It has no effect, because subcontractor payment is between the contractor and its subcontractors", "The architect pays the subcontractor directly out of the amount certified", "Withhold only what is needed to protect the owner if nonpayment is supported, and notify the contractor of the reasons in writing", "Withhold the full application until lien waivers arrive from every subcontractor"],
       ans: 2,
       why: ["Failure to pay subcontractors is a listed ground.", "Architects do not make payments.", "Correct.", "Withhold only what is necessary to protect the owner."],
-      explain: "A201 §9.5.1 lists failure to pay subcontractors among the grounds for withholding." }
+      explain: "A201 §9.5.1.3 lists failure to pay subcontractors as a ground. Ask for lien waivers and an explanation, withhold only to the extent reasonably necessary, and notify the reasons in writing (§9.4.1).", ref: "AIA A201–2017, §9.5.1.3 and §9.4.1" }
   ]
 }
 ];

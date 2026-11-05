@@ -28,7 +28,7 @@ ARE.LESSONS.push({
 <li><strong>Public first.</strong> If a client insists on a decision that violates the code and endangers occupants, the architect refuses, and if overruled, reports to the building official.</li>
 <li><strong>Honesty.</strong> Do not misrepresent qualifications, credit for work, or what a certificate says. Sign only what you know to be true.</li>
 <li><strong>Conflicts of interest.</strong> Disclose them in writing; do not accept compensation from contractors or suppliers on the same project without full disclosure and consent.</li>
-<li><strong>Colleagues.</strong> Credit others' work, respect intellectual property, and do not attempt to supplant another architect who is under contract.</li>
+<li><strong>Colleagues.</strong> Credit others' work and respect intellectual property. The AIA's old rule against “supplanting” another architect was dropped after antitrust rulings, but inducing an owner to break a live contract can still be tortious interference, so confirm an earlier agreement has ended before you take over.</li>
 </ul>
 
 <h3>Sealing and responsible control</h3>

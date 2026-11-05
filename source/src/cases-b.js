@@ -22,6 +22,8 @@ ARE.CASES.push({
 <li>The Architect warrants that the design will achieve LEED Silver certification.</li>
 <li>Payment within 90 days of invoice; no interest on late payment.</li>
 <li>Disputes: mediation, then litigation in the county court.</li>
+<li>Standard of care: the skill and care ordinarily used by architects practicing under similar circumstances.</li>
+<li>The Owner will furnish a hazardous-materials survey of the arena.</li>
 </ol>` }
   ],
   questions: [
@@ -32,13 +34,13 @@ ARE.CASES.push({
     { id: "cs-fs-3", type: "calc", diff: 2, obj: "pcm-2.1", q: "What was the break-even rate? (Two decimals.)", ans: 2.80, tol: 0.006, unit: "",
       explain: "Overhead rate = 1,260,000 ÷ 700,000 = 1.80. Break-even = 1 + 1.80 = 2.80. With a net multiplier of 3.21 the firm is profitable (profit = 2,250,000 − 1,960,000 = $290,000)." },
     { id: "cs-fs-4", type: "mc", diff: 2, obj: "pcm-2.1", q: "Which financial issue needs the most urgent attention?",
-      opts: ["Utilization", "The $410,000 receivable over 90 days from one client", "Consultant costs", "The break-even rate"],
+      opts: ["Utilization of 64% across all hours paid", "The $410,000 receivable over 90 days from one client", "Consultant costs of $520,000, about 18% of gross revenue", "A break-even rate of 2.80 against a 3.21 net multiplier"],
       ans: 1, why: ["64% is within a typical range.", "Correct. Aged receivables threaten cash flow and may never be collected.", "Pass-through costs.", "The firm is above break-even."],
       explain: "Profit on paper does not pay salaries; collect receivables and review terms with that client." },
-    { id: "cs-fs-5", type: "ms", diff: 3, obj: "pcm-3.3", pick: 3, q: "Which three clauses should the firm negotiate before signing? Check the three that apply.",
-      opts: ["Clause 1: fixed fee including an undefined existing-conditions survey", "Clause 2: indemnity regardless of cause", "Clause 3: warranty of LEED Silver certification", "Clause 5: mediation before litigation", "The project name", "The owner's address"],
-      ans: [0, 1, 2], why: ["Correct. Price the survey hourly or define its scope.", "Correct. Limit indemnity to the architect's negligence.", "Correct. Replace the warranty with a commitment to design to LEED Silver criteria.", "Mediation before litigation follows AIA practice.", "Not an issue.", "Not an issue."],
-      explain: "Clause 4 (90-day payment) is also worth negotiating, given the firm's receivables problem." }
+    { id: "cs-fs-5", type: "ms", diff: 3, obj: "pcm-3.3", pick: 3, q: "Which three clauses create the greatest professional-liability or uninsurable risk and should be negotiated before signing? Check the three that apply.",
+      opts: ["Clause 1: fixed fee including an undefined existing-conditions survey", "Clause 2: indemnity regardless of cause", "Clause 3: warranty of LEED Silver certification", "Clause 5: mediation before litigation", "Clause 6: standard of care", "Clause 7: owner-furnished hazardous-materials survey"],
+      ans: [0, 1, 2], why: ["Correct. Price the survey hourly or define its scope.", "Correct. Limit indemnity to the architect's negligence.", "Correct. Replace the warranty with a commitment to design to LEED Silver criteria.", "Mediation before litigation follows AIA practice.", "This is the normal professional standard; it adds no liability.", "Owner-furnished information shifts that risk to the owner; it helps the architect."],
+      explain: "Clause 4 (90-day payment, no interest) is a cash-flow issue worth raising too, but it is a business term rather than a liability risk.", ref: "AIA B101–2017, §2.2 (standard of care) and §8.2" }
   ]
 });
 
@@ -72,18 +74,18 @@ ARE.CASES.push({
     { id: "cs-ch-2", type: "calc", diff: 3, obj: "ppd-2.2", q: "What is the allowable area A_a?", ans: 38250, tol: 1, unit: "sf",
       explain: "A_a = 36,000 + (9,000 × 0.25) = 38,250 sf." },
     { id: "cs-ch-3", type: "mc", diff: 3, obj: "ppd-2.3", q: "The proposed footprint is 39,600 sf. What is the most appropriate design response?",
-      opts: ["No change; it complies", "Reduce the footprint to 38,250 sf or less, add qualifying frontage, change construction type, or divide the building with a fire wall", "Remove the sprinklers", "Add a second story to the same footprint"],
-      ans: 1, why: ["39,600 > 38,250.", "Correct. Any of these brings the building into compliance; the owner's cost and program decide.", "Sprinklers increase allowable area.", "Adding a story does not fix the per-story limit."],
+      opts: ["No change; the frontage increase already brings it into compliance", "Reduce the footprint to 38,250 sf or less, or change the frontage, construction type or fire-wall layout", "Remove the sprinklers and design to the nonsprinklered area limit", "Add a second story to the same footprint to spread the area"],
+      ans: 1, why: ["39,600 > 38,250, which already includes the frontage increase.", "Correct. Any of these brings the building into compliance; the owner's cost and program decide.", "Sprinklers increase allowable area; removing them lowers it.", "Adding a story does not fix the per-story limit."],
       explain: "Compare the actual area to the allowable area for each story." },
     { id: "cs-ch-4", type: "mc", diff: 2, obj: "ppd-3.1", q: "Which HVAC approach best meets the owner's priorities?",
-      opts: ["A single large rooftop unit serving the whole building", "VRF with a dedicated outdoor air system, with low-noise indoor units in the waiting room", "Window air conditioners", "Electric baseboard only"],
-      ans: 1, why: ["One zone cannot control 40 exam rooms individually.", "Correct. Many zones, efficient, quiet indoor units.", "Noisy and inefficient.", "No cooling or ventilation."],
+      opts: ["A single large rooftop unit serving the whole building", "VRF with a dedicated outdoor air system, with low-noise indoor units in the waiting room", "Packaged terminal units in each exam room with a central exhaust fan", "Electric baseboard heat with operable windows for cooling"],
+      ans: 1, why: ["One zone cannot control 40 exam rooms individually.", "Correct. Many zones, efficient, quiet indoor units.", "Noisy at every room and hard to ventilate well.", "No mechanical cooling or controlled ventilation."],
       explain: "Match zoning, efficiency and noise to the program." },
     { id: "cs-ch-5", type: "calc", diff: 2, obj: "pdd-1.2", q: "How many water closets are required for the women's room (100 women)?", ans: 3, tol: 0, unit: "WCs",
       explain: "First 50 ÷ 25 = 2; remaining 50 ÷ 50 = 1. Total 3." },
     { id: "cs-ch-6", type: "ms", diff: 3, obj: "ppd-5.2", pick: 2, q: "Which two problems with the SD estimate should you raise with the cost consultant? Check the two that apply.",
-      opts: ["No escalation to the construction midpoint", "Unit cost far below regional comparables", "The geotechnical bearing capacity", "The use of square-foot costing at SD", "Including any design contingency", "The estimate's page count"],
-      ans: [0, 1], why: ["Correct. 18 months of escalation is missing.", "Correct. $265/sf vs $420–480/sf needs reconciliation.", "Bearing of 3,000 psf supports spread footings; not an estimate flaw.", "Square-foot costing is appropriate at SD.", "Contingency is appropriate (3% is low for SD, but including it is correct).", "Irrelevant."],
+      opts: ["No escalation to the construction midpoint", "Unit cost far below regional comparables", "The geotechnical bearing capacity", "The use of square-foot costing at SD", "Including any design contingency", "Costing on gross rather than net floor area"],
+      ans: [0, 1], why: ["Correct. 18 months of escalation is missing.", "Correct. $265/sf vs $420–480/sf needs reconciliation.", "Bearing of 3,000 psf supports spread footings; not an estimate flaw.", "Square-foot costing is appropriate at SD.", "Including a design contingency at SD is appropriate.", "Gross area is the normal basis for square-foot costs."],
       explain: "Evaluate estimates for date, unit costs and markups before reporting to the owner." }
   ]
 });
