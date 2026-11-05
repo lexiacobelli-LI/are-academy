@@ -8815,6 +8815,13 @@ E.buildForm = (divId, form) => {
     }
     ids = ids.concat(take);
   });
+  // Match the real exam length exactly: trim rounding excess, or top up from unused real items in the division.
+  const need = Math.max(0, d.items - caseIds.length);
+  if (ids.length > need) ids = sshuffle(ids, r).slice(0, need);
+  else if (ids.length < need) {
+    const used = new Set(ids), spare = sshuffle(E.questions.filter(q => q.div === divId && !q.case && !drill(q) && !used.has(q.id)).map(q => q.id), r);
+    ids = ids.concat(spare.slice(0, need - ids.length));
+  }
   ids = sshuffle(ids, r);
   return { ids: ids.concat(caseIds), discrete: ids.length, cases: caseList.slice(0, 2).map(c => c.id), real: d.items };
 };
