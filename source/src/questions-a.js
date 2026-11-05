@@ -57,12 +57,16 @@ Q({ id: "q-pcm-06", div: "pcm", obj: "pcm-1.4", lesson: "pcm-risk", type: "ms", 
   opts: ["“The Architect warrants that the Drawings will be free of errors and omissions.”",
     "“The Architect shall perform its services consistent with the professional skill and care ordinarily provided by architects practicing in the same or similar locality under similar circumstances.”",
     "“The Architect guarantees that the Project will achieve LEED Gold certification.”",
-    "“The Architect shall review laws and regulations applicable to its services and use reasonable efforts to comply.”"],
+    "“The Architect shall review laws and regulations applicable to its services and use reasonable efforts to comply.”",
+    "“The Architect shall coordinate its services with those services provided by the Owner and the Owner's consultants.”",
+    "“The Architect shall be entitled to rely on the accuracy and completeness of services and information furnished by the Owner.”"],
   ans: [0, 2],
   why: ["Correct. A warranty of error-free documents is a promise of perfection.",
     "This is the standard of care as written in B101–2017.",
     "Correct. Certification depends on factors outside the architect's control; a guarantee is an express warranty.",
-    "Reasonable-efforts language is consistent with the standard of care."],
+    "Reasonable-efforts language is consistent with the standard of care.",
+    "Coordination with the owner's consultants is an ordinary B101 obligation, not a heightened one.",
+    "A right to rely on owner-furnished information limits, rather than raises, the architect's obligation."],
   explain: "Warranties and guarantees create contractual liability beyond negligence, which professional liability policies typically exclude.",
   ref: "AIA B101–2017, §2.2 (standard of care)" });
 
@@ -207,9 +211,9 @@ Q({ id: "q-pjm-08", div: "pjm", obj: "pjm-3.1", lesson: "pjm-contracts", type: "
 
 Q({ id: "q-pjm-09", div: "pjm", obj: "pjm-5.2", lesson: "pjm-contracts", type: "ms", diff: 2, fmt: "Check all that apply", pick: 3,
   q: "Which three are part of an architect's internal quality-control process for construction documents? Select three.",
-  opts: ["Interdisciplinary coordination checks at set milestones", "Directing the contractor's construction sequence", "A code compliance review against a checklist", "Peer review of the set by a senior architect not on the team", "Verifying the contractor's crew sizes on site"],
+  opts: ["Interdisciplinary coordination checks at set milestones", "Directing the contractor's construction sequence", "A code compliance review against a checklist", "Peer review of the set by a senior architect not on the team", "Verifying the contractor's crew sizes on site", "Approving the contractor's site safety program"],
   ans: [0, 2, 3],
-  why: ["Correct.", "Means, methods and sequences belong to the contractor.", "Correct.", "Correct.", "Crew sizing is a contractor matter."],
+  why: ["Correct.", "Means, methods and sequences belong to the contractor.", "Correct.", "Correct.", "Crew sizing is a contractor matter.", "Site safety is the contractor's responsibility (A201 Article 10)."],
   explain: "QC belongs to the architect's own work product: checking, coordinating and reviewing documents before issue.",
   ref: "Architect's Handbook of Professional Practice — quality management" });
 
@@ -231,15 +235,15 @@ Q({ id: "q-pjm-11", div: "pjm", obj: "pjm-3.1", lesson: "pjm-contracts", type: "
   ref: "AIA B101–2017, Article 3" });
 
 Q({ id: "q-pjm-12", div: "pjm", obj: "pjm-3.1", lesson: "pjm-contracts", type: "mc", diff: 2, fmt: "Multiple choice",
-  q: "Under B101–2017, if the owner has not retained a cost consultant, who prepares the estimate of the Cost of the Work as part of basic services?",
+  q: "Under B101–2017, who prepares the estimate of the Cost of the Work during design as part of basic services?",
   opts: ["The contractor", "The owner", "The architect", "No estimate is required"],
   ans: 2,
   why: ["There is no contractor during design in design-bid-build.",
     "The owner sets the budget but does not prepare the estimate.",
-    "Correct. The architect prepares and updates the estimate at the end of SD, DD and CD unless the owner provides a cost consultant.",
+    "Correct. The architect prepares a preliminary estimate at SD (§3.2.6) and updates it at DD (§3.3.2) and CD (§3.4.4), using area, volume or similar conceptual techniques (§6.3). A detailed estimate by the architect is a Supplemental Service.",
     "B101 requires estimates as a basic service."],
   explain: "If the estimate exceeds the owner's budget, B101 sets out the owner's options and the architect's obligation to modify the documents.",
-  ref: "AIA B101–2017, Article 6 (Cost of the Work)" });
+  ref: "AIA B101–2017, §§3.2.6, 3.3.2, 3.4.4 and 6.3" });
 
 Q({ id: "q-pjm-13", div: "pjm", obj: "pjm-4.4", lesson: "pjm-contracts", type: "mc", diff: 2, fmt: "Scenario",
   q: "A plans examiner's comment requires an additional exit stair based on an interpretation the architect believes is incorrect. What is the best FIRST step?",
@@ -343,9 +347,9 @@ Q({ id: "q-pa-10", div: "pa", obj: "pa-2.1", lesson: "pa-zoning", type: "mc", di
 
 Q({ id: "q-pa-11", div: "pa", obj: "pa-1.1", lesson: "pa-program", type: "ms", diff: 2, fmt: "Check all that apply", pick: 3,
   q: "Which three strategies suit a hot-arid climate? Select three.",
-  opts: ["High thermal mass walls with night ventilation", "Shaded courtyards", "Lightweight, raised construction to catch breezes", "Small, shaded openings", "Large unshaded west-facing glazing"],
+  opts: ["High thermal mass walls with night ventilation", "Shaded courtyards", "Lightweight, raised construction to catch breezes", "Small, shaded openings", "Large unshaded west-facing glazing", "Dark, heat-absorbing roof surfaces"],
   ans: [0, 1, 3],
-  why: ["Correct. Mass absorbs daytime heat; cool night air flushes it.", "Correct.", "This suits hot-humid climates, where large day–night swings are absent.", "Correct.", "This maximizes unwanted heat gain."],
+  why: ["Correct. Mass absorbs daytime heat; cool night air flushes it.", "Correct.", "This suits hot-humid climates, where large day–night swings are absent.", "Correct.", "This maximizes unwanted heat gain.", "Dark roofs absorb solar heat; light, reflective roofs suit hot-arid sites."],
   explain: "Hot-arid climates have large daily temperature swings, which thermal mass exploits.",
   ref: "Brown & DeKay, Sun, Wind & Light" });
 

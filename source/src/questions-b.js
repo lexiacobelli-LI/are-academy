@@ -96,9 +96,9 @@ Q({ id: "q-ppd-12", div: "ppd", obj: "ppd-2.2", lesson: "ppd-egress", type: "mc"
 
 Q({ id: "q-ppd-13", div: "ppd", obj: "ppd-2.2", lesson: "ppd-egress", type: "ms", diff: 2, fmt: "Check all that apply", pick: 2,
   q: "Which two conditions can increase a building's allowable area beyond the tabular value in the 2021 IBC? Select two.",
-  opts: ["Open frontage along a public way or open space", "A higher occupant load", "An automatic sprinkler system throughout (where not already required for the tabular value)", "A fire alarm system", "Use of Type V-B construction"],
+  opts: ["Open frontage along a public way or open space", "A higher occupant load", "An automatic sprinkler system throughout (where not already required for the tabular value)", "A fire alarm system", "Use of Type V-B construction", "Providing more exits than the minimum required"],
   ans: [0, 2],
-  why: ["Correct. Frontage increase under §506.3.", "Occupant load does not increase area.", "Correct. Sprinkler increases are built into Table 506.2 values (S1, SM).", "Fire alarms do not increase area.", "Type V-B has the lowest allowable areas."],
+  why: ["Correct. Frontage increase under §506.3.", "Occupant load does not increase area.", "Correct. Sprinkler increases are built into Table 506.2 values (S1, SM).", "Fire alarms do not increase area.", "Type V-B has the lowest allowable areas.", "Extra exits improve egress but do not change allowable area."],
   explain: "Allowable area depends on occupancy, construction type, sprinklers and frontage.",
   ref: "2021 IBC §506" });
 
@@ -247,9 +247,9 @@ Q({ id: "q-ce-05", div: "ce", obj: "ce-4.1", lesson: "ce-payment", type: "order"
 
 Q({ id: "q-ce-06", div: "ce", obj: "ce-3.3", lesson: "ce-payment", type: "ms", diff: 2, fmt: "Check all that apply", pick: 3,
   q: "Which three are grounds for the architect to withhold certification of payment under A201–2017? Select three.",
-  opts: ["Defective work not remedied", "The contractor uses a construction sequence the architect would not have chosen", "Failure of the contractor to make payments to subcontractors", "Third-party claims filed or reasonable evidence they will be filed", "The owner's lender is late releasing funds"],
+  opts: ["Defective work not remedied", "The contractor uses a construction sequence the architect would not have chosen", "Failure of the contractor to make payments to subcontractors", "Third-party claims filed or reasonable evidence they will be filed", "The owner's lender is late releasing funds", "An RFI from the contractor is still awaiting the architect's answer"],
   ans: [0, 2, 3],
-  why: ["Correct.", "Sequence is the contractor's choice.", "Correct.", "Correct.", "Owner financing is not a ground under §9.5.1."],
+  why: ["Correct.", "Sequence is the contractor's choice.", "Correct.", "Correct.", "Owner financing is not a ground under §9.5.1.", "An open RFI is not a ground; the architect must still respond with reasonable promptness."],
   explain: "Withholding protects the owner from loss tied to the contractor's performance.",
   ref: "AIA A201–2017, §9.5.1" });
 

@@ -41,7 +41,7 @@ ARE.GLOSSARY = [
 ["Initial Decision Maker", "Construction admin", "Person who first decides claims under A201–2017; the architect unless another is named.", "ce-admin"],
 ["Integrated project delivery", "Delivery", "Collaborative delivery using a multi-party agreement with shared risk and reward.", "pcm-delivery"],
 ["LLC", "Practice", "Limited liability company: shields owners from business debts; pass-through tax by default.", "pcm-risk"],
-["LLP", "Practice", "Limited liability partnership: partners shielded from other partners' negligence and partnership debts.", "pcm-risk"],
+["LLP", "Practice", "Limited liability partnership: partners shielded from other partners' negligence (and, in many states, from partnership debts).", "pcm-risk"],
 ["Lot coverage", "Zoning", "Building footprint ÷ lot area.", "pa-zoning"],
 ["MasterFormat", "Specifications", "CSI system organizing construction information into numbered divisions and sections.", "pdd-specs"],
 ["Meeting minutes", "Project management", "The written record of decisions and action items from a meeting.", "pjm-quality"],

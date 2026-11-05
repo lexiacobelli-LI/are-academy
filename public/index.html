@@ -1758,7 +1758,7 @@ ARE.LESSONS.push({
 <ul>
 <li><strong>Remoteness:</strong> where two exits are required, separate them by at least <strong>1/2 the overall diagonal</strong> of the area served, or <strong>1/3</strong> in a fully sprinklered building, measured in a straight line between the nearest edges of the doors.</li>
 <li><strong>Exit access travel distance</strong> (Table 1017.2, selected): Group B 200 ft unsprinklered / 300 ft sprinklered; Groups A, E, M 200 ft / 250 ft.</li>
-<li><strong>Dead-end corridors</strong> (§1020.5): 20 ft maximum; 50 ft in Groups B, E, F, I-1, M, R-1, R-2, S and U where the building is sprinklered.</li>
+<li><strong>Dead-end corridors</strong> (§1020.5): 20 ft maximum; 50 ft in Groups B, E, F, I-1, M, R-1, R-2, R-4, S and U where the building is sprinklered.</li>
 <li>Exit doors serving 50 or more occupants swing in the direction of egress travel.</li>
 </ul>
 
@@ -2200,12 +2200,16 @@ Q({ id: "q-pcm-06", div: "pcm", obj: "pcm-1.4", lesson: "pcm-risk", type: "ms", 
   opts: ["“The Architect warrants that the Drawings will be free of errors and omissions.”",
     "“The Architect shall perform its services consistent with the professional skill and care ordinarily provided by architects practicing in the same or similar locality under similar circumstances.”",
     "“The Architect guarantees that the Project will achieve LEED Gold certification.”",
-    "“The Architect shall review laws and regulations applicable to its services and use reasonable efforts to comply.”"],
+    "“The Architect shall review laws and regulations applicable to its services and use reasonable efforts to comply.”",
+    "“The Architect shall coordinate its services with those services provided by the Owner and the Owner's consultants.”",
+    "“The Architect shall be entitled to rely on the accuracy and completeness of services and information furnished by the Owner.”"],
   ans: [0, 2],
   why: ["Correct. A warranty of error-free documents is a promise of perfection.",
     "This is the standard of care as written in B101–2017.",
     "Correct. Certification depends on factors outside the architect's control; a guarantee is an express warranty.",
-    "Reasonable-efforts language is consistent with the standard of care."],
+    "Reasonable-efforts language is consistent with the standard of care.",
+    "Coordination with the owner's consultants is an ordinary B101 obligation, not a heightened one.",
+    "A right to rely on owner-furnished information limits, rather than raises, the architect's obligation."],
   explain: "Warranties and guarantees create contractual liability beyond negligence, which professional liability policies typically exclude.",
   ref: "AIA B101–2017, §2.2 (standard of care)" });
 
@@ -2350,9 +2354,9 @@ Q({ id: "q-pjm-08", div: "pjm", obj: "pjm-3.1", lesson: "pjm-contracts", type: "
 
 Q({ id: "q-pjm-09", div: "pjm", obj: "pjm-5.2", lesson: "pjm-contracts", type: "ms", diff: 2, fmt: "Check all that apply", pick: 3,
   q: "Which three are part of an architect's internal quality-control process for construction documents? Select three.",
-  opts: ["Interdisciplinary coordination checks at set milestones", "Directing the contractor's construction sequence", "A code compliance review against a checklist", "Peer review of the set by a senior architect not on the team", "Verifying the contractor's crew sizes on site"],
+  opts: ["Interdisciplinary coordination checks at set milestones", "Directing the contractor's construction sequence", "A code compliance review against a checklist", "Peer review of the set by a senior architect not on the team", "Verifying the contractor's crew sizes on site", "Approving the contractor's site safety program"],
   ans: [0, 2, 3],
-  why: ["Correct.", "Means, methods and sequences belong to the contractor.", "Correct.", "Correct.", "Crew sizing is a contractor matter."],
+  why: ["Correct.", "Means, methods and sequences belong to the contractor.", "Correct.", "Correct.", "Crew sizing is a contractor matter.", "Site safety is the contractor's responsibility (A201 Article 10)."],
   explain: "QC belongs to the architect's own work product: checking, coordinating and reviewing documents before issue.",
   ref: "Architect's Handbook of Professional Practice — quality management" });
 
@@ -2374,15 +2378,15 @@ Q({ id: "q-pjm-11", div: "pjm", obj: "pjm-3.1", lesson: "pjm-contracts", type: "
   ref: "AIA B101–2017, Article 3" });
 
 Q({ id: "q-pjm-12", div: "pjm", obj: "pjm-3.1", lesson: "pjm-contracts", type: "mc", diff: 2, fmt: "Multiple choice",
-  q: "Under B101–2017, if the owner has not retained a cost consultant, who prepares the estimate of the Cost of the Work as part of basic services?",
+  q: "Under B101–2017, who prepares the estimate of the Cost of the Work during design as part of basic services?",
   opts: ["The contractor", "The owner", "The architect", "No estimate is required"],
   ans: 2,
   why: ["There is no contractor during design in design-bid-build.",
     "The owner sets the budget but does not prepare the estimate.",
-    "Correct. The architect prepares and updates the estimate at the end of SD, DD and CD unless the owner provides a cost consultant.",
+    "Correct. The architect prepares a preliminary estimate at SD (§3.2.6) and updates it at DD (§3.3.2) and CD (§3.4.4), using area, volume or similar conceptual techniques (§6.3). A detailed estimate by the architect is a Supplemental Service.",
     "B101 requires estimates as a basic service."],
   explain: "If the estimate exceeds the owner's budget, B101 sets out the owner's options and the architect's obligation to modify the documents.",
-  ref: "AIA B101–2017, Article 6 (Cost of the Work)" });
+  ref: "AIA B101–2017, §§3.2.6, 3.3.2, 3.4.4 and 6.3" });
 
 Q({ id: "q-pjm-13", div: "pjm", obj: "pjm-4.4", lesson: "pjm-contracts", type: "mc", diff: 2, fmt: "Scenario",
   q: "A plans examiner's comment requires an additional exit stair based on an interpretation the architect believes is incorrect. What is the best FIRST step?",
@@ -2486,9 +2490,9 @@ Q({ id: "q-pa-10", div: "pa", obj: "pa-2.1", lesson: "pa-zoning", type: "mc", di
 
 Q({ id: "q-pa-11", div: "pa", obj: "pa-1.1", lesson: "pa-program", type: "ms", diff: 2, fmt: "Check all that apply", pick: 3,
   q: "Which three strategies suit a hot-arid climate? Select three.",
-  opts: ["High thermal mass walls with night ventilation", "Shaded courtyards", "Lightweight, raised construction to catch breezes", "Small, shaded openings", "Large unshaded west-facing glazing"],
+  opts: ["High thermal mass walls with night ventilation", "Shaded courtyards", "Lightweight, raised construction to catch breezes", "Small, shaded openings", "Large unshaded west-facing glazing", "Dark, heat-absorbing roof surfaces"],
   ans: [0, 1, 3],
-  why: ["Correct. Mass absorbs daytime heat; cool night air flushes it.", "Correct.", "This suits hot-humid climates, where large day–night swings are absent.", "Correct.", "This maximizes unwanted heat gain."],
+  why: ["Correct. Mass absorbs daytime heat; cool night air flushes it.", "Correct.", "This suits hot-humid climates, where large day–night swings are absent.", "Correct.", "This maximizes unwanted heat gain.", "Dark roofs absorb solar heat; light, reflective roofs suit hot-arid sites."],
   explain: "Hot-arid climates have large daily temperature swings, which thermal mass exploits.",
   ref: "Brown & DeKay, Sun, Wind & Light" });
 
@@ -2598,9 +2602,9 @@ Q({ id: "q-ppd-12", div: "ppd", obj: "ppd-2.2", lesson: "ppd-egress", type: "mc"
 
 Q({ id: "q-ppd-13", div: "ppd", obj: "ppd-2.2", lesson: "ppd-egress", type: "ms", diff: 2, fmt: "Check all that apply", pick: 2,
   q: "Which two conditions can increase a building's allowable area beyond the tabular value in the 2021 IBC? Select two.",
-  opts: ["Open frontage along a public way or open space", "A higher occupant load", "An automatic sprinkler system throughout (where not already required for the tabular value)", "A fire alarm system", "Use of Type V-B construction"],
+  opts: ["Open frontage along a public way or open space", "A higher occupant load", "An automatic sprinkler system throughout (where not already required for the tabular value)", "A fire alarm system", "Use of Type V-B construction", "Providing more exits than the minimum required"],
   ans: [0, 2],
-  why: ["Correct. Frontage increase under §506.3.", "Occupant load does not increase area.", "Correct. Sprinkler increases are built into Table 506.2 values (S1, SM).", "Fire alarms do not increase area.", "Type V-B has the lowest allowable areas."],
+  why: ["Correct. Frontage increase under §506.3.", "Occupant load does not increase area.", "Correct. Sprinkler increases are built into Table 506.2 values (S1, SM).", "Fire alarms do not increase area.", "Type V-B has the lowest allowable areas.", "Extra exits improve egress but do not change allowable area."],
   explain: "Allowable area depends on occupancy, construction type, sprinklers and frontage.",
   ref: "2021 IBC §506" });
 
@@ -2749,9 +2753,9 @@ Q({ id: "q-ce-05", div: "ce", obj: "ce-4.1", lesson: "ce-payment", type: "order"
 
 Q({ id: "q-ce-06", div: "ce", obj: "ce-3.3", lesson: "ce-payment", type: "ms", diff: 2, fmt: "Check all that apply", pick: 3,
   q: "Which three are grounds for the architect to withhold certification of payment under A201–2017? Select three.",
-  opts: ["Defective work not remedied", "The contractor uses a construction sequence the architect would not have chosen", "Failure of the contractor to make payments to subcontractors", "Third-party claims filed or reasonable evidence they will be filed", "The owner's lender is late releasing funds"],
+  opts: ["Defective work not remedied", "The contractor uses a construction sequence the architect would not have chosen", "Failure of the contractor to make payments to subcontractors", "Third-party claims filed or reasonable evidence they will be filed", "The owner's lender is late releasing funds", "An RFI from the contractor is still awaiting the architect's answer"],
   ans: [0, 2, 3],
-  why: ["Correct.", "Sequence is the contractor's choice.", "Correct.", "Correct.", "Owner financing is not a ground under §9.5.1."],
+  why: ["Correct.", "Sequence is the contractor's choice.", "Correct.", "Correct.", "Owner financing is not a ground under §9.5.1.", "An open RFI is not a ground; the architect must still respond with reasonable promptness."],
   explain: "Withholding protects the owner from loss tied to the contractor's performance.",
   ref: "AIA A201–2017, §9.5.1" });
 
@@ -2957,9 +2961,9 @@ Q({ id: "q-pjm-15", div: "pjm", obj: "pjm-2.3", lesson: "pjm-quality", type: "mc
 
 Q({ id: "q-pjm-16", div: "pjm", obj: "pjm-5.3", lesson: "pjm-quality", type: "ms", diff: 3, fmt: "Check all that apply", pick: 2,
   q: "A duct and a steel beam occupy the same space in a corridor ceiling, discovered during construction. Which two reviews were most likely to have caught it? Select two.",
-  opts: ["Interdisciplinary coordination review of structural and mechanical drawings", "Code compliance review", "BIM clash detection followed by human review", "Specification spell-check", "Cost estimate update"],
+  opts: ["Interdisciplinary coordination review of structural and mechanical drawings", "Code compliance review", "BIM clash detection followed by human review", "Specification spell-check", "Cost estimate update", "Value-engineering review of interior finishes"],
   ans: [0, 2],
-  why: ["Correct.", "Code review would not normally find a physical conflict.", "Correct.", "Not related.", "Not related."],
+  why: ["Correct.", "Code review would not normally find a physical conflict.", "Correct.", "Not related.", "Not related.", "Finish selections do not reveal duct–beam conflicts."],
   explain: "Spatial conflicts are coordination problems.",
   ref: "Architect's Handbook, 15th ed. — quality management" });
 
@@ -4933,7 +4937,7 @@ ARE.GLOSSARY = [
 ["Initial Decision Maker", "Construction admin", "Person who first decides claims under A201–2017; the architect unless another is named.", "ce-admin"],
 ["Integrated project delivery", "Delivery", "Collaborative delivery using a multi-party agreement with shared risk and reward.", "pcm-delivery"],
 ["LLC", "Practice", "Limited liability company: shields owners from business debts; pass-through tax by default.", "pcm-risk"],
-["LLP", "Practice", "Limited liability partnership: partners shielded from other partners' negligence and partnership debts.", "pcm-risk"],
+["LLP", "Practice", "Limited liability partnership: partners shielded from other partners' negligence (and, in many states, from partnership debts).", "pcm-risk"],
 ["Lot coverage", "Zoning", "Building footprint ÷ lot area.", "pa-zoning"],
 ["MasterFormat", "Specifications", "CSI system organizing construction information into numbered divisions and sections.", "pdd-specs"],
 ["Meeting minutes", "Project management", "The written record of decisions and action items from a meeting.", "pjm-quality"],

@@ -41,7 +41,7 @@ ARE.LESSONS.push({
 <ul>
 <li><strong>Remoteness:</strong> where two exits are required, separate them by at least <strong>1/2 the overall diagonal</strong> of the area served, or <strong>1/3</strong> in a fully sprinklered building, measured in a straight line between the nearest edges of the doors.</li>
 <li><strong>Exit access travel distance</strong> (Table 1017.2, selected): Group B 200 ft unsprinklered / 300 ft sprinklered; Groups A, E, M 200 ft / 250 ft.</li>
-<li><strong>Dead-end corridors</strong> (§1020.5): 20 ft maximum; 50 ft in Groups B, E, F, I-1, M, R-1, R-2, S and U where the building is sprinklered.</li>
+<li><strong>Dead-end corridors</strong> (§1020.5): 20 ft maximum; 50 ft in Groups B, E, F, I-1, M, R-1, R-2, R-4, S and U where the building is sprinklered.</li>
 <li>Exit doors serving 50 or more occupants swing in the direction of egress travel.</li>
 </ul>
 

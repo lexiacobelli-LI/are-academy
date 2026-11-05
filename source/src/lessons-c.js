@@ -144,9 +144,9 @@ Q({ id: "q-pjm-15", div: "pjm", obj: "pjm-2.3", lesson: "pjm-quality", type: "mc
 
 Q({ id: "q-pjm-16", div: "pjm", obj: "pjm-5.3", lesson: "pjm-quality", type: "ms", diff: 3, fmt: "Check all that apply", pick: 2,
   q: "A duct and a steel beam occupy the same space in a corridor ceiling, discovered during construction. Which two reviews were most likely to have caught it? Select two.",
-  opts: ["Interdisciplinary coordination review of structural and mechanical drawings", "Code compliance review", "BIM clash detection followed by human review", "Specification spell-check", "Cost estimate update"],
+  opts: ["Interdisciplinary coordination review of structural and mechanical drawings", "Code compliance review", "BIM clash detection followed by human review", "Specification spell-check", "Cost estimate update", "Value-engineering review of interior finishes"],
   ans: [0, 2],
-  why: ["Correct.", "Code review would not normally find a physical conflict.", "Correct.", "Not related.", "Not related."],
+  why: ["Correct.", "Code review would not normally find a physical conflict.", "Correct.", "Not related.", "Not related.", "Finish selections do not reveal duct–beam conflicts."],
   explain: "Spatial conflicts are coordination problems.",
   ref: "Architect's Handbook, 15th ed. — quality management" });
 
