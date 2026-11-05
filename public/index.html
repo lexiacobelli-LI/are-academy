@@ -6593,6 +6593,692 @@ ARE.QX("ce", [
  "Stopping work is the owner's right under specified conditions.", "AIA A201–2017, §2.4"]
 ], "y");
 
+/* Round 3 dedicated lessons (v11). Original explanations. AIA sections checked against the user's 2017 copies.
+   Accessibility references are to the 2010 ADA Standards for Accessible Design; codes to the 2021 IBC unless stated. */
+
+ARE.LESSONS.push({
+  id: "pcm-fees", div: "pcm", obj: ["pcm-3.1", "pcm-3.2", "pcm-2.1"], title: "Fee Proposals & Compensation Methods",
+  minutes: 35, level: "Core",
+  summary: "How to build a fee from the bottom up, check it from the top down, and choose a compensation method that fits the scope and the risk.",
+  objectives: [
+    "Build a fee from a work plan: hours, rates, consultants, expenses and profit.",
+    "Convert salary to billing rates using direct personnel expense and multipliers.",
+    "Compare stipulated sum, percentage, hourly and unit compensation.",
+    "Recognize fee risks: undefined scope, long schedules and reimbursables."
+  ],
+  why: "A fee that does not cover the work cannot be fixed later. Most unprofitable projects were lost at the proposal stage.",
+  exam: "Expect calculations (billing rate, fee from hours, percentage fees) and scenarios asking which compensation method suits a situation.",
+  body: `
+<h3>Bottom-up: from the work plan</h3>
+<ol>
+<li>List tasks by phase and estimate hours by staff level.</li>
+<li>Multiply hours by billing rates to get the architect's labor.</li>
+<li>Add consultant fees, usually with a markup for coordination and risk.</li>
+<li>Add reimbursable expenses if they are not billed separately.</li>
+<li>Add contingency and profit.</li>
+</ol>
+<p><strong>Top-down</strong> checks compare the result with a percentage of construction cost or with fees on similar projects. If the two methods disagree badly, the scope or the assumptions need another look.</p>
+
+<h3>From salary to billing rate</h3>
+<p><strong>Direct salary expense (DSE)</strong> is the salary cost of hours on projects. <strong>Direct personnel expense (DPE)</strong> adds mandatory and customary benefits (payroll taxes, health insurance, retirement, paid leave). Billing rate = DSE per hour × a multiplier, or DPE × a smaller multiplier. The multiplier must cover overhead and profit: it should exceed the break-even rate (1 + overhead rate).</p>
+
+<h3>Compensation methods (B101 Article 11)</h3>
+<table class="tbl"><thead><tr><th>Method</th><th>Fits</th><th>Risk sits with</th></tr></thead><tbody>
+<tr><td>Stipulated sum</td><td>Well-defined scope</td><td>Architect (efficiency rewarded)</td></tr>
+<tr><td>Percentage of construction cost</td><td>Traditional, simple</td><td>Shared; fee moves with cost, which can look like an incentive to raise cost</td></tr>
+<tr><td>Hourly / multiple of DPE</td><td>Uncertain scope, studies</td><td>Owner (add a not-to-exceed cap to share risk)</td></tr>
+<tr><td>Unit cost (per sf, per unit)</td><td>Repetitive work, prototypes</td><td>Shared</td></tr>
+</tbody></table>
+<p><strong>Reimbursable expenses</strong> (B101 §11.8), such as travel, printing and permit fees, are paid in addition to fees, often with a markup.</p>
+`,
+  diagram: "",
+  formulas: [
+    { name: "Billing rate", f: "Rate = Direct salary per hour × multiplier" },
+    { name: "Labor fee", f: "Labor = Σ (hours × rate)" },
+    { name: "Fee check", f: "% fee = Total fee ÷ construction cost" }
+  ],
+  example: { title: "Applying it", html: `<p>A clinic fit-out needs 1,200 architect hours at a blended $130/h ($156,000). MEP and structural consultants quote $48,000, marked up 10% ($52,800). Expenses are billed separately. Adding 12% profit on the architect's labor ($18,720) gives a proposed fee of $227,520. On a $3.2 million construction cost that is 7.1%, which falls in the range for similar fit-outs, so the proposal holds up.</p>` },
+  mistakes: [
+    "Forgetting consultant coordination time and markup.",
+    "Using a multiplier below the break-even rate.",
+    "Offering a stipulated sum when the scope is undefined.",
+    "Leaving the number of site visits and the schedule open-ended in a fixed-fee agreement."
+  ],
+  scenario: { prompt: "An owner wants a fixed fee for a feasibility study whose scope depends on what an existing-conditions survey finds. What should the architect propose?",
+    answer: "Hourly compensation with a not-to-exceed amount for the study, or a fixed fee for the survey phase with the rest of the study priced once conditions are known. A stipulated sum for undefined scope puts all the risk on the architect." },
+  refs: [
+    { t: "AIA B101–2017, Article 11 (§11.1, §11.8)", a: "Your copy" },
+    { t: "AIA, The Architect's Handbook of Professional Practice, 15th ed. — compensation and fee development", a: "Purchase" }
+  ],
+  check: ["q-pcm-z01", "q-pcm-z02", "q-pcm-z03"]
+});
+
+ARE.LESSONS.push({
+  id: "pjm-agreements", div: "pjm", obj: ["pjm-3.3", "pjm-3.1", "pjm-3.2"], title: "Owner–Contractor Agreements & Delivery Documents",
+  minutes: 30, level: "Core",
+  summary: "Which AIA agreement fits which delivery method, what each one fixes (price, time, retainage, liquidated damages), and how they connect to A201.",
+  objectives: [
+    "Match AIA owner–contractor agreements to delivery methods and pricing.",
+    "Explain how agreements, general conditions and specifications form the contract documents.",
+    "Identify what is set in the agreement rather than in A201.",
+    "Describe the architect's role when it is not a party to the agreement."
+  ],
+  why: "The agreement form decides who carries cost risk. PjM tests whether you can match the form to the owner's goals.",
+  exam: "Items describe an owner's priorities (certainty of price, early start, single point of responsibility) and ask which agreement fits, or what a clause in the agreement controls.",
+  body: `
+<h3>The main AIA forms</h3>
+<table class="tbl"><thead><tr><th>Document</th><th>Use</th></tr></thead><tbody>
+<tr><td>A101</td><td>Owner–contractor, stipulated sum (design-bid-build)</td></tr>
+<tr><td>A102</td><td>Cost of the Work plus a fee, with a guaranteed maximum price (GMP)</td></tr>
+<tr><td>A103</td><td>Cost of the Work plus a fee, without a GMP</td></tr>
+<tr><td>A133</td><td>Owner–construction manager as constructor, cost plus fee with a GMP (CM at risk)</td></tr>
+<tr><td>A132</td><td>Owner–construction manager as adviser</td></tr>
+<tr><td>A141</td><td>Owner–design-builder</td></tr>
+<tr><td>A201</td><td>General Conditions used with A101, A102 and A103</td></tr>
+</tbody></table>
+
+<h3>The contract documents</h3>
+<p>Under A201, the Contract Documents are the agreement, the conditions of the contract (general, supplementary and other), the drawings, the specifications, addenda issued before execution, other documents listed in the agreement, and modifications issued after execution. <strong>Bidding requirements</strong> (the advertisement, instructions to bidders, bid forms) and <strong>submittals</strong> are not Contract Documents unless listed.</p>
+
+<h3>What the agreement sets</h3>
+<ul>
+<li>Contract Sum (or the cost-plus formula and GMP) and alternates or unit prices accepted.</li>
+<li>Date of commencement and the date or period for Substantial Completion.</li>
+<li>Liquidated damages, if any.</li>
+<li>Progress payment timing and retainage.</li>
+<li>The Initial Decision Maker, if not the architect, and the binding dispute resolution method.</li>
+</ul>
+<p>Supplementary Conditions modify A201 for the project (insurance limits, owner-specific procedures). Edit them there rather than changing A201's text.</p>
+
+<h3>The architect's position</h3>
+<p>The architect prepares the documents and administers the contract, but is not a party to the owner–contractor agreement. Its duties during construction come from both the owner–architect agreement and A201, which should be consistent (for example, B101 and A201 are coordinated editions).</p>
+`,
+  diagram: "",
+  formulas: [],
+  example: { title: "Applying it", html: `<p>A school board needs price certainty, competitive public bidding and complete documents before construction. The architect recommends design-bid-build with A101 and A201, supplementary conditions for the board's insurance and bonding, liquidated damages tied to the school opening date, and 5% retainage stated in the agreement. A private developer who wants to start early and cap cost would be better served by A133 with a GMP.</p>` },
+  mistakes: [
+    "Treating the bid form or instructions to bidders as contract documents.",
+    "Rewriting A201 instead of using supplementary conditions.",
+    "Assuming the architect is a party to the owner–contractor agreement.",
+    "Confusing A102 (contractor, cost plus with GMP) with A133 (CM as constructor with GMP)."
+  ],
+  scenario: { prompt: "An owner wants to start foundations before design is complete but also needs a maximum price before committing. Which agreement fits, and when is the GMP set?",
+    answer: "CM at risk using A133. The CM provides preconstruction services during design and commits to a GMP once the documents are developed enough to price, often in stages or with early packages." },
+  refs: [
+    { t: "AIA A101, A102, A103, A132, A133, A141 and A201 (2017 editions); AIA Contract Documents synopses", a: "Synopses free (aiacontracts.com)" },
+    { t: "AIA, The Architect's Handbook of Professional Practice, 15th ed. — project delivery and construction contracts", a: "Purchase" }
+  ],
+  check: ["q-pjm-z01", "q-pjm-z02", "q-pjm-z03"]
+});
+
+ARE.LESSONS.push({
+  id: "pa-budget", div: "pa", obj: ["pa-4.5", "pa-4.3"], title: "Project Budgets, Cost Models & Feasibility",
+  minutes: 30, level: "Core",
+  summary: "Turn a program into a project budget: construction cost, soft costs, contingencies and escalation, and test whether the owner's numbers work.",
+  objectives: [
+    "Separate construction cost from total project cost.",
+    "Apply design contingency, construction contingency and escalation correctly.",
+    "Choose the estimating method that fits each phase.",
+    "Recommend responses when program, budget and schedule don't align."
+  ],
+  why: "Many projects fail before design starts because the program never fit the budget. Programming is the cheapest moment to find that out.",
+  exam: "PA items give a program, a cost per square foot and soft-cost percentages and ask for a total, or ask what to do when the numbers don't work.",
+  body: `
+<h3>Two different budgets</h3>
+<p>The <strong>construction cost</strong> (Cost of the Work) is what the contractor is paid. The <strong>total project budget</strong> adds soft costs: design and consultant fees, permits, testing and inspection, furniture and equipment (FF&amp;E), technology, moving, financing, insurance, legal and the owner's contingency, and sometimes land. Soft costs often add 20–40% to construction cost depending on project type.</p>
+
+<h3>Contingencies and escalation</h3>
+<ul>
+<li><strong>Design contingency</strong> covers scope not yet drawn. It is large at programming and shrinks to near zero at CDs.</li>
+<li><strong>Construction (owner's) contingency</strong> covers unforeseen conditions and changes during construction, commonly 5–10% (higher for renovation).</li>
+<li><strong>Escalation</strong> carries today's cost to the midpoint of construction: cost × (1 + rate)<sup>years</sup>.</li>
+</ul>
+
+<h3>Estimating by phase</h3>
+<table class="tbl"><thead><tr><th>Phase</th><th>Method</th></tr></thead><tbody>
+<tr><td>Programming / feasibility</td><td>Cost per square foot or per unit from comparables</td></tr>
+<tr><td>Schematic design</td><td>Systems or assemblies estimate (UniFormat)</td></tr>
+<tr><td>DD and CDs</td><td>Quantity takeoff and unit prices (MasterFormat)</td></tr>
+</tbody></table>
+
+<h3>When the numbers don't work</h3>
+<p>The architect lays out the gap with evidence and the levers: reduce or phase the program, adjust quality, change the delivery method or schedule, or increase the budget. The owner decides. Record the decision; it becomes the basis for later estimates.</p>
+`,
+  diagram: "",
+  formulas: [
+    { name: "Gross area", f: "Gross = Net ÷ efficiency" },
+    { name: "Escalation", f: "Future cost = Current cost × (1 + rate)^years to midpoint" },
+    { name: "Project budget", f: "Total = Construction (incl. contingencies, escalation) + soft costs" }
+  ],
+  example: { title: "Applying it", html: `<p>A library needs 21,000 nsf at 0.70 efficiency, so 30,000 gsf. Comparable libraries cost $380/sf today, giving $11.4 million. With a 10% design contingency ($12.54 million) and two years of 4% escalation to the construction midpoint, construction is about $13.56 million. Soft costs at 30% add about $4.07 million, for a total project budget near $17.6 million. The owner's $14 million total budget does not fit, so the architect presents three options: reduce the program to about 24,000 gsf, phase the children's wing, or raise funds.</p>` },
+  mistakes: [
+    "Comparing the owner's total budget with construction cost alone.",
+    "Applying escalation to the start of construction instead of the midpoint.",
+    "Keeping a large design contingency at CDs.",
+    "Pricing net area instead of gross."
+  ],
+  scenario: { prompt: "The owner's budget number turns out to include furniture, fees and technology. The architect has been designing to it as a construction cost. What should happen?",
+    answer: "Stop and reconcile. Separate the owner's total budget into construction and soft costs, recalculate the construction budget available, and show the owner how the current design compares. Then agree on adjustments before design continues." },
+  refs: [
+    { t: "AIA B101–2017, Article 6 (Cost of the Work)", a: "Your copy" },
+    { t: "CSI UniFormat and MasterFormat", a: "Purchase (csiresources.org)" },
+    { t: "AIA, The Architect's Handbook of Professional Practice, 15th ed. — project cost management", a: "Purchase" }
+  ],
+  check: ["q-pa-z01", "q-pa-z02", "q-pa-z03"]
+});
+
+ARE.LESSONS.push({
+  id: "ppd-access", div: "ppd", obj: ["ppd-2.2", "ppd-2.3", "ppd-4.3"], title: "Accessibility in Building Design",
+  minutes: 35, level: "Core",
+  summary: "The accessibility rules that shape plans: which laws apply, accessible routes, entrances, parking, toilet rooms and the dimensions the exam expects you to know.",
+  objectives: [
+    "Distinguish the ADA, the Fair Housing Act and IBC Chapter 11 with ICC A117.1.",
+    "Plan accessible routes, entrances and parking.",
+    "Lay out accessible toilet rooms with the key clearances.",
+    "Apply reach ranges, door clearances and ramp limits."
+  ],
+  why: "Accessibility drives plan dimensions from the first sketch: corridor widths, toilet room sizes, ramps and parking. Fixing it late is expensive.",
+  exam: "Expect dimension questions (clear widths, turning space, ramp slopes, reach ranges) and scenarios about which rule applies to a building type.",
+  body: `
+<h3>Which rules apply</h3>
+<ul>
+<li><strong>ADA</strong> (civil rights law): the 2010 ADA Standards for Accessible Design apply to public accommodations, commercial facilities (Title III) and state and local government facilities (Title II). It is enforced through complaints and lawsuits, not permits.</li>
+<li><strong>Fair Housing Act</strong>: design requirements for covered multifamily dwellings.</li>
+<li><strong>IBC Chapter 11</strong> with <strong>ICC A117.1</strong>: the building code path, enforced by the building official. Projects often must meet both the ADA and the code; follow the more stringent requirement.</li>
+</ul>
+
+<h3>Key dimensions (2010 ADA Standards)</h3>
+<table class="tbl"><thead><tr><th>Element</th><th>Requirement</th></tr></thead><tbody>
+<tr><td>Accessible route width</td><td>36 in clear; 60 in where passing space is needed (§403.5)</td></tr>
+<tr><td>Running and cross slope</td><td>Running ≤ 1:20 (or it is a ramp); cross slope ≤ 1:48 (§403.3)</td></tr>
+<tr><td>Ramps</td><td>Slope ≤ 1:12; rise ≤ 30 in per run; landings 60 in long; handrails where rise &gt; 6 in (§405)</td></tr>
+<tr><td>Door clear width</td><td>32 in clear with the door open 90° (§404.2.3)</td></tr>
+<tr><td>Turning space</td><td>60 in diameter circle or a T-shaped space (§304.3)</td></tr>
+<tr><td>Reach range</td><td>15 in to 48 in above the floor for unobstructed reach (§308)</td></tr>
+<tr><td>Water closet</td><td>Centerline 16–18 in from the side wall (§604.2); side grab bar 42 in min, rear 36 in min (§604.5)</td></tr>
+<tr><td>Parking</td><td>Access aisle 60 in; 1 of every 6 accessible spaces van accessible (§502, §208.2.4)</td></tr>
+</tbody></table>
+
+<h3>Entrances and routes</h3>
+<p>At least 60% of public entrances must be accessible (§206.4.1), and an accessible route must connect parking, public sidewalks and transit stops to the accessible entrance (§206.2.1). Inside, an accessible route connects every accessible space and element.</p>
+`,
+  diagram: "",
+  formulas: [
+    { name: "Ramp length", f: "Run length = rise × 12 (at 1:12)" },
+    { name: "Ramp runs", f: "Runs = rise ÷ 30 in, rounded up (landing between runs)" }
+  ],
+  example: { title: "Applying it", html: `<p>A clinic entrance sits 42 in above the sidewalk. At 1:12, the ramp needs 42 × 12 = 504 in (42 ft) of sloped length, split into two runs because the rise exceeds 30 in, with a 60 in landing between them and at top and bottom, plus handrails on both sides. Regrading the walk to stay at or below 1:20 over part of the rise would shorten the ramp.</p>` },
+  mistakes: [
+    "Using 36 in for door clear width. Doors need 32 in clear; routes need 36 in.",
+    "Forgetting intermediate landings when the rise exceeds 30 in.",
+    "Assuming a building permit means ADA compliance.",
+    "Placing the water closet centerline outside 16–18 in."
+  ],
+  scenario: { prompt: "A two-story office building has accessible ground-floor entrances but no elevator. A tenant asks whether that is acceptable. What should the architect check?",
+    answer: "Whether an exception applies. The ADA and the IBC have limited exceptions for some small multistory buildings, but they depend on building type, size and use (for example, medical offices and shopping centers generally do not qualify). Check the 2010 ADA Standards §206.2.3 and IBC §1104.4 for the specific case." },
+  canada: "In Ontario, barrier-free design follows OBC Section 3.8, and the Accessibility for Ontarians with Disabilities Act (AODA) sets standards for public spaces. Dimensions differ from the ADA in places, so check the OBC directly.",
+  refs: [
+    { t: "2010 ADA Standards for Accessible Design (§206, §208, §304, §308, §403–§405, §502, §604)", a: "Free (ada.gov)" },
+    { t: "2021 IBC Chapter 11; ICC A117.1", a: "Free to read (codes.iccsafe.org)" },
+    { t: "Fair Housing Act Design Manual", a: "Free (hud.gov)" }
+  ],
+  check: ["q-ppd-z01", "q-ppd-z02", "q-ppd-z03"]
+});
+
+ARE.LESSONS.push({
+  id: "pdd-roofing", div: "pdd", obj: ["pdd-1.5", "pdd-2.3", "pdd-1.1"], title: "Roofing & Below-Grade Waterproofing",
+  minutes: 30, level: "Core",
+  summary: "How to detail low-slope roofs and below-grade walls so water goes where it should: membranes, slope, drainage, flashing and the difference between dampproofing and waterproofing.",
+  objectives: [
+    "Compare common low-slope membranes and attachment methods.",
+    "Provide slope, primary and secondary drainage.",
+    "Detail base flashing, edges and penetrations.",
+    "Choose dampproofing or waterproofing below grade."
+  ],
+  why: "Roofs and foundations are where water problems are most expensive. Most failures happen at edges, penetrations and transitions, not in the field of the membrane.",
+  exam: "PDD items show a roof edge, parapet or foundation wall section and ask what is missing, or ask which membrane or drainage approach fits.",
+  body: `
+<h3>Low-slope membranes</h3>
+<table class="tbl"><thead><tr><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Built-up roofing (BUR)</td><td>Layers of felt and bitumen; durable, labor-intensive</td></tr>
+<tr><td>Modified bitumen</td><td>Factory sheets, torched, mopped or self-adhered</td></tr>
+<tr><td>EPDM (thermoset)</td><td>Rubber sheet; seams taped or glued; adhered, fastened or ballasted</td></tr>
+<tr><td>TPO and PVC (thermoplastic)</td><td>Heat-welded seams; often white for a cool roof</td></tr>
+</tbody></table>
+<p>Membranes can be <strong>fully adhered</strong>, <strong>mechanically fastened</strong> or <strong>ballasted</strong>. Wind uplift design governs the choice at edges and corners.</p>
+
+<h3>Slope and drainage</h3>
+<p>The IBC requires a minimum slope of ¼ in per foot (2%) for most low-slope membranes (§1507). Achieve it with sloped structure or tapered insulation, with crickets behind curbs and between drains. Where parapets would trap water, the roof needs <strong>secondary (overflow) drainage</strong> by overflow drains or scuppers (IBC §1502.2 and the plumbing code), set above the primary drains so they only work if the primary system is blocked.</p>
+
+<h3>Flashing and edges</h3>
+<ul>
+<li><strong>Base flashing</strong> turns the membrane up walls and curbs, terminated and covered by counterflashing.</li>
+<li><strong>Edges</strong> need tested edge metal that resists wind uplift.</li>
+<li><strong>Penetrations</strong> are minimized and grouped; use pipe boots or curbs, not pitch pans where avoidable.</li>
+</ul>
+
+<h3>Below grade</h3>
+<p><strong>Dampproofing</strong> resists moisture without hydrostatic pressure. <strong>Waterproofing</strong> is needed where groundwater creates hydrostatic pressure (IBC §1805). Add drainage: a drainage mat or board against the wall and a perimeter foundation drain to daylight or a sump.</p>
+`,
+  diagram: `<svg viewBox="0 0 480 220" role="img" aria-label="Parapet section with membrane turned up as base flashing, counterflashing, coping, tapered insulation sloping to a primary drain and an overflow scupper set higher"><g class="dg-text" font-size="11">
+<rect x="380" y="30" width="34" height="150" class="dg-hatch"/><rect x="372" y="22" width="50" height="10" class="dg-accent2"/><text x="300" y="18">Coping</text>
+<path d="M40 170 L370 150" class="dg-line"/><path d="M40 176 L370 156" class="dg-leader"/>
+<path d="M370 150 V100 H378" class="dg-accentline" stroke-width="3"/><text x="270" y="96">Base flashing</text><path d="M330 98 l40 6" class="dg-leader"/>
+<path d="M378 92 h-14" class="dg-line"/><text x="250" y="80">Counterflashing</text><path d="M330 80 l34 10" class="dg-leader"/>
+<rect x="58" y="168" width="20" height="10" class="dg-soft"/><text x="40" y="198">Primary drain (low point)</text>
+<rect x="380" y="128" width="34" height="10" class="dg-air"/><text x="250" y="132">Overflow scupper, higher</text><path d="M360 130 h20" class="dg-leader"/>
+<text x="150" y="150">Tapered insulation, ¼ in/ft min</text></g></svg>`,
+  formulas: [
+    { name: "Taper rise", f: "Rise = slope × distance (¼ in/ft × 40 ft = 10 in)" }
+  ],
+  example: { title: "Applying it", html: `<p>A 120 ft × 80 ft roof with parapets on all sides drains to four interior drains. The architect shows tapered insulation at ¼ in/ft to each drain, crickets between drains, overflow drains beside each primary drain with their inlets set 2 in higher, base flashing up each parapet under counterflashing, and edge metal tested for the project's wind exposure.</p>` },
+  mistakes: [
+    "Flat roofs with no slope. Ponding shortens membrane life.",
+    "Parapet roofs without overflow drainage.",
+    "Setting overflow drains at the same level as primary drains.",
+    "Specifying dampproofing where groundwater exerts hydrostatic pressure."
+  ],
+  scenario: { prompt: "A basement wall will sit below the seasonal high water table. The specification calls for bituminous dampproofing. What should change?",
+    answer: "Specify a waterproofing system rated for hydrostatic pressure, with a drainage layer and a foundation drain, because dampproofing does not resist water under pressure. Coordinate with the geotechnical report's groundwater findings." },
+  refs: [
+    { t: "2021 IBC §1502.2, §1507 and §1805", a: "Free to read (codes.iccsafe.org)" },
+    { t: "NRCA Roofing Manual", a: "Purchase (nrca.net)" },
+    { t: "ANSI/SPRI ES-1 (edge systems)", a: "Free (spri.org)" }
+  ],
+  check: ["q-pdd-z01", "q-pdd-z02", "q-pdd-z03"]
+});
+
+ARE.LESSONS.push({
+  id: "ce-changes", div: "ce", obj: ["ce-3.1", "ce-1.3", "ce-3.3"], title: "Changes in the Work: Change Orders, CCDs & Minor Changes",
+  minutes: 30, level: "Core",
+  summary: "The three ways A201–2017 changes the work, who signs each, how cost is adjusted, and how the architect evaluates a contractor's price.",
+  objectives: [
+    "Choose between a change order, a construction change directive and a minor change.",
+    "Apply the methods for adjusting the contract sum under a CCD.",
+    "Evaluate a contractor's change proposal for reasonableness.",
+    "Explain how deletions are credited and how CCD work is paid."
+  ],
+  why: "Changes are where construction budgets are won or lost. The architect manages the process and must keep each tool within its limits.",
+  exam: "Expect 'which document?' items, signature questions, and scenarios where price or time is disputed but work must continue.",
+  body: `
+<h3>Three tools (A201 Article 7)</h3>
+<table class="tbl"><thead><tr><th>Tool</th><th>Signed by</th><th>Use</th></tr></thead><tbody>
+<tr><td>Change Order (G701)</td><td>Owner, contractor and architect</td><td>All agree on the change, the sum and the time (§7.2)</td></tr>
+<tr><td>Construction Change Directive (G714)</td><td>Owner and architect</td><td>Directs a change before agreement on sum or time (§7.3.1)</td></tr>
+<tr><td>Minor change (G710 often used)</td><td>Architect</td><td>Consistent with intent, no change to sum or time (§7.4)</td></tr>
+</tbody></table>
+
+<h3>Adjusting the sum under a CCD (§7.3.3)</h3>
+<ol>
+<li>A lump sum, properly itemized and supported;</li>
+<li>Unit prices in the documents or agreed later;</li>
+<li>Cost determined in an agreed way plus a fixed or percentage fee; or</li>
+<li>If the contractor disagrees or doesn't respond, the architect determines the adjustment from reasonable expenditures and savings, plus allowances for overhead and profit (§7.3.4).</li>
+</ol>
+<p>The contractor proceeds promptly with CCD work (§7.3.6). If it signs the CCD, that is agreement and it becomes a change order (§7.3.7). Pending final cost, the contractor may bill CCD work in payment applications (§7.3.9). When agreement is reached later, the architect prepares a change order (§7.3.10).</p>
+
+<h3>Evaluating a price</h3>
+<p>Ask for an itemized breakdown: labor hours and rates, materials, equipment, subcontractor quotes, overhead and profit at the agreed markups, and time impact with schedule logic. Compare unit costs with the schedule of values and published data. For deletions, the credit is the net cost to the contractor (§7.3.8).</p>
+`,
+  diagram: "",
+  formulas: [
+    { name: "Change price", f: "Price = labor + materials + equipment + subs + markups" }
+  ],
+  example: { title: "Applying it", html: `<p>The owner wants heavier trench grates that engines can drive over. The contractor quotes $7,400; the owner thinks $4,000 is fair, and the grates are needed in five days. The architect prepares a CCD signed by the owner and architect directing the work, with the adjustment based on cost plus the contract's fee percentage. The contractor installs the grates, tracks costs, and bills them on the next application. Once costs are verified, the architect prepares a change order for the agreed amount.</p>` },
+  mistakes: [
+    "Using a minor change when cost or time changes.",
+    "Waiting for price agreement before urgent work proceeds. Use a CCD.",
+    "Accepting a lump-sum change with no breakdown.",
+    "Thinking the contractor must sign a CCD for it to take effect."
+  ],
+  scenario: { prompt: "The architect wants to move a light switch 2 ft to suit the furniture plan. There is no cost or time effect. Which document applies?",
+    answer: "A minor change in the work, ordered by the architect under A201 §7.4 (often issued on G710, Architect's Supplemental Instructions). It is binding on the owner and contractor and needs no change order." },
+  refs: [
+    { t: "AIA A201–2017, Article 7 (§7.1.2, §7.2, §7.3.1–§7.3.10, §7.4)", a: "Your copy" },
+    { t: "AIA G701, G710, G714", a: "Purchase (aiacontracts.com)" }
+  ],
+  check: ["q-ce-z01", "q-ce-z02", "q-ce-z03"]
+});
+
+Object.assign(ARE.TAKEAWAYS || (ARE.TAKEAWAYS = {}), {
+  "pcm-fees": ["Build fees bottom-up, check top-down.", "Rate = salary × multiplier; multiplier > break-even.", "Undefined scope → hourly with a cap.", "Mark up consultants for coordination.", "Reimbursables are in addition to fees."],
+  "pjm-agreements": ["A101 stipulated sum; A102 cost plus with GMP; A103 without.", "A133 = CM at risk with GMP; A132 = CM adviser; A141 = design-build.", "Bid forms and submittals are not contract documents.", "Use supplementary conditions to modify A201.", "The architect is not party to the owner–contractor agreement."],
+  "pa-budget": ["Project budget = construction + soft costs.", "Design contingency shrinks; construction contingency stays.", "Escalate to the construction midpoint.", "Price gross area, not net.", "Present the gap and the levers; the owner decides."],
+  "ppd-access": ["Route 36 in; door 32 in clear; turning 60 in.", "Ramps ≤ 1:12, ≤ 30 in rise per run, 60 in landings.", "Walks ≤ 1:20; cross slope ≤ 1:48.", "Reach 15–48 in.", "WC centerline 16–18 in.", "ADA and code may both apply: meet the stricter."],
+  "pdd-roofing": ["¼ in/ft minimum for most membranes.", "Parapets need overflow drainage set higher.", "Flash every edge, curb and penetration.", "Dampproofing ≠ waterproofing.", "Drain the foundation."],
+  "ce-changes": ["CO: owner, contractor and architect sign.", "CCD: owner and architect; contractor proceeds.", "Minor change: architect; no sum or time.", "Architect determines CCD price if no agreement.", "Deletion credit = net cost."]
+});
+
+ARE.QX("pcm", [
+["pcm-3.2", 2, "Calculation", "A project architect's salary is $45/h. The firm uses a direct salary multiplier of 3.1. What is the billing rate?",
+ ["$95.50/h", "$127.50/h", "$139.50/h", "$155.00/h"], 2,
+ ["Too low.", "Check the multiplication.", "Correct. 45 × 3.1 = $139.50/h.", "Too high."],
+ "Rate = direct salary per hour × multiplier.", "Architect's Handbook of Professional Practice — compensation"],
+["pcm-3.1", 2, "Calculation", "A work plan totals 900 hours at a blended rate of $125/h. Consultants cost $60,000 with a 10% markup. Profit is 10% of the architect's labor. What is the total fee?",
+ ["$172,500", "$183,750", "$189,750", "$195,000"], 2,
+ ["This omits markup and profit.", "This omits the consultant markup.", "Correct. Labor 112,500 + consultants 66,000 + profit 11,250 = $189,750.", "Too high."],
+ "Build up labor, consultants with markup, expenses and profit.", "Architect's Handbook of Professional Practice — fee development"],
+["pcm-3.2", 2, "Multiple choice", "Which compensation method is most often criticized because the architect's fee rises when construction cost rises?",
+ ["Stipulated sum", "Percentage of construction cost", "Hourly with a cap", "Unit cost per room"], 1,
+ ["Fixed regardless of cost.", "Correct.", "Tied to hours, not cost.", "Tied to units."],
+ "Many owners prefer stipulated sums for this reason.", "AIA B101–2017, Article 11"],
+["pcm-2.1", 2, "Calculation", "A firm's current assets are $900,000 and current liabilities are $600,000. What is the current ratio?",
+ ["0.67", "1.5", "2.0", "3.0"], 1,
+ ["This divides the wrong way.", "Correct. 900,000 ÷ 600,000 = 1.5.", "Check the division.", "Too high."],
+ "A current ratio above about 1.0 suggests the firm can meet short-term obligations.", "Architect's Handbook of Professional Practice — financial management"],
+["pcm-2.1", 2, "Multiple choice", "Which number shows how long, on average, clients take to pay the firm?",
+ ["Utilization rate", "Average collection period (days sales outstanding)", "Net multiplier", "Backlog"], 1,
+ ["Measures billable time.", "Correct.", "Measures revenue per labor dollar.", "Measures contracted work."],
+ "Long collection periods strain cash flow.", "Architect's Handbook of Professional Practice — financial management"],
+["pcm-1.1", 2, "Scenario", "A firm wins a project that needs 30% more staff time than it has for six months. Which response carries the least long-term risk?",
+ ["Hire permanent staff immediately", "Use a mix of overtime, temporary staff or a teaming partner while confirming whether the workload will last", "Turn down all other work", "Delay the project without telling the client"], 1,
+ ["Risky if work drops after six months.", "Correct.", "Damages relationships.", "Not acceptable."],
+ "Match staffing commitments to how long the workload will last.", "Architect's Handbook of Professional Practice — human resources"],
+["pcm-1.2", 2, "Multiple choice", "Which factor most strongly indicates a worker is an employee rather than an independent contractor?",
+ ["The worker has a business card", "The firm controls how, when and where the work is done", "The worker is paid by invoice", "The worker is called a contractor in a letter"], 1,
+ ["Not decisive.", "Correct.", "Payment form is not decisive.", "Labels do not decide status."],
+ "Misclassification brings tax and wage penalties.", "U.S. IRS and Department of Labor guidance"],
+["pcm-1.4", 2, "Multiple choice", "An architect promises a client the building will 'meet all LEED Platinum requirements.' What has the architect done?",
+ ["Stated the standard of care", "Possibly created an express warranty beyond the standard of care", "Nothing legally significant", "Limited their liability"], 1,
+ ["The standard of care is reasonable skill and care.", "Correct.", "Promises can create obligations.", "It increases liability."],
+ "Use 'design intended to achieve' language and define the architect's role.", "Architect's Handbook of Professional Practice — risk management"],
+["pcm-2.2", 2, "Multiple choice", "What is a 'statute of repose' in construction?",
+ ["A deadline from when a defect is discovered", "An absolute time limit for claims, usually counted from substantial completion", "A rule about insurance", "A contract clause on payment"], 1,
+ ["That describes some statutes of limitation.", "Correct.", "Not related.", "Not related."],
+ "Repose periods vary by state.", "State statutes of limitation and repose"],
+["pcm-2.3", 2, "Multiple choice", "Which marketing activity best builds a firm's reputation in a target market?",
+ ["Cold-calling random owners", "Publishing and presenting work and research relevant to that market", "Lowering fees across all projects", "Buying more software"], 1,
+ ["Low return.", "Correct.", "Not reputational.", "Not related."],
+ "Marketing builds reputation; business development pursues projects.", "Architect's Handbook of Professional Practice — marketing"],
+["pcm-3.3", 2, "Scenario", "A client asks the architect to start design based on an unverified site boundary. What reduces risk most?",
+ ["Start and adjust later", "Request a boundary and topographic survey from the owner before design proceeds", "Measure the site with a tape", "Use online maps"], 1,
+ ["Leads to rework.", "Correct. B101 makes the owner responsible for surveys.", "Not reliable.", "Not reliable."],
+ "Owner-furnished information should be in place before design.", "AIA B101–2017, §5.4"],
+["pcm-4.1", 2, "Multiple choice", "What must most states require of a firm that offers architectural services?",
+ ["Nothing", "That it be registered or meet ownership or control rules, with a licensed architect in responsible charge", "That it be a corporation", "That it have 10 employees"], 1,
+ ["Most states regulate firms.", "Correct, though rules vary.", "Other forms are allowed.", "No size rule."],
+ "Check the state board's firm practice rules.", "State registration laws"],
+["pcm-4.2", 2, "Multiple choice", "Which practice best protects a firm's intellectual property in its standard details?",
+ ["Sharing them freely with competitors", "Keeping them in controlled firm libraries and addressing ownership and licensing in contracts", "Never documenting them", "Letting employees take copies"], 1,
+ ["Gives away value.", "Correct.", "Loses knowledge.", "Risky."],
+ "Agreements also define the owner's license to use instruments of service.", "AIA B101–2017, Article 7"]
+], "z");
+
+ARE.QX("pjm", [
+["pjm-3.3", 2, "Multiple choice", "An owner wants a cost-plus-fee contract with a guaranteed maximum price with a general contractor. Which AIA agreement fits?",
+ ["A101", "A102", "A103", "A141"], 1,
+ ["Stipulated sum.", "Correct.", "Cost plus fee without a GMP.", "Design-build."],
+ "A102 and A103 are cost of the work plus fee; only A102 has a GMP.", "AIA A102–2017"],
+["pjm-3.3", 2, "Multiple choice", "Which is NOT a Contract Document under A201–2017 unless specifically listed?",
+ ["The agreement", "The drawings", "Instructions to bidders", "Addenda issued before execution"], 2,
+ ["It is a Contract Document.", "They are Contract Documents.", "Correct. Bidding requirements are not Contract Documents unless listed.", "They are Contract Documents."],
+ "Submittals are not Contract Documents either.", "AIA A201–2017, §1.1.1"],
+["pjm-3.1", 2, "Multiple choice", "Where should project-specific changes to A201, such as higher insurance limits, be made?",
+ ["By editing A201's text", "In supplementary conditions", "In the specifications' Part 3", "In meeting minutes"], 1,
+ ["Editing the form invites confusion.", "Correct.", "Part 3 covers execution.", "Not a contract document."],
+ "Supplementary conditions modify the general conditions for a project.", "AIA A503 (Guide for Supplementary Conditions)"],
+["pjm-3.3", 2, "Multiple choice", "Where are liquidated damages for late completion usually stated?",
+ ["In A201", "In the owner–contractor agreement", "In the owner–architect agreement", "In the building permit"], 1,
+ ["A201 does not set the amount.", "Correct.", "The architect is not party to it.", "Not related."],
+ "Liquidated damages must be a reasonable estimate of the owner's loss to be enforceable.", "AIA A101–2017"],
+["pjm-3.4", 2, "Multiple choice", "Under B101–2017, who is responsible for the accuracy of a geotechnical report the owner provides?",
+ ["The architect", "The owner, through its geotechnical engineer; the architect may rely on it", "The contractor", "The building official"], 1,
+ ["The architect relies on it.", "Correct.", "Not the contractor.", "Not their role."],
+ "Reliance is stated in B101 §3.1.2.", "AIA B101–2017, §3.1.2 and §5.5"],
+["pjm-2.1", 2, "Multiple choice", "Which belongs in the scope section of a project work plan?",
+ ["The owner's financing terms", "Services included and excluded, deliverables and phase milestones", "The contractor's crew sizes", "The building's paint colors"], 1,
+ ["Not the architect's work plan.", "Correct.", "Not the architect's work.", "Too detailed."],
+ "Exclusions prevent scope arguments later.", "Architect's Handbook of Professional Practice — work planning"],
+["pjm-2.2", 2, "Multiple choice", "An activity on the critical path slips two days. What happens to the project end date if nothing else changes?",
+ ["Nothing", "It moves two days later", "It moves one day later", "It moves earlier"], 1,
+ ["Critical activities have no float.", "Correct.", "Not how critical paths work.", "Not possible."],
+ "Recover time by adding resources or overlapping later critical work.", "Critical path method"],
+["pjm-2.3", 2, "Scenario", "A consultant emails the owner directly about a design issue, bypassing the architect. What should the architect do?",
+ ["Ignore it", "Remind the consultant of the communication protocol and confirm the issue's resolution in writing with the owner", "Fire the consultant", "Let the consultant manage the owner"], 1,
+ ["Breaks the record.", "Correct.", "Too drastic as a first step.", "Breaks the contract chain."],
+ "Define communication protocols at the kickoff meeting.", "Architect's Handbook of Professional Practice — communication"],
+["pjm-4.1", 2, "Multiple choice", "Which document best confirms that the owner approved each design phase?",
+ ["A verbal OK", "A signed or written phase approval recorded in the project record", "A consultant's email", "The invoice"], 1,
+ ["Easily disputed.", "Correct. B101 requires owner approval at each phase.", "Not the owner's approval.", "Payment is not approval."],
+ "Phase approvals define the baseline for later changes.", "AIA B101–2017, §3.2 and §3.3"],
+["pjm-4.3", 2, "Multiple choice", "What is the main purpose of a transmittal?",
+ ["To approve a design", "To record what was sent, to whom, when and why", "To change the contract", "To pay a consultant"], 1,
+ ["Not an approval.", "Correct.", "Not a modification.", "Not a payment."],
+ "Transmittals are basic project records.", "Architect's Handbook of Professional Practice — project records"],
+["pjm-4.4", 2, "Scenario", "The fire department needs a fire lane that conflicts with the planned courtyard. When should this have been identified?",
+ ["During construction", "At an early meeting with the fire marshal during schematic design", "At the final inspection", "Never"], 1,
+ ["Too late and expensive.", "Correct.", "Too late.", "Required."],
+ "Fire access requirements come from the fire code and local rules.", "2021 International Fire Code §503"],
+["pjm-5.2", 2, "Multiple choice", "What is a 'red flag' in reviewing a proposed owner–architect agreement?",
+ ["A standard of care clause", "An obligation to 'guarantee' code compliance or 'certify' the absence of defects", "A mediation clause", "A payment schedule"], 1,
+ ["Normal.", "Correct.", "Normal.", "Normal."],
+ "Guarantees and certifications may be uninsurable.", "Architect's Handbook of Professional Practice — risk management"],
+["pjm-5.3", 2, "Multiple choice", "Which check best catches a door swing that conflicts with a structural column?",
+ ["Specification review", "Overlaying architectural plans with structural plans at a coordination review", "Cost estimate", "Code review of occupant load"], 1,
+ ["Not spatial.", "Correct.", "Not spatial.", "Not related."],
+ "Overlay checks catch spatial conflicts.", "Architect's Handbook of Professional Practice — quality management"]
+], "z");
+
+ARE.QX("pa", [
+["pa-4.5", 2, "Calculation", "Construction cost is estimated at $10,000,000. Soft costs are 30% of construction cost. What is the total project budget?",
+ ["$10,300,000", "$12,000,000", "$13,000,000", "$13,300,000"], 2,
+ ["This adds 3%.", "This adds 20%.", "Correct. 10,000,000 × 1.30 = $13,000,000.", "Too high."],
+ "Soft costs include fees, FF&E, permits, testing, financing and owner contingency.", "Project cost management practice"],
+["pa-4.5", 2, "Multiple choice", "Which cost is a soft cost?",
+ ["Structural steel", "Design and consultant fees", "Roofing", "Site paving"], 1,
+ ["Construction cost.", "Correct.", "Construction cost.", "Construction cost."],
+ "Separate the owner's total budget from the construction budget.", "Project cost management practice"],
+["pa-4.3", 2, "Multiple choice", "During programming, which estimating method is most appropriate?",
+ ["Detailed quantity takeoff", "Cost per square foot from comparable projects", "Subcontractor bids", "Change order pricing"], 1,
+ ["Not enough design exists.", "Correct.", "No bids yet.", "Construction phase."],
+ "Estimates become more detailed with each phase.", "Cost estimating practice"],
+["pa-1.1", 2, "Multiple choice", "Which site feature most improves a building's access to cooling summer breezes?",
+ ["Dense evergreen trees on the windward side", "Openings oriented toward prevailing summer winds, with low planting that channels air", "A solid wall facing the wind", "A deep basement"], 1,
+ ["Blocks the breeze.", "Correct.", "Blocks the breeze.", "Not related."],
+ "Use the wind rose to find prevailing summer winds.", "Brown & DeKay, Sun, Wind & Light"],
+["pa-1.2", 2, "Multiple choice", "A steep north-facing slope in a cold climate is most likely to:",
+ ["Receive the most winter sun", "Stay colder and shaded in winter, with snow and ice lasting longer", "Be the best location for solar panels", "Have no effect"], 1,
+ ["South slopes get more sun.", "Correct.", "South slopes are better.", "Aspect matters."],
+ "Slope aspect affects microclimate.", "Site analysis practice"],
+["pa-2.1", 2, "Multiple choice", "Under the 2021 IBC, what is the occupancy group of a facility caring for 30 children, all aged 3 to 5, for part of the day?",
+ ["Group A-3", "Group E", "Group I-4", "Group R-3"], 1,
+ ["Assembly.", "Correct. Care for more than five children older than 2½ years for less than 24 hours is Group E.", "I-4 applies to care of children 2½ years or younger (with exceptions) and to adult day care.", "Residential."],
+ "Ages matter: children older than 2½ → E; 2½ or younger → generally I-4, with exceptions in §308.5.", "2021 IBC §305.2 and §308.5"],
+["pa-2.2", 2, "Multiple choice", "What is a zoning 'overlay district'?",
+ ["A replacement for the base zone", "An additional set of rules, such as historic or flood rules, applied on top of the base zoning", "A building code chapter", "A deed restriction"], 1,
+ ["It adds to the base zone.", "Correct.", "Not a code.", "Private, not zoning."],
+ "Check overlays as well as the base district.", "Zoning practice"],
+["pa-2.3", 2, "Multiple choice", "Where would the architect find recorded easements affecting the site?",
+ ["The building code", "The title report and the boundary survey", "The specifications", "The geotechnical report"], 1,
+ ["Not there.", "Correct.", "Not there.", "Not there."],
+ "Ask the owner for the title report early.", "Real property practice"],
+["pa-3.1", 2, "Calculation", "A site drops 6 ft over a horizontal distance of 150 ft. What is the slope?",
+ ["2%", "4%", "6%", "25%"], 1,
+ ["Check the division.", "Correct. 6 ÷ 150 = 0.04 = 4%.", "Too steep.", "Divides the wrong way."],
+ "Slopes over 5% on walks become ramps under accessibility rules.", "Site analysis practice"],
+["pa-3.2", 2, "Scenario", "The traffic study shows the main road is congested at peak hours; the site also fronts a quiet side street. Where should the primary vehicle entry go?",
+ ["On the main road at the intersection", "On the side street, if the traffic engineer and the city agree", "Both, randomly", "No vehicle entry"], 1,
+ ["Worsens congestion and safety.", "Correct.", "Not reasoned.", "Not practical."],
+ "Combine reports to make siting decisions.", "Site planning practice"],
+["pa-4.4", 2, "Multiple choice", "What does a stacking diagram show?",
+ ["Furniture layouts", "Which departments go on which floor", "Structural loads", "Site drainage"], 1,
+ ["Too detailed.", "Correct.", "Not related.", "Not related."],
+ "Stacking follows from adjacency and floor-plate size.", "Programming practice"],
+["pa-4.6", 2, "Multiple choice", "Which question should a systems comparison for a new office building answer first?",
+ ["Which brand of chiller", "Which systems meet the program's performance needs within the budget and space available", "Which color the ducts are", "Which contractor to use"], 1,
+ ["Too early.", "Correct.", "Not relevant.", "Not relevant."],
+ "Compare systems on performance, cost and space.", "Building systems practice"],
+["pa-4.7", 2, "Multiple choice", "On a plan, a long-short-long dashed line usually represents:",
+ ["A hidden object", "A centerline or property line, depending on the legend", "A wall to be demolished", "A dimension"], 1,
+ ["Short dashes show hidden lines.", "Correct. Always check the legend.", "Demolition is often dashed.", "Dimension lines are solid."],
+ "Read the legend; line conventions vary slightly by office.", "U.S. National CAD Standard"]
+], "z");
+
+ARE.QX("ppd", [
+["ppd-2.2", 2, "Multiple choice", "What is the minimum clear width for an accessible door under the 2010 ADA Standards?",
+ ["30 in", "32 in", "36 in", "42 in"], 1,
+ ["Too narrow.", "Correct. 32 in clear, measured with the door open 90°.", "That is the route width.", "Larger than required."],
+ "Door clear width and route width differ.", "2010 ADA Standards §404.2.3"],
+["ppd-2.3", 3, "Calculation", "A ramp must rise 36 in at a slope of 1:12. How many runs are needed, given a maximum rise of 30 in per run?",
+ ["1", "2", "3", "4"], 1,
+ ["36 in exceeds 30 in.", "Correct. 36 ÷ 30 = 1.2, so 2 runs with a landing between.", "More than needed.", "More than needed."],
+ "Total length is 36 × 12 = 432 in (36 ft) plus landings.", "2010 ADA Standards §405.6 and §405.7"],
+["ppd-4.3", 2, "Multiple choice", "What is the required turning space in an accessible toilet room under the 2010 ADA Standards?",
+ ["48 in circle", "60 in circle or a T-shaped space", "72 in square", "36 in circle"], 1,
+ ["Too small.", "Correct.", "Larger than required.", "Too small."],
+ "Door swings may overlap the turning space in some cases.", "2010 ADA Standards §304.3 and §603.2.1"],
+["ppd-2.2", 2, "Multiple choice", "At least what share of public entrances must be accessible under the 2010 ADA Standards?",
+ ["One entrance", "50%", "60%", "100%"], 2,
+ ["The rule is a percentage.", "Too low.", "Correct.", "Not required."],
+ "Accessible entrances must connect to the accessible route.", "2010 ADA Standards §206.4.1"],
+["ppd-2.3", 2, "Multiple choice", "A parking lot has 6 accessible spaces. How many must be van accessible?",
+ ["0", "1", "2", "6"], 1,
+ ["At least one is required.", "Correct. One of every six accessible spaces.", "More than required.", "More than required."],
+ "Van spaces need a wider space or wider access aisle.", "2010 ADA Standards §208.2.4"],
+["ppd-1.1", 2, "Multiple choice", "Which siting choice best supports passive solar heating in a cold climate?",
+ ["North-facing main glazing", "South-facing glazing clear of winter shade from trees and buildings", "West-facing glazing", "No glazing"], 1,
+ ["Little winter sun.", "Correct.", "Overheats in summer afternoons.", "No gain."],
+ "Check winter shadows from neighbors.", "Brown & DeKay, Sun, Wind & Light"],
+["ppd-2.1", 2, "Multiple choice", "Zoning sets a 35 ft height limit measured to the midpoint of a pitched roof. What does the architect need first?",
+ ["The building code's height table", "The zoning ordinance's definition of how height is measured", "The structural drawings", "The roofing manufacturer"], 1,
+ ["The code measures height differently.", "Correct. Zoning and code definitions differ.", "Not first.", "Not related."],
+ "Always use each regulation's own definitions.", "Zoning practice"],
+["ppd-3.1", 2, "Multiple choice", "In a small building with limited ceiling space, which heating and cooling approach needs the least duct space?",
+ ["Central VAV", "Ductless split or VRF units with a small ventilation system", "Constant-volume reheat", "Underfloor air with a raised floor"], 1,
+ ["Large ducts.", "Correct.", "Large ducts.", "Needs floor depth."],
+ "Ductless systems move refrigerant instead of air.", "ASHRAE guidance"],
+["ppd-3.2", 2, "Multiple choice", "Which system resists lateral loads through rigid beam-to-column connections?",
+ ["Braced frame", "Moment frame", "Shear wall", "Bearing wall"], 1,
+ ["Uses diagonals.", "Correct.", "Uses solid walls.", "Carries gravity loads."],
+ "Moment frames keep bays open but cost more.", "Ching, Building Structures Illustrated"],
+["ppd-3.3", 2, "Multiple choice", "Which partition detail most improves sound isolation between offices?",
+ ["Stopping the wall at the ceiling", "Extending the wall to the deck, adding insulation and sealing gaps", "Using thinner board", "Adding a door grille"], 1,
+ ["Sound flanks over the wall.", "Correct.", "Reduces mass.", "Creates a leak."],
+ "Small openings greatly reduce STC.", "Acoustics practice"],
+["ppd-4.2", 2, "Multiple choice", "Why place mechanical rooms near the center of the building on each floor?",
+ ["For appearance", "To shorten duct runs and reduce shaft and ceiling space", "Codes require it", "To increase floor area"], 1,
+ ["Not the reason.", "Correct.", "Not required.", "Not related."],
+ "Central service cores reduce distribution.", "Systems integration practice"],
+["ppd-4.4", 2, "Multiple choice", "A building in a hurricane region should prioritize which envelope feature?",
+ ["Large unprotected glazing", "Impact-resistant glazing or shutters and well-anchored roofing", "Lightweight roof ballast", "No overhangs"], 1,
+ ["Vulnerable.", "Correct.", "Blows off.", "Not the main concern."],
+ "Wind-borne debris regions have specific glazing rules.", "2021 IBC §1609.2"],
+["ppd-5.3", 2, "Calculation", "Option A costs $200,000 to install and $20,000 a year to run. Option B costs $260,000 and $12,000 a year. Ignoring interest, after how many years does B become cheaper?",
+ ["5", "7.5", "10", "12"], 1,
+ ["Check: 60,000 ÷ 8,000.", "Correct. Extra $60,000 ÷ $8,000/yr savings = 7.5 years.", "Too long.", "Too long."],
+ "Simple payback = extra first cost ÷ annual savings.", "Life-cycle cost practice"]
+], "z");
+
+ARE.QX("pdd", [
+["pdd-1.5", 2, "Multiple choice", "What minimum slope does the 2021 IBC require for most low-slope membrane roofs, such as modified bitumen, EPDM and TPO?",
+ ["None", "⅛ in per foot", "¼ in per foot", "1 in per foot"], 2,
+ ["Slope is required.", "Allowed for some coal-tar built-up roofs only.", "Correct.", "Steeper than required."],
+ "Achieve slope with structure or tapered insulation.", "2021 IBC §1507"],
+["pdd-2.3", 2, "Multiple choice", "A roof is surrounded by parapets. What else must the drainage design include?",
+ ["Nothing beyond primary drains", "Secondary (overflow) drains or scuppers set above the primary drains", "A larger gutter", "A skylight"], 1,
+ ["Blocked drains would pond water.", "Correct.", "No gutters at parapets.", "Not related."],
+ "Overflow inlets sit higher so they only work when primary drains are blocked.", "2021 IBC §1502.2"],
+["pdd-1.1", 2, "Multiple choice", "A basement wall will face hydrostatic pressure from groundwater. What should be specified?",
+ ["Bituminous dampproofing", "A waterproofing system with a drainage layer and foundation drain", "Paint", "Nothing"], 1,
+ ["Dampproofing does not resist water under pressure.", "Correct.", "Not adequate.", "Not adequate."],
+ "Dampproofing vs waterproofing depends on hydrostatic pressure.", "2021 IBC §1805"],
+["pdd-1.5", 2, "Multiple choice", "Where is counterflashing installed?",
+ ["Under the membrane", "Over the top of base flashing, shedding water away from its termination", "On the roof deck", "Inside the wall cavity only"], 1,
+ ["Not its location.", "Correct.", "Not its location.", "Incomplete."],
+ "Counterflashing protects the base flashing's top edge.", "NRCA Roofing Manual"],
+["pdd-1.2", 2, "Calculation", "A 20,000 sf office needs about 1 ton of cooling per 400 sf as a rule of thumb. What capacity is needed?",
+ ["20 tons", "40 tons", "50 tons", "80 tons"], 2,
+ ["Check the division.", "Check the division.", "Correct. 20,000 ÷ 400 = 50 tons.", "Too high."],
+ "Rules of thumb give early sizes; the engineer calculates actual loads.", "HVAC rules of thumb"],
+["pdd-1.3", 2, "Multiple choice", "Which member is designed mainly for axial compression?",
+ ["Beam", "Column", "Joist", "Lintel"], 1,
+ ["Bending.", "Correct.", "Bending.", "Bending over an opening."],
+ "Columns buckle if too slender; check unbraced length.", "Structural practice"],
+["pdd-1.4", 2, "Multiple choice", "What is the main purpose of emergency lighting along an egress path?",
+ ["Decoration", "Keep the path illuminated if normal power fails, for a set duration", "Save energy", "Provide task lighting"], 1,
+ ["Not decorative.", "Correct.", "Not the purpose.", "Not the purpose."],
+ "The IBC requires egress illumination and emergency power for it.", "2021 IBC §1008"],
+["pdd-1.6", 2, "Multiple choice", "In a BIM coordination meeting, who normally resolves a clash between a duct and a beam?",
+ ["The software", "The responsible design disciplines, coordinated by the architect", "The owner", "The building official"], 1,
+ ["Software only finds clashes.", "Correct.", "Not their role.", "Not their role."],
+ "Record each clash resolution and update the models.", "BIM practice"],
+["pdd-2.1", 2, "Multiple choice", "Which drawing best shows the vertical relationship of floors, roof and structure across the whole building?",
+ ["Floor plan", "Building section", "Door schedule", "Site plan"], 1,
+ ["Horizontal only.", "Correct.", "Not related.", "Site only."],
+ "Wall sections and details then enlarge parts of it.", "Construction documentation practice"],
+["pdd-2.5", 2, "Multiple choice", "A change during bidding affects the bid price. How do bidders learn about it?",
+ ["A change order", "An addendum issued to all bidders before bids are due", "A field report", "A phone call to the low bidder"], 1,
+ ["After the contract.", "Correct.", "Construction phase.", "Unfair."],
+ "Bid forms often ask bidders to list addenda received.", "AIA A701–2018"],
+["pdd-3.1", 2, "Multiple choice", "What does a descriptive specification do?",
+ ["Names one manufacturer", "Describes the required properties of materials and products without naming brands", "States only performance results", "Gives the price"], 1,
+ ["That is proprietary.", "Correct.", "That is performance.", "Not a specification type."],
+ "Descriptive specs are common in public work.", "CSI Project Delivery Practice Guide"],
+["pdd-3.2", 2, "Multiple choice", "Which MasterFormat division covers roofing, waterproofing, insulation and sealants?",
+ ["Division 05", "Division 07", "Division 08", "Division 09"], 1,
+ ["Metals.", "Correct. Thermal and Moisture Protection.", "Openings.", "Finishes."],
+ "Know the common divisions by number.", "CSI MasterFormat"],
+["pdd-4.1", 2, "Multiple choice", "Which handrail height range does the 2021 IBC require on stairs?",
+ ["30–34 in", "34–38 in", "36–42 in", "42 in minimum"], 1,
+ ["Too low.", "Correct.", "Not the range.", "That is guard height."],
+ "Guards are 42 in minimum where required.", "2021 IBC §1014.2 and §1015.3"]
+], "z");
+
+ARE.QX("ce", [
+["ce-3.1", 2, "Multiple choice", "Who must sign a construction change directive for it to take effect under A201–2017?",
+ ["Owner, contractor and architect", "Owner and architect", "Contractor only", "Architect only"], 1,
+ ["That is a change order.", "Correct. §7.3.1.", "Not enough.", "That is a minor change."],
+ "If the contractor signs too, it becomes a change order (§7.3.7).", "AIA A201–2017, §7.3.1 and §7.3.7"],
+["ce-1.3", 2, "Multiple choice", "The contractor disagrees with the CCD's pricing method. Under A201–2017, who determines the adjustment?",
+ ["The owner alone", "The architect, based on reasonable expenditures and savings plus allowances for overhead and profit", "The contractor", "A court, immediately"], 1,
+ ["Not alone.", "Correct. §7.3.4.", "Not alone.", "Disputes follow Article 15."],
+ "The contractor may still pursue a claim if it disagrees.", "AIA A201–2017, §7.3.4"],
+["ce-3.3", 2, "Multiple choice", "Can the contractor bill for CCD work before the final cost is agreed?",
+ ["No", "Yes, in applications for payment, with the architect determining amounts in the meantime", "Only after substantial completion", "Only with a new contract"], 1,
+ ["A201 allows it.", "Correct. §7.3.9.", "Too late.", "Not required."],
+ "This keeps cash flowing on urgent changes.", "AIA A201–2017, §7.3.9"],
+["ce-3.1", 2, "Multiple choice", "Which document is used to ask the contractor for a price on a proposed change before deciding?",
+ ["G701 change order", "G709 proposal request", "G704 certificate of substantial completion", "G702 payment application"], 1,
+ ["Records an agreed change.", "Correct.", "Closeout.", "Payment."],
+ "Proposal requests let the owner decide with a price in hand.", "AIA G709"],
+["ce-1.3", 2, "Multiple choice", "The owner deletes a portion of the work. How is the credit calculated under A201–2017?",
+ ["As the owner decides", "As the actual net cost, confirmed by the architect", "As the original bid price plus profit", "There is no credit"], 1,
+ ["Not unilateral.", "Correct. §7.3.8.", "Not the rule.", "Credits apply."],
+ "Ask for an itemized credit.", "AIA A201–2017, §7.3.8"],
+["ce-2.1", 2, "Multiple choice", "How often does the architect visit the site under A201–2017?",
+ ["Daily", "At intervals appropriate to the stage of construction, or as agreed in the owner–architect agreement", "Only at substantial completion", "Never"], 1,
+ ["Continuous presence is not required.", "Correct. §4.2.2.", "Too few.", "Required."],
+ "B101 often limits the number of visits (§4.2.3).", "AIA A201–2017, §4.2.2"],
+["ce-2.2", 2, "Multiple choice", "Who arranges tests and inspections required by the contract documents under A201–2017?",
+ ["The architect", "The contractor, unless the documents say otherwise", "The building official", "The lender"], 1,
+ ["The architect may observe.", "Correct.", "Officials do code inspections.", "Not related."],
+ "The owner usually pays for tests required by the documents.", "AIA A201–2017, §13.4"],
+["ce-2.3", 2, "Multiple choice", "What should a field report from the architect record?",
+ ["Instructions on construction methods", "Observed progress, conformance issues and items needing action", "Only the weather", "Workers' names"], 1,
+ ["Methods are the contractor's.", "Correct.", "Incomplete.", "Not needed."],
+ "Distribute reports to the owner and contractor.", "Construction administration practice"],
+["ce-3.2", 2, "Multiple choice", "How soon must the architect act on submittals under A201–2017?",
+ ["Within 24 hours", "With reasonable promptness, as needed to avoid delay, or as the approved submittal schedule allows", "Within 90 days", "Only at the end of the job"], 1,
+ ["Not the rule.", "Correct.", "Too slow.", "Causes delay."],
+ "The contractor prepares a submittal schedule for approval.", "AIA A201–2017, §4.2.7 and §3.10.2"],
+["ce-3.3", 2, "Calculation", "Work completed to date is $1,200,000 and stored materials are $50,000. Retainage is 10%. Previous certificates total $900,000. What is the current payment due?",
+ ["$125,000", "$180,000", "$225,000", "$350,000"], 0,
+ ["Correct. 1,250,000 − 125,000 retainage = 1,125,000; minus 900,000 = $125,000.", "Check the stored materials and retainage.", "This ignores retainage.", "This ignores previous payments."],
+ "Include stored materials in the total earned when the contract allows.", "AIA G702"],
+["ce-3.4", 2, "Multiple choice", "Masonry is missing the specified joint reinforcement, found after several courses are laid. What should the architect do?",
+ ["Accept it to keep the schedule", "Notify the contractor that the work is nonconforming and require correction, or a proposal for an engineer-approved fix", "Pay for the repair", "Ignore it"], 1,
+ ["Not acceptable.", "Correct.", "Not the architect's cost.", "Not acceptable."],
+ "Correction of nonconforming work is at the contractor's cost.", "AIA A201–2017, §12.2.1"],
+["ce-4.1", 2, "Multiple choice", "When does the one-year correction period in A201–2017 start?",
+ ["At contract signing", "At substantial completion", "At final payment", "At the first site visit"], 1,
+ ["Too early.", "Correct. §12.2.2.1.", "Later than the rule.", "Not related."],
+ "Separate from warranties and from statutes of limitation.", "AIA A201–2017, §12.2.2.1"],
+["ce-4.2", 2, "Multiple choice", "Which closeout item helps the owner operate and maintain building systems?",
+ ["The bid bond", "Operation and maintenance manuals and training", "The schedule of values", "The pre-bid minutes"], 1,
+ ["Bidding.", "Correct.", "Payment.", "Bidding."],
+ "Specify O&M manuals and training in Division 01.", "Construction closeout practice"]
+], "z");
+
 /* REFERENCE LIBRARY — glossary, formulas, calculators, sources */
 ARE.GLOSSARY = [
 // [term, category, definition, lessonId]
