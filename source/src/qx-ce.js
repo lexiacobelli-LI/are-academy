@@ -11,7 +11,7 @@ ARE.QX("ce", [
  ["Logo design", "Experience with similar projects, financial capacity, bonding capacity, safety record and references", "Number of social media followers", "Office location only"], 1,
  ["Not relevant.", "Correct.", "Not relevant.", "Location can matter, but it is not enough alone."],
  "Prequalification lowers the risk of awarding to an unqualified bidder.", "AIA A305 (Contractor's Qualification Statement)"],
-["ce-1.2", 2, "Multiple choice", "What does a bid bond guarantee?",
+["ce-1.2", 2, "Multiple choice", "When a bidder submits a bid bond, what does it assure the owner if that bidder is awarded the contract?",
  ["That the work is free of defects", "That the bidder will enter into the contract and provide required bonds if awarded", "That subcontractors will be paid", "That the project finishes on time"], 1,
  ["Not a bond's role.", "Correct.", "That is a payment bond.", "That relates to the performance bond and contract."],
  "Bid, performance and payment bonds protect the owner at different stages.", "AIA A310"],
