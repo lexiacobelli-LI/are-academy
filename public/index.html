@@ -2960,7 +2960,7 @@ ARE.LESSONS.push({
 <li><strong>Decision log</strong>: owner approvals at each phase, signed where possible.</li>
 <li><strong>Emails and calls</strong>: confirm verbal directions in writing.</li>
 </ul>
-<p>Communication on a design-bid-build project runs through defined paths: the owner and contractor communicate through the architect on matters about the contract documents; consultants communicate through the architect.</p>
+<p>Communication on a design-bid-build project follows defined paths. Under A201–2017 §4.2.4, the owner and contractor must include the architect in all communications that affect the architect's services or responsibilities. Consultants communicate through the architect.</p>
 
 <h3>QA versus QC</h3>
 <p><strong>Quality assurance</strong> is the system that prevents errors: standards, checklists, templates, staffing, training and a quality plan for the project. <strong>Quality control</strong> checks the work: milestone reviews, cross-discipline coordination checks, code reviews and peer review by someone outside the team. Schedule QC reviews in the work plan (for example at 50% and 90% CDs) with time to fix what they find.</p>
@@ -4963,11 +4963,11 @@ Object.entries(T).forEach(([id, list]) => {
 /* ---------- Question bank expansion (v9): compact rows → standard question objects ----------
    Row: [objective, difficulty 1-3, format, stem, options, answer (index, or array for check-all), why-per-option, explanation, reference]
    All items are original. References name the document and section only where the section was checked. */
-ARE.QX = (div, rows) => rows.forEach((r, i) => {
+ARE.QX = (div, rows, pre = "x") => rows.forEach((r, i) => {
   const [obj, diff, fmt, q, opts, ans, why, explain, ref] = r;
   const lesson = (ARE.LESSONS.find(l => (l.obj || []).includes(obj)) || ARE.LESSONS.find(l => l.div === div) || {}).id;
   const ms = Array.isArray(ans);
-  const id = `q-${div}-x${String(i + 1).padStart(2, "0")}`;
+  const id = `q-${div}-${pre}${String(i + 1).padStart(2, "0")}`;
   // Fixed, per-question order so the correct answer isn't always in the same position. Numeric answers stay in ascending order.
   let order = opts.map((_, k) => k);
   if (fmt !== "Calculation") {
@@ -5726,6 +5726,873 @@ ARE.QX("ce", [
  "POEs inform both the owner's operations and the firm's future designs.", "Architect's Handbook of Professional Practice — post-occupancy evaluation"]
 ]);
 
+/* Round 2 dedicated lessons (v10). Original explanations; AIA sections checked against the user's 2017 copies.
+   Code references are to the 2021 International Building Code unless stated. */
+
+ARE.LESSONS.push({
+  id: "pcm-ethics", div: "pcm", obj: ["pcm-1.2", "pcm-1.3", "pcm-1.4"], title: "Ethics, Licensure & Professional Conduct",
+  minutes: 30, level: "Core",
+  summary: "Who regulates architects, what the AIA Code of Ethics and NCARB's model rules require, and how to resolve the ethical situations the exam likes to test.",
+  objectives: [
+    "Distinguish licensing law (state boards) from professional ethics (AIA Code) and model rules (NCARB).",
+    "Apply the main obligations of the AIA Code of Ethics to practice situations.",
+    "Explain sealing, responsible control and practice across jurisdictions.",
+    "Choose the ethical course when duties to the public, client and firm conflict."
+  ],
+  why: "Licensure exists to protect the public's health, safety and welfare. Ethics items test whether you put that duty first when a client, employer or schedule pushes the other way.",
+  exam: "Scenario items: a client asks for something improper, an employee leaves with drawings, a conflict of interest appears, or an architect is asked to seal work. Choose the response that protects the public and stays honest.",
+  body: `
+<h3>Three layers of rules</h3>
+<table class="tbl"><thead><tr><th>Source</th><th>Who it binds</th><th>Enforced by</th></tr></thead><tbody>
+<tr><td>State registration law and board rules</td><td>Every licensed architect in that jurisdiction</td><td>The state licensing board: discipline, fines, revocation</td></tr>
+<tr><td>NCARB Model Rules of Conduct</td><td>Adopted in whole or part by many boards</td><td>The boards that adopt them</td></tr>
+<tr><td>AIA Code of Ethics and Professional Conduct</td><td>AIA members only</td><td>AIA National Ethics Council</td></tr>
+</tbody></table>
+<p>Licensing law is the legal minimum. The AIA Code is voluntary for non-members but sets the professional benchmark the exam uses.</p>
+
+<h3>The AIA Code's obligations</h3>
+<p>The Code is organized as Canons, each with Ethical Standards (goals) and enforceable Rules: general obligations (knowledge, skill, respect for law), obligations to the public, to the client, to the profession, to colleagues, and to the environment. Themes the exam returns to:</p>
+<ul>
+<li><strong>Public first.</strong> If a client insists on a decision that violates the code and endangers occupants, the architect refuses, and if overruled, reports to the building official.</li>
+<li><strong>Honesty.</strong> Do not misrepresent qualifications, credit for work, or what a certificate says. Sign only what you know to be true.</li>
+<li><strong>Conflicts of interest.</strong> Disclose them in writing; do not accept compensation from contractors or suppliers on the same project without full disclosure and consent.</li>
+<li><strong>Colleagues.</strong> Credit others' work, respect intellectual property, and do not attempt to supplant another architect who is under contract.</li>
+</ul>
+
+<h3>Sealing and responsible control</h3>
+<p>An architect may seal only documents prepared under their <strong>responsible control</strong>: the level of control and personal supervision that the jurisdiction requires. Sealing work prepared by others without that control ("plan stamping") is a violation. Licensure is by jurisdiction: an architect licensed elsewhere must obtain a license where the project is located before practicing or sealing there. The NCARB Certificate eases reciprocal licensing but is not itself a license.</p>
+
+<h3>Standard of care in ethical terms</h3>
+<p>The legal duty is ordinary professional skill and care, not perfection (AIA B101–2017 §2.2). Ethically, the architect also practices only within their competence: take on unfamiliar project types only with the right consultants or experience on the team.</p>
+`,
+  diagram: "",
+  formulas: [],
+  example: { title: "Applying it", html: `<p>During CDs, the owner asks the architect to remove the second exit stair to save money, saying the building official "won't notice." The architect explains the code requirement and the life-safety risk in writing. If the owner still directs the change, the architect refuses to issue noncompliant documents. Withdrawing from the project and informing the building official are the next steps if the owner proceeds anyway. Protecting the public outranks the client relationship.</p>` },
+  mistakes: [
+    "Treating the AIA Code as law. It binds members; state law binds licensees.",
+    "Thinking an NCARB Certificate lets you practice in any state.",
+    "Sealing a consultant's or a former employee's drawings you did not control.",
+    "Keeping a conflict of interest quiet because it seems small. Disclose in writing."
+  ],
+  scenario: { prompt: "A product rep offers the project architect a free trip if their cladding is specified as the sole source. What should the architect do?",
+    answer: "Decline. Accepting a gift tied to a specification decision is an undisclosed conflict of interest that compromises the duty to the client. Specify on merit, and if the firm has a relationship with the manufacturer, disclose it to the owner in writing." },
+  canada: "In Ontario, practice is regulated by the Ontario Association of Architects under the Architects Act and Regulation 27. Canadian licensing follows the Canadian Experience Record Book and the ExAC exam. NCARB and the Canadian licensing authorities have a mutual recognition agreement for experienced architects.",
+  refs: [
+    { t: "AIA Code of Ethics and Professional Conduct", a: "Free (aia.org)" },
+    { t: "NCARB Model Rules of Conduct and Legislative Guidelines", a: "Free (ncarb.org)" },
+    { t: "AIA, The Architect's Handbook of Professional Practice, 15th ed. — ethics and professional conduct", a: "Purchase" }
+  ],
+  check: ["q-pcm-y01", "q-pcm-y02", "q-pcm-y03"]
+});
+
+ARE.LESSONS.push({
+  id: "pjm-changes", div: "pjm", obj: ["pjm-3.1", "pjm-4.2", "pjm-4.4"], title: "Scope Changes, Additional Services & Approvals",
+  minutes: 30, level: "Core",
+  summary: "How B101–2017 handles services beyond the basic scope, how to manage scope creep before it eats the fee, and the architect's duties with authorities having jurisdiction.",
+  objectives: [
+    "Distinguish Basic, Supplemental and Additional Services under B101–2017.",
+    "Apply the notice-and-authorization steps in B101 §4.2.1 and §4.2.2.",
+    "Track and communicate cumulative scope changes.",
+    "Describe the architect's duties with governmental authorities and utilities."
+  ],
+  why: "Scope creep is the most common reason projects lose money. The contract gives the architect a process; the exam tests whether you follow it.",
+  exam: "Expect scenarios where the owner asks for a change, an agency adds a requirement, or the project runs long. Pick the response that gives notice, explains the impact and gets authorization before work proceeds.",
+  body: `
+<h3>Three kinds of services</h3>
+<ul>
+<li><strong>Basic Services</strong> (B101 Article 3): the phases from schematic design through construction, including the usual structural, mechanical and electrical engineering.</li>
+<li><strong>Supplemental Services</strong> (§4.1): extra services chosen when the agreement is signed, such as programming, LEED certification or a detailed cost estimate, listed with who provides them.</li>
+<li><strong>Additional Services</strong> (§4.2): services that arise during the project because circumstances change.</li>
+</ul>
+
+<h3>The Additional Services process</h3>
+<p>Under <strong>§4.2.1</strong>, when the architect recognizes the need for certain Additional Services, it notifies the owner promptly and explains the facts. It does <strong>not proceed</strong> until the owner gives written authorization. Triggers include changes to the owner's information, instructions or approvals, or a material change in size, quality, complexity, schedule, budget or delivery method; new or revised codes and laws; certain changed official code interpretations; late owner decisions or other failures by the owner or its consultants; owner-requested alternate bids; public hearings; and assisting an IDM other than the architect.</p>
+<p>Under <strong>§4.2.2</strong>, some construction-phase services are provided immediately to avoid delay: out-of-sequence submittals, RFIs the contractor could have answered from the documents, change orders and CCDs that need evaluation or revised drawings, an extensive number of claims, and substitutions. The architect notifies the owner, who can stop further work in writing, and pays for services already provided.</p>
+<p><strong>§4.2.3</strong> sets limits on construction-phase effort (the number of submittal reviews, site visits and inspections). Effort beyond those limits is an Additional Service. <strong>§4.2.5</strong> compensates services that run past the agreed duration through no fault of the architect.</p>
+
+<h3>Managing scope creep</h3>
+<p>Keep a change log from day one. Record each request, who made it, the effect on hours, fee and schedule, and the owner's decision. Report the cumulative effect at each phase review. Small requests are rarely the problem alone; their sum is.</p>
+
+<h3>Authorities having jurisdiction</h3>
+<p>B101 <strong>§3.1.5</strong> requires the architect to contact the governmental authorities that must approve the construction documents and the utility providers, and to respond to their design requirements. Under <strong>§3.1.6</strong>, the architect assists the owner with the filings the owner is responsible for. Meet early with the building official, fire marshal and planning staff; record their interpretations in writing.</p>
+`,
+  diagram: "",
+  formulas: [
+    { name: "Fee consumed", f: "% consumed = Hours spent × rate ÷ phase fee" },
+    { name: "Change impact", f: "Added fee = Added hours × blended rate" }
+  ],
+  example: { title: "Applying it", html: `<p>After DD approval, the owner adds a second-floor training room. The architect sends a short notice: the change, why it is outside the approved design, an estimate of 60 added hours ($7,800 at $130/h), a two-week schedule effect, and a request for written authorization. Work on the change starts once the owner signs. The change log shows the owner the running total of approved changes at each meeting.</p>` },
+  mistakes: [
+    "Starting a §4.2.1 Additional Service before the owner authorizes it in writing.",
+    "Calling a Supplemental Service an Additional Service. Supplemental services are chosen at signing.",
+    "Absorbing many small changes, then surprising the owner with one large bill.",
+    "Relying on a verbal code interpretation from a plans examiner."
+  ],
+  scenario: { prompt: "The city adopts a new energy code after the architect finishes DD. The owner wants the building permitted under the new code. Is the redesign an Additional Service?",
+    answer: "Yes. B101 §4.2.1 includes services needed because of changes in laws or codes after the design is prepared. The architect notifies the owner, explains the effect on fee and schedule, and proceeds once the owner authorizes it in writing." },
+  refs: [
+    { t: "AIA B101–2017, §3.1.5, §3.1.6, §4.1, §4.2.1–§4.2.5", a: "Your copy" },
+    { t: "AIA, The Architect's Handbook of Professional Practice, 15th ed. — project management and owner-architect agreements", a: "Purchase" }
+  ],
+  check: ["q-pjm-y01", "q-pjm-y02", "q-pjm-y03"]
+});
+
+ARE.LESSONS.push({
+  id: "ce-claims", div: "ce", obj: ["ce-2.1", "ce-3.4"], title: "Claims, Disputes & the Initial Decision Maker",
+  minutes: 30, level: "Core",
+  summary: "How A201–2017 Article 15 handles claims: notice deadlines, the Initial Decision Maker, mediation and binding dispute resolution.",
+  objectives: [
+    "Define a Claim and apply the 21-day notice requirement.",
+    "Describe the Initial Decision Maker's role and timeline.",
+    "Sequence initial decision, mediation and binding dispute resolution.",
+    "Explain continuing performance and the waiver of consequential damages."
+  ],
+  why: "Construction disputes are expensive. A201 sets a strict process so they are raised early and decided by a neutral first reviewer. The architect is usually that reviewer.",
+  exam: "Expect sequencing items (what happens next?), deadline items (21 days, 10 days) and role items (who decides? must the contractor keep working?).",
+  body: `
+<h3>What a Claim is</h3>
+<p>A Claim is a demand by the owner or contractor seeking, as a matter of right, payment, an extension of time or other relief under the contract. Claims are between owner and contractor; the architect is not a party to their agreement.</p>
+
+<h3>Notice and deadlines</h3>
+<ul>
+<li>Claims are initiated by written notice to the other party and to the Initial Decision Maker <strong>within 21 days</strong> after the event, or after the claimant first recognizes the condition (§15.1.3.1).</li>
+<li>All claims must be commenced within the period set by law, and <strong>in any case not more than 10 years</strong> after substantial completion (§15.1.2).</li>
+<li>Weather-delay claims need data showing conditions were abnormal for the period and could not have been anticipated (§15.1.6.2).</li>
+</ul>
+
+<h3>The Initial Decision Maker (IDM)</h3>
+<p>The IDM is named in the owner–contractor agreement; <strong>the architect serves as IDM unless another person is named</strong> (§15.2.1). The IDM must not show partiality (§1.1.8). <strong>Within 10 days</strong> of receiving a Claim, the IDM requests more data, rejects, approves, suggests a compromise, or advises that it cannot resolve the claim (§15.2.2). The initial decision is in writing, states reasons, and is final and binding unless a party pursues mediation and binding dispute resolution (§15.2.5).</p>
+
+<h3>After the initial decision</h3>
+<ol>
+<li><strong>Mediation</strong> is a condition precedent to binding dispute resolution (§15.3.1).</li>
+<li><strong>Binding dispute resolution</strong> is arbitration if the agreement selects it (§15.4.1); otherwise, litigation.</li>
+</ol>
+<p>While a claim is pending, the contractor keeps working and the owner keeps paying amounts not in dispute (§15.1.4). The owner and contractor waive consequential damages against each other, such as lost profits and loss of use (§15.1.7).</p>
+`,
+  diagram: `<svg viewBox="0 0 560 140" role="img" aria-label="Claim sequence: event, notice within 21 days, initial decision maker acts within 10 days, initial decision, mediation, then arbitration or litigation"><g class="dg-text" font-size="11">
+<rect x="8" y="40" width="84" height="56" class="dg-soft"/><text x="50" y="64" text-anchor="middle">Event</text><text x="50" y="80" text-anchor="middle">occurs</text>
+<rect x="116" y="40" width="96" height="56" class="dg-soft"/><text x="164" y="64" text-anchor="middle">Notice</text><text x="164" y="80" text-anchor="middle">≤ 21 days</text>
+<rect x="236" y="40" width="96" height="56" class="dg-accent2"/><text x="284" y="64" text-anchor="middle">IDM acts</text><text x="284" y="80" text-anchor="middle">≤ 10 days</text>
+<rect x="356" y="40" width="84" height="56" class="dg-soft"/><text x="398" y="64" text-anchor="middle">Mediation</text><text x="398" y="80" text-anchor="middle">required</text>
+<rect x="464" y="40" width="88" height="56" class="dg-soft"/><text x="508" y="60" text-anchor="middle">Arbitration</text><text x="508" y="76" text-anchor="middle">or</text><text x="508" y="90" text-anchor="middle">litigation</text>
+<path d="M92 68h22M212 68h22M332 68h22M440 68h22" class="dg-line"/>
+<text x="280" y="124" text-anchor="middle">Work continues and undisputed payments continue throughout (§15.1.4)</text></g></svg>`,
+  formulas: [],
+  example: { title: "Applying it", html: `<p>On day 1 the contractor hits unexpected rock. On day 15 it sends written notice to the owner and the architect (the IDM) with a claim for $48,000 and 8 days. On day 22 the architect, acting within 10 days of receipt, requests the rock-removal logs. After review, the architect issues a written decision approving $41,000 and 6 days, with reasons. The owner disagrees and files for mediation. The contractor keeps working and is paid for undisputed work in the meantime.</p>` },
+  mistakes: [
+    "Letting the contractor stop work while a claim is pending.",
+    "Skipping mediation and going straight to arbitration.",
+    "Assuming the owner decides claims. The IDM does, and it is the architect unless another is named.",
+    "Missing the 21-day notice window."
+  ],
+  scenario: { prompt: "The owner asks the architect, as IDM, to reject a contractor's valid delay claim to protect the budget. What should the architect do?",
+    answer: "Decide the claim impartially on its merits. A201 §1.1.8 requires the IDM not to show partiality to either party. Explain to the owner that a biased decision would breach that duty and is likely to be overturned in mediation or arbitration anyway." },
+  refs: [
+    { t: "AIA A201–2017, §1.1.8 and Article 15 (§15.1.2, §15.1.3.1, §15.1.4, §15.1.6.2, §15.1.7, §15.2, §15.3.1, §15.4.1)", a: "Your copy" },
+    { t: "AIA, The Architect's Handbook of Professional Practice, 15th ed. — construction contract administration and dispute resolution", a: "Purchase" }
+  ],
+  check: ["q-ce-y01", "q-ce-y02", "q-ce-y03"]
+});
+
+Object.assign(ARE.TAKEAWAYS || (ARE.TAKEAWAYS = {}), {
+  "pcm-ethics": ["State boards license; the AIA Code binds members.", "Public safety outranks the client.", "Seal only work under your responsible control.", "License where the project is; NCARB certification helps but is not a license.", "Disclose conflicts in writing."],
+  "pjm-changes": ["Basic = Article 3; Supplemental = chosen at signing; Additional = arise later.", "§4.2.1: notify, explain, wait for written authorization.", "§4.2.2: provide to avoid delay, notify the owner.", "Code changes after design are Additional Services.", "Keep a change log and report the running total."],
+  "ce-claims": ["Notice within 21 days.", "IDM = architect unless named otherwise; acts within 10 days.", "Mediation before arbitration or litigation.", "Work and undisputed payments continue.", "Consequential damages are mutually waived.", "Claims close 10 years after substantial completion at most."]
+});
+
+/* Round 2 dedicated lessons (v10), continued. Code references are to the 2021 IBC and 2021 IEBC unless stated;
+   adopted editions and local amendments vary by jurisdiction, so confirm the edition the AHJ enforces. */
+
+ARE.LESSONS.push({
+  id: "pa-existing", div: "pa", obj: ["pa-4.1", "pa-4.2", "pa-2.3"], title: "Existing Buildings & Historic Preservation",
+  minutes: 35, level: "Core",
+  summary: "How to analyze an existing building before you design: condition and hazard surveys, the existing building code's compliance paths, accessibility triggers, and the four preservation treatments.",
+  objectives: [
+    "Plan the surveys an existing building needs before programming.",
+    "Describe the IEBC compliance methods and the work-area classifications.",
+    "Apply the accessibility 'path of travel' rule for alterations.",
+    "Distinguish preservation, rehabilitation, restoration and reconstruction."
+  ],
+  why: "Most work in practice touches an existing building. The surprises (hidden structure, asbestos, code triggers) are where budgets and schedules break.",
+  exam: "PA items give a renovation scenario and ask what to survey first, which code path applies, what a change of occupancy triggers, or which preservation treatment fits the owner's goal.",
+  body: `
+<h3>Know the building before you design</h3>
+<ul>
+<li><strong>Existing conditions survey:</strong> verify record drawings in the field; they are often wrong or missing.</li>
+<li><strong>Structural assessment:</strong> capacity for new loads, deterioration, and seismic or wind deficiencies.</li>
+<li><strong>Hazardous materials survey:</strong> asbestos, lead paint, PCBs and mold, required before materials are disturbed. The owner commissions it; abatement is usually a separate contract.</li>
+<li><strong>Systems and envelope:</strong> remaining service life of roofing, windows, mechanical and electrical equipment.</li>
+</ul>
+
+<h3>The existing building code</h3>
+<p>Many U.S. jurisdictions adopt the <strong>International Existing Building Code (IEBC)</strong>. It offers three compliance paths; the designer picks one for the project:</p>
+<ul>
+<li><strong>Prescriptive</strong> method: specific requirements by type of work.</li>
+<li><strong>Work area</strong> method: requirements scale with the extent of work, classified as repair, <strong>Alteration Level 1</strong> (replace or cover existing materials), <strong>Level 2</strong> (reconfigure space, add or remove doors and walls, extend systems), <strong>Level 3</strong> (work area over 50% of the building area), change of occupancy, addition, historic building or relocated building.</li>
+<li><strong>Performance</strong> method: evaluate and score the building's overall safety.</li>
+</ul>
+<p>A <strong>change of occupancy</strong> can trigger major upgrades (egress, fire protection, structure) even with little physical work.</p>
+
+<h3>Accessibility in alterations</h3>
+<p>Altered areas must comply. When an alteration affects a <strong>primary function area</strong>, the path of travel to it (and the restrooms, phones and fountains serving it) must also be made accessible, but the cost is capped: spending beyond <strong>20% of the cost of the alteration</strong> is considered disproportionate (2010 ADA Standards and 28 CFR §35.151(b)(4) and §36.403).</p>
+
+<h3>Historic preservation</h3>
+<p>The Secretary of the Interior's Standards define four treatments:</p>
+<table class="tbl"><thead><tr><th>Treatment</th><th>Goal</th></tr></thead><tbody>
+<tr><td>Preservation</td><td>Maintain and repair existing historic materials as they are</td></tr>
+<tr><td>Rehabilitation</td><td>Make a compatible new use possible while keeping character-defining features (the most common treatment)</td></tr>
+<tr><td>Restoration</td><td>Depict the property at a particular period, removing later work</td></tr>
+<tr><td>Reconstruction</td><td>Recreate a vanished building or feature with new construction</td></tr>
+</tbody></table>
+<p>Federally funded or permitted projects affecting historic properties go through <strong>Section 106</strong> review under the National Historic Preservation Act. Federal historic tax credits require a certified rehabilitation that meets the Standards for Rehabilitation.</p>
+`,
+  diagram: "",
+  formulas: [
+    { name: "Level 3 test (IEBC)", f: "Work area > 50% of building area → Alteration Level 3" },
+    { name: "Disproportionality cap", f: "Path-of-travel spending required up to 20% × cost of the alteration" }
+  ],
+  example: { title: "Applying it", html: `<p>An owner wants to turn a 1955 two-story school (Group E) into offices (Group B). Before programming, the architect recommends a field-verified existing conditions survey, a structural assessment for new floor loads, and a hazardous materials survey (the building predates 1980). Under the IEBC, the change of occupancy will drive the code review regardless of how little is rebuilt. Because the building is listed on a local register, the team confirms the review process with the preservation commission and plans a rehabilitation that keeps the original corridors and windows.</p>` },
+  mistakes: [
+    "Trusting record drawings without field verification.",
+    "Assuming minor physical work means minor code upgrades. A change of occupancy can trigger a lot.",
+    "Confusing restoration (depict one period) with rehabilitation (compatible new use).",
+    "Forgetting the path of travel when altering a primary function area."
+  ],
+  scenario: { prompt: "A client wants to add a café to a historic bank and qualify for federal historic tax credits. Which treatment should guide the design?",
+    answer: "Rehabilitation. It allows a compatible new use while retaining character-defining features, and certified rehabilitations meeting the Secretary of the Interior's Standards for Rehabilitation are what qualify for the federal credit." },
+  canada: "In Ontario, renovations follow Part 11 of the Ontario Building Code, and heritage properties are designated under the Ontario Heritage Act. Parks Canada's Standards and Guidelines for the Conservation of Historic Places in Canada use similar treatments: preservation, rehabilitation and restoration.",
+  refs: [
+    { t: "2021 International Existing Building Code — compliance methods and work-area classifications", a: "Free to read (codes.iccsafe.org)" },
+    { t: "Secretary of the Interior's Standards for the Treatment of Historic Properties", a: "Free (nps.gov)" },
+    { t: "2010 ADA Standards; 28 CFR §35.151(b)(4) and §36.403 (path of travel)", a: "Free (ada.gov)" },
+    { t: "AIA, The Architect's Handbook of Professional Practice, 15th ed. — existing buildings and preservation", a: "Purchase" }
+  ],
+  check: ["q-pa-y01", "q-pa-y02", "q-pa-y03"]
+});
+
+ARE.LESSONS.push({
+  id: "ppd-heightarea", div: "ppd", obj: ["ppd-2.2", "ppd-2.3", "ppd-3.4"], title: "Construction Types, Allowable Height & Area, Fire Separations",
+  minutes: 40, level: "Core",
+  summary: "How the IBC links occupancy, construction type, sprinklers and frontage to how tall and large a building can be, and which rated walls separate what.",
+  objectives: [
+    "Describe the five construction types and what their ratings mean.",
+    "Use Tables 504.3, 504.4 and 506.2 with the frontage increase to find allowable height and area.",
+    "Choose between fire walls, fire barriers, fire partitions and smoke barriers.",
+    "Set opening protection for rated walls."
+  ],
+  why: "Construction type is one of the biggest cost decisions in schematic design, and the allowable-area check is a classic PPD calculation.",
+  exam: "Expect a calculation using a case-provided table and the frontage formula, and scenarios asking which wall type separates two uses or encloses a stair.",
+  body: `
+<h3>Construction types (IBC Chapter 6)</h3>
+<p>Types I and II are noncombustible; III has noncombustible exterior walls and any permitted interior; IV is heavy or mass timber; V allows combustible materials throughout. "A" subtypes are protected (rated), "B" are unprotected. Table 601 gives hourly ratings for the primary frame, bearing walls, floors and roofs. For the primary structural frame: I-A 3 h, I-B 2 h, II-A 1 h, II-B 0, III-A 1 h, III-B 0, V-A 1 h, V-B 0. Table 602 adds exterior wall ratings based on fire separation distance.</p>
+
+<h3>Allowable height and area (Chapter 5)</h3>
+<ul>
+<li><strong>Height in feet</strong> (Table 504.3) and <strong>stories</strong> (Table 504.4) depend on occupancy, type and sprinklers (NS or S).</li>
+<li><strong>Area per story</strong> (Table 506.2) gives NS, S1 (one story, sprinklered) and SM (multistory, sprinklered) values. The sprinkler benefit is built into the table.</li>
+<li><strong>Frontage increase</strong> (§506.3): I<sub>f</sub> = [F/P − 0.25] × W/30, where F is perimeter on a public way or open space at least 20 ft wide, P the total perimeter, and W the width of that open space (use no more than 30 for the ratio). The increase is capped at 0.75.</li>
+<li><strong>One story</strong> (§506.2.1): A<sub>a</sub> = A<sub>t</sub> + (NS × I<sub>f</sub>). <strong>Multistory</strong> (§506.2.3): use the SM value, A<sub>a</sub> = [A<sub>t</sub> + (NS × I<sub>f</sub>)] × S<sub>a</sub>, where S<sub>a</sub> is the number of stories above grade plane, not more than three.</li>
+</ul>
+<p>If the building is too large, the options are a higher construction type, adding sprinklers, more frontage, or dividing it with <strong>fire walls</strong> into separate buildings.</p>
+
+<h3>Which rated element?</h3>
+<table class="tbl"><thead><tr><th>Element</th><th>Use</th><th>Key trait</th></tr></thead><tbody>
+<tr><td>Fire wall (§706)</td><td>Divides one structure into separate buildings for height and area</td><td>Continuous from foundation through the roof; stays standing if one side collapses</td></tr>
+<tr><td>Fire barrier (§707)</td><td>Exit stair and shaft enclosures, occupancy separations, fire areas</td><td>Floor to floor or to the roof deck, continuous through concealed spaces</td></tr>
+<tr><td>Fire partition (§708)</td><td>Corridor walls, dwelling and sleeping unit separations, tenant separations in malls</td><td>Usually 1 hour or less; may terminate at a rated ceiling membrane in some cases</td></tr>
+<tr><td>Smoke barrier (§709)</td><td>Smoke compartments, such as in hospitals</td><td>Resists smoke movement; typically 1 hour</td></tr>
+</tbody></table>
+<p>Openings need protectives rated for the wall (Table 716.1(2)): for example, 1½-hour doors in 2-hour fire barriers and 1-hour doors in 1-hour exit enclosures and shafts. Doors are labeled and self-closing, installed to NFPA 80.</p>
+`,
+  diagram: "",
+  formulas: [
+    { name: "Frontage increase", f: "If = [F/P − 0.25] × W/30   (W ≤ 30 for the ratio; If ≤ 0.75)" },
+    { name: "Allowable area, one story", f: "Aa = At + (NS × If)" },
+    { name: "Occupant load", f: "Occupant load = area ÷ load factor (Table 1004.5)" }
+  ],
+  example: { title: "Applying it", html: `<p>A one-story Group B clinic, Type V-B, fully sprinklered. Case values: NS = 9,000 sf, S1 = 36,000 sf. The building is 220 ft × 180 ft (perimeter 800 ft); the 220 ft and 180 ft sides face streets at least 30 ft wide. F = 400 ft, so I<sub>f</sub> = [400/800 − 0.25] × 30/30 = 0.25. A<sub>a</sub> = 36,000 + (9,000 × 0.25) = 38,250 sf. The footprint is 39,600 sf, so it does not comply as Type V-B. The options are Type V-A, more frontage, or a fire wall.</p>` },
+  mistakes: [
+    "Adding a separate sprinkler increase on top of the S1 or SM value. The table already includes it.",
+    "Using W greater than 30 in the frontage ratio.",
+    "Using a fire barrier where you need separate buildings. Only a fire wall creates them.",
+    "Using NS instead of the S value as A<sub>t</sub> in a sprinklered building."
+  ],
+  scenario: { prompt: "A two-story Type II-B office building is slightly over its allowable area. The owner does not want to upgrade the construction type. What else could work?",
+    answer: "Increase the frontage (site the building so more perimeter faces streets or open space at least 20 ft wide), confirm the building is fully sprinklered so the SM value applies, or divide it with a fire wall into two separate buildings that each comply." },
+  canada: "In Ontario, the OBC sets building size by occupancy, height and area in Part 3 (Subsection 3.2.2) using different articles and terms (for example, 'combustible' and 'noncombustible construction' and 'streets' for firefighting access). Do not mix IBC and OBC values.",
+  refs: [
+    { t: "2021 IBC Chapter 5 (Tables 504.3, 504.4, 506.2; §506.2.1, §506.2.3, §506.3)", a: "Free to read (codes.iccsafe.org)" },
+    { t: "2021 IBC Chapter 6 (Tables 601, 602) and Chapter 7 (§706–§709, Table 716.1(2))", a: "Free to read (codes.iccsafe.org)" },
+    { t: "NFPA 80, Standard for Fire Doors and Other Opening Protectives", a: "Free to read (nfpa.org)" }
+  ],
+  check: ["q-ppd-y01", "q-ppd-y02", "q-ppd-y03"]
+});
+
+ARE.LESSONS.push({
+  id: "pdd-firerated", div: "pdd", obj: ["pdd-4.1", "pdd-1.5", "pdd-2.3"], title: "Fire-Rated Assemblies, Penetrations & Joints",
+  minutes: 30, level: "Core",
+  summary: "How to document rated walls and floors so they actually keep their rating: tested assemblies, continuity, penetrations, joints, ducts and doors.",
+  objectives: [
+    "Specify a rated assembly by a tested listing.",
+    "Detail continuity of rated walls to the deck and through concealed spaces.",
+    "Choose firestop systems for penetrations and joints by F and T ratings.",
+    "Coordinate fire and smoke dampers and opening protectives."
+  ],
+  why: "A rated wall is only as good as its weakest hole. Most failures are at penetrations, head-of-wall joints and doors, which are exactly the details CDs must show.",
+  exam: "PDD items show a wall section or a penetration and ask what is missing, or ask which test standard or rating applies.",
+  body: `
+<h3>Rated assemblies</h3>
+<p>Fire-resistance ratings come from testing to <strong>ASTM E119 / UL 263</strong> (§703). Designers specify a <strong>listed design</strong>, such as a UL design number, and build exactly what was tested: stud size and spacing, board type (Type X), layers, fasteners and joint treatment. Note the design number on the partition type schedule.</p>
+
+<h3>Continuity</h3>
+<p>Fire barriers run from the floor to the floor or roof deck above and continue through concealed spaces above ceilings (§707.5). The top of the wall needs a <strong>head-of-wall joint</strong> that allows deck deflection and keeps the rating.</p>
+
+<h3>Penetrations (§714)</h3>
+<ul>
+<li><strong>Through-penetrations</strong> (pipes, cables or conduit passing through the whole assembly) use a tested <strong>firestop system</strong> to ASTM E814 / UL 1479.</li>
+<li>The <strong>F rating</strong> is how long flame is kept from passing. The <strong>T rating</strong> also limits temperature rise on the unexposed side; floor penetrations often need T ratings as well.</li>
+<li><strong>Membrane penetrations</strong> (an outlet box in one face) are limited in size and spacing or need protection, such as putty pads.</li>
+</ul>
+
+<h3>Joints (§715)</h3>
+<p>Joints between rated assemblies, such as head-of-wall and floor-to-curtain-wall perimeter joints, use tested joint systems (ASTM E1966 / UL 2079 for joints; ASTM E2307 for the perimeter fire barrier at curtain walls).</p>
+
+<h3>Ducts and openings</h3>
+<p>Ducts passing through rated assemblies need <strong>fire dampers</strong> where §717 requires them, and <strong>smoke dampers</strong> at smoke barriers. Show access panels for inspection. Doors and windows in rated walls are labeled opening protectives, self-closing or automatic-closing, installed to NFPA 80 (§716).</p>
+`,
+  diagram: `<svg viewBox="0 0 480 220" role="img" aria-label="Section of a fire barrier extending to the deck with a head-of-wall joint, a pipe through-penetration with firestop, and a fire damper at a duct"><g class="dg-text" font-size="11">
+<rect x="20" y="20" width="440" height="14" class="dg-hatch"/><text x="240" y="16" text-anchor="middle">Floor or roof deck above</text>
+<rect x="210" y="44" width="24" height="160" class="dg-soft"/><rect x="206" y="34" width="32" height="10" class="dg-accent2"/>
+<path d="M238 39h70" class="dg-leader"/><text x="312" y="43">Head-of-wall joint system (§715)</text>
+<path d="M120 100h220" class="dg-line" stroke-width="5"/><circle cx="222" cy="100" r="9" class="dg-accent2"/>
+<path d="M231 106l60 30" class="dg-leader"/><text x="294" y="140">Firestop system: F and T ratings (§714)</text>
+<rect x="170" y="160" width="104" height="22" class="dg-air"/><rect x="214" y="156" width="16" height="30" class="dg-accent2"/>
+<path d="M230 186l60 18" class="dg-leader"/><text x="294" y="210">Fire damper with access panel (§717)</text>
+<text x="120" y="70">Ceiling below</text><path d="M60 76h150M234 76h150" class="dg-leader" stroke-dasharray="4 3"/>
+<text x="30" y="214">Rated wall runs through the ceiling space to the deck (§707.5)</text></g></svg>`,
+  formulas: [],
+  example: { title: "Applying it", html: `<p>At the 90% CD review, the partition schedule shows a 2-hour exit stair enclosure ending at the ceiling. The reviewer redlines it to extend to the deck, adds a listed head-of-wall joint, tags the sprinkler main and conduits passing through with a firestop system number, and asks the mechanical engineer to confirm whether the supply duct entering the stair is allowed at all. Ducts generally may not penetrate exit enclosures except as the code allows.</p>` },
+  mistakes: [
+    "Stopping a fire barrier at the ceiling.",
+    "Writing 'seal penetration with fire caulk' instead of naming a tested firestop system.",
+    "Ignoring the T rating at floor penetrations.",
+    "Forgetting access panels for fire dampers."
+  ],
+  scenario: { prompt: "A plumber wants to run PVC drain lines through a 1-hour corridor floor using the firestop sealant already on site. What should the architect check?",
+    answer: "That the firestop system used is listed for that penetrant (plastic pipe of that size), that assembly, and the required F and T ratings, and that it matches the system shown in the documents or an approved submittal. Plastic pipe usually needs an intumescent system, not just sealant." },
+  refs: [
+    { t: "2021 IBC Chapter 7: §703, §707.5, §714, §715, §716, §717", a: "Free to read (codes.iccsafe.org)" },
+    { t: "UL Product iQ / Fire Resistance Directory (listed designs and firestop systems)", a: "Free with registration (productiq.ulprospector.com)" },
+    { t: "ASTM E119, E814, E1966, E2307; NFPA 80", a: "Purchase (ASTM); free to read (NFPA)" }
+  ],
+  check: ["q-pdd-y01", "q-pdd-y02", "q-pdd-y03"]
+});
+
+Object.assign(ARE.TAKEAWAYS || (ARE.TAKEAWAYS = {}), {
+  "pa-existing": ["Survey before you design: conditions, structure, hazards.", "IEBC paths: prescriptive, work area, performance.", "Level 3 = work area over 50% of the building.", "Change of occupancy can trigger big upgrades.", "Path of travel up to 20% of alteration cost.", "Rehabilitation = compatible new use, keep character."],
+  "ppd-heightarea": ["Type I–V; A = protected, B = unprotected.", "Tables 504.3, 504.4 and 506.2 already include sprinkler benefits.", "If = [F/P − 0.25] × W/30, W ≤ 30, max 0.75.", "Aa = At + (NS × If).", "Only fire walls create separate buildings.", "Fire barriers enclose stairs and shafts and go to the deck."],
+  "pdd-firerated": ["Build the tested, listed design.", "Fire barriers continue to the deck.", "Penetrations: listed firestop with F (and often T) ratings.", "Joints need tested joint systems.", "Fire dampers need access.", "Rated doors: labeled, self-closing, NFPA 80."]
+});
+
+ARE.QX("pcm", [
+["pcm-1.3", 2, "Multiple choice", "Which statement about the AIA Code of Ethics and Professional Conduct is correct?",
+ ["It is state law for all licensed architects", "It binds AIA members and is enforced by the AIA National Ethics Council", "It replaces the state board's rules", "It applies only to firm owners"], 1,
+ ["State registration law binds licensees; the Code is a professional standard.", "Correct.", "Board rules still govern licensure.", "It applies to all members."],
+ "Licensing law is the legal minimum; the Code is the profession's benchmark.", "AIA Code of Ethics and Professional Conduct"],
+["pcm-1.3", 2, "Scenario", "An owner directs the architect to delete required fire sprinklers to save money. The architect explains the code requirement, but the owner insists. What should the architect do?",
+ ["Delete them as directed by the client", "Refuse to issue noncompliant documents and, if the owner proceeds, notify the building official as appropriate", "Delete them and add a disclaimer", "Let the contractor decide"], 1,
+ ["The duty to public safety outranks the client's direction.", "Correct.", "A disclaimer does not make the design compliant.", "The architect cannot delegate this."],
+ "Obligations to the public come first in the AIA Code.", "AIA Code of Ethics and Professional Conduct"],
+["pcm-1.2", 2, "Multiple choice", "An architect licensed in Ohio holds an NCARB Certificate. Can she seal drawings for a project in Michigan?",
+ ["Yes, the Certificate is a national license", "Only after she obtains a Michigan license; the Certificate helps her get it", "Yes, if a Michigan architect co-signs", "Yes, for projects under 10,000 sf"], 1,
+ ["The Certificate is not a license.", "Correct.", "Co-signing does not license her.", "No such exemption applies to sealing."],
+ "Licensure is by jurisdiction; reciprocity still requires a license there.", "NCARB Certificate; state registration laws"],
+["pcm-1.3", 2, "Multiple choice", "A supplier offers the project architect a paid vacation if its product is specified as the only acceptable brand. What is the correct response?",
+ ["Accept it if the product is good", "Decline it; accepting would be an undisclosed conflict of interest", "Accept it and tell the contractor", "Accept it after the project ends"], 1,
+ ["Quality does not cure a conflict.", "Correct.", "Disclosure to the contractor is irrelevant.", "Timing does not change the conflict."],
+ "Gifts tied to specification decisions compromise the duty to the client.", "AIA Code of Ethics and Professional Conduct"],
+["pcm-1.3", 2, "Scenario", "An architect learns another firm is already under contract for a project and is asked by the owner to take over at a lower fee. What should the architect do first?",
+ ["Accept immediately", "Confirm the other architect's contract has been terminated, or notify that architect, before accepting", "Offer an even lower fee", "Ignore the existing contract"], 1,
+ ["This risks supplanting a colleague under contract.", "Correct. The Code requires respect for colleagues' contractual relationships.", "Fee cutting does not address the ethical issue.", "The existing contract matters."],
+ "Do not attempt to supplant another architect who is under contract.", "AIA Code of Ethics and Professional Conduct"],
+["pcm-1.4", 2, "Multiple choice", "Which statement best describes how a court decides whether an architect met the standard of care?",
+ ["By whether the building had any defects", "By comparing the architect's conduct with what other architects would reasonably have done in similar circumstances, usually using expert testimony", "By the owner's satisfaction", "By the contractor's opinion"], 1,
+ ["Defects alone do not prove negligence.", "Correct.", "Satisfaction is not the test.", "Not the test."],
+ "Expert witnesses describe what a reasonable architect would have done.", "AIA B101–2017, §2.2; professional liability law"],
+["pcm-2.1", 2, "Calculation", "Indirect expenses are $900,000 and direct labor is $600,000. What is the overhead rate?",
+ ["0.67", "1.25", "1.50", "2.50"], 2,
+ ["This divides the wrong way.", "Check the division.", "Correct. 900,000 ÷ 600,000 = 1.50.", "This is the break-even rate."],
+ "Overhead rate = indirect expenses ÷ direct labor. Break-even rate = 1 + overhead rate = 2.50.", "Architect's Handbook of Professional Practice — financial management"],
+["pcm-2.1", 2, "Calculation", "Total hours paid are 20,000 and billable hours are 13,000. What is the utilization rate?",
+ ["35%", "54%", "65%", "154%"], 2,
+ ["This is the non-billable share.", "Check the division.", "Correct. 13,000 ÷ 20,000 = 65%.", "This divides the wrong way."],
+ "Utilization = billable hours ÷ total hours paid.", "Architect's Handbook of Professional Practice — financial management"],
+["pcm-2.1", 3, "Scenario", "A firm's net multiplier is 2.6 and its break-even rate is 2.8. What does this mean?",
+ ["The firm is profitable", "The firm is losing money on its labor; revenue per dollar of direct labor does not cover overhead", "The firm should hire more staff", "The numbers are unrelated"], 1,
+ ["It needs a multiplier above break-even to profit.", "Correct.", "Hiring would not fix a pricing or utilization problem.", "They are directly compared."],
+ "Raise the multiplier (pricing, utilization) or lower overhead.", "Architect's Handbook of Professional Practice — financial management"],
+["pcm-2.2", 2, "Multiple choice", "Which policy covers an employee who is injured while visiting a construction site for the firm?",
+ ["Professional liability", "Workers' compensation", "Commercial general liability", "Builder's risk"], 1,
+ ["Covers professional errors.", "Correct.", "Covers third-party injury and damage.", "Covers the work under construction."],
+ "Workers' compensation is required by state law for employees.", "Architect's Handbook of Professional Practice — insurance"],
+["pcm-2.2", 2, "Multiple choice", "A professional liability policy has a $1 million per-claim limit and a $50,000 deductible. A covered claim settles for $300,000. What does the firm pay?",
+ ["$0", "$50,000", "$250,000", "$300,000"], 1,
+ ["The deductible applies.", "Correct. The firm pays the deductible; the insurer pays the rest within the limit.", "This reverses the shares.", "The policy responds."],
+ "Some policies apply the deductible to defense costs too; read the policy.", "Insurance practice"],
+["pcm-2.2", 2, "Multiple choice", "Which contract clause most effectively limits an architect's financial exposure on a project?",
+ ["A warranty of performance", "A limitation of liability clause capping damages at an agreed amount", "An indemnity covering all claims", "An unlimited consequential damages clause"], 1,
+ ["Warranties increase exposure.", "Correct. Enforceability varies by state.", "Broad indemnity increases exposure.", "Increases exposure."],
+ "Limitation of liability and mutual waiver of consequential damages are key risk tools.", "AIA B101–2017, Article 8; Architect's Handbook — risk management"],
+["pcm-2.3", 2, "Multiple choice", "A firm's three largest clients provide 70% of revenue. What is the main strategic risk?",
+ ["Too much diversity", "Client concentration: losing one client would sharply cut revenue", "Too many small projects", "High utilization"], 1,
+ ["The opposite.", "Correct.", "Not indicated.", "Not a risk here."],
+ "Diversify markets and clients to reduce concentration risk.", "Architect's Handbook of Professional Practice — strategic planning"],
+["pcm-2.3", 2, "Scenario", "A founding principal plans to retire in five years and owns 80% of the firm. What should the firm start now?",
+ ["Nothing until she announces retirement", "An ownership transition plan, including valuation, leadership development and buyout funding", "Closing the firm", "Hiring a marketing consultant"], 1,
+ ["Transitions take years.", "Correct.", "Not necessary.", "Not the main need."],
+ "Ownership transition is a long-term strategic issue.", "Architect's Handbook of Professional Practice — ownership transition"],
+["pcm-3.1", 2, "Multiple choice", "A public agency uses qualifications-based selection. How is the fee set?",
+ ["The lowest fee wins", "The agency ranks firms on qualifications, then negotiates a fee with the top-ranked firm", "Fees are fixed by law", "The architect sets any fee"], 1,
+ ["Price is not the first criterion.", "Correct. If negotiation fails, the agency moves to the next firm.", "Not fixed.", "It is negotiated."],
+ "Federal agencies use QBS under the Brooks Act; many states have similar laws.", "Brooks Act (40 U.S.C. §§1101–1104)"],
+["pcm-3.1", 2, "Scenario", "A client asks for a full design competition entry with no compensation. What should the firm weigh?",
+ ["Nothing; always enter", "The cost of the effort against the chance of winning, strategic value, and whether the request is fair", "Only the design opportunity", "Only the fee on the final project"], 1,
+ ["Free work has real costs.", "Correct.", "Incomplete.", "Incomplete."],
+ "Unpaid design work should go through the same go/no-go review as any pursuit.", "Architect's Handbook of Professional Practice — business development"],
+["pcm-3.2", 2, "Multiple choice", "Under CM at risk, when does the construction manager usually commit to a guaranteed maximum price?",
+ ["Before design starts", "During design, once documents are developed enough to price", "After construction ends", "Never"], 1,
+ ["Too early to price.", "Correct.", "Too late.", "The GMP is a defining feature."],
+ "The CM provides preconstruction services first, then a GMP.", "Architect's Handbook of Professional Practice — project delivery"],
+["pcm-3.2", 2, "Multiple choice", "Which compensation method gives the architect the greatest incentive to work efficiently?",
+ ["Hourly with no limit", "Stipulated sum", "Cost plus a percentage of cost", "Reimbursable only"], 1,
+ ["No incentive to limit hours.", "Correct. Efficiency increases profit under a fixed fee.", "Rewards higher cost.", "No incentive."],
+ "Stipulated sums suit well-defined scope and reward efficiency.", "AIA B101–2017, Article 11"],
+["pcm-4.1", 2, "Multiple choice", "Which structure offers pass-through taxation and protects owners from business debts, and is widely used by small firms?",
+ ["Sole proprietorship", "Limited liability company (LLC)", "General partnership", "C corporation"], 1,
+ ["No liability protection.", "Correct.", "No liability protection.", "Taxed at the entity level."],
+ "Check whether the state allows LLCs for professional practice.", "Architect's Handbook of Professional Practice — business structures"],
+["pcm-4.2", 2, "Multiple choice", "What is the main purpose of a firm-wide project closeout review (lessons learned)?",
+ ["To assign blame", "To capture what worked and what didn't so standards and future projects improve", "To prepare invoices", "To meet code requirements"], 1,
+ ["Not the purpose.", "Correct.", "Billing is separate.", "Not a code requirement."],
+ "Feed lessons into standards, details and checklists.", "Architect's Handbook of Professional Practice — knowledge management"]
+], "y");
+
+ARE.QX("pjm", [
+["pjm-4.2", 2, "Multiple choice", "Under B101–2017 §4.2.1, what must happen before the architect performs an Additional Service caused by a change in the owner's approved program?",
+ ["Nothing; the architect proceeds and bills later", "The architect notifies the owner, explains the need, and waits for written authorization", "The contractor must agree", "The building official must approve"], 1,
+ ["§4.2.1 services need authorization first.", "Correct.", "The contractor is not a party.", "Not related."],
+ "Notify, explain, and get written authorization before proceeding.", "AIA B101–2017, §4.2.1"],
+["pjm-4.2", 2, "Multiple choice", "During construction, the contractor submits a shop drawing out of sequence from the approved schedule. Under B101–2017, how is the architect's review treated?",
+ ["It is a Basic Service with no notice", "It is an Additional Service the architect provides to avoid delay, with prompt notice to the owner", "The architect must refuse to review it", "It requires a new agreement"], 1,
+ ["§4.2.2 lists it as an Additional Service.", "Correct.", "The architect reviews it to avoid delay.", "No new agreement is needed."],
+ "§4.2.2 services are provided immediately; the owner may stop further work in writing.", "AIA B101–2017, §4.2.2"],
+["pjm-3.1", 2, "Multiple choice", "Which is a Supplemental Service under B101–2017 rather than an Additional Service?",
+ ["Redesign after the owner changes an approved program", "A detailed cost estimate chosen when the agreement is signed", "Attending a public hearing that arises during design", "Assisting an IDM other than the architect"], 1,
+ ["Additional Service (§4.2.1).", "Correct. Supplemental Services are selected at signing (§4.1).", "Additional Service (§4.2.1).", "Additional Service (§4.2.1)."],
+ "Supplemental: chosen up front. Additional: arise during the project.", "AIA B101–2017, §4.1 and §4.2"],
+["pjm-4.4", 2, "Multiple choice", "Under B101–2017, who contacts the governmental authorities required to approve the construction documents?",
+ ["The owner only", "The architect", "The contractor", "The lender"], 1,
+ ["The owner files, with the architect's help.", "Correct. B101 §3.1.5.", "Not during design.", "Not related."],
+ "The architect also assists the owner with required filings (§3.1.6).", "AIA B101–2017, §3.1.5 and §3.1.6"],
+["pjm-4.4", 2, "Scenario", "After the permit is issued, a new plans examiner interprets a code section differently from the original approval and requires a redesign. How is the architect's redesign treated under B101–2017?",
+ ["A Basic Service", "An Additional Service, since the official interpretation is contrary to one made before the permit", "The contractor's responsibility", "Not compensable"], 1,
+ ["B101 treats it as additional.", "Correct. §4.2.1.3 covers this.", "Not the contractor's design responsibility.", "It is compensable with authorization."],
+ "Get early AHJ interpretations in writing; they protect the owner and the architect.", "AIA B101–2017, §4.2.1"],
+["pjm-2.2", 2, "Multiple choice", "Which schedule tool shows task durations as bars against time but does not, by itself, show dependencies?",
+ ["Critical path network", "Gantt (bar) chart", "Earned value curve", "Milestone list with logic"], 1,
+ ["Networks show dependencies.", "Correct.", "Shows cost performance.", "Logic implies dependencies."],
+ "Use CPM logic to find the critical path; bar charts communicate it.", "Scheduling practice"],
+["pjm-2.2", 3, "Calculation", "Activities A (5 days) and B (3 days) run in sequence; activity C (6 days) runs in parallel with both and all must finish before D (2 days). What is the project duration?",
+ ["8 days", "10 days", "11 days", "16 days"], 1,
+ ["This omits D.", "Correct. Path A–B–D = 10 days; path C–D = 8 days. The longest is 10.", "Check the paths.", "This adds every activity."],
+ "The critical path is the longest path through the network.", "Critical path method"],
+["pjm-2.1", 2, "Calculation", "The architect's own fee is $400,000, and the work plan allots 40% to CDs. The firm wants 15% profit on its own fee. What labor budget is available for CDs, before overhead considerations, if profit is taken equally from each phase?",
+ ["$136,000", "$160,000", "$184,000", "$240,000"], 0,
+ ["Correct. CD fee = 160,000; minus 15% profit (24,000) = $136,000.", "This ignores profit.", "This adds profit.", "This uses the wrong phase share."],
+ "Take profit off the top before setting phase budgets.", "Architect's Handbook of Professional Practice — work planning"],
+["pjm-2.1", 2, "Calculation", "The planned value at week 10 is $60,000, and earned value is $48,000. What is the schedule performance index (SPI)?",
+ ["0.80", "1.00", "1.20", "1.25"], 0,
+ ["Correct. SPI = EV ÷ PV = 48,000 ÷ 60,000 = 0.80, so the work is behind schedule.", "Not on schedule.", "Check the division.", "This divides the wrong way."],
+ "SPI below 1.0 = behind schedule; CPI below 1.0 = over budget.", "Earned value management"],
+["pjm-2.3", 2, "Multiple choice", "What should meeting minutes include to be most useful?",
+ ["A full transcript", "Decisions, action items with responsible parties and dates, and a request for corrections by a deadline", "Only the attendees", "Only the next meeting date"], 1,
+ ["Too long to use.", "Correct.", "Incomplete.", "Incomplete."],
+ "Minutes become part of the project record.", "Architect's Handbook of Professional Practice — project communication"],
+["pjm-3.2", 2, "Multiple choice", "The architect's agreement with the owner limits its construction-phase site visits to 20. What should the consultant agreements say?",
+ ["Nothing about site visits", "Consultant site visits coordinated with, and limited consistent with, the prime agreement", "Unlimited visits", "Visits only after substantial completion"], 1,
+ ["Gaps create unpaid work.", "Correct.", "Inconsistent with the prime agreement.", "Too late."],
+ "Scope should flow down consistently.", "AIA C401–2017"],
+["pjm-3.3", 2, "Multiple choice", "Under A201–2017, who prepares the construction schedule?",
+ ["The architect", "The contractor", "The owner", "The building official"], 1,
+ ["The architect reviews but does not prepare it.", "Correct.", "Not under A201.", "Not their role."],
+ "The contractor submits the schedule for the owner's and architect's information.", "AIA A201–2017, §3.10"],
+["pjm-3.4", 2, "Multiple choice", "The owner's separate IT consultant designs the data network. A cable tray conflicts with a beam. Who is responsible for the IT design?",
+ ["The architect", "The owner, through its own consultant; the architect coordinates", "The structural engineer", "The contractor"], 1,
+ ["The architect coordinates but is not responsible for the owner's consultant.", "Correct.", "Not their design.", "Not their design."],
+ "B101 §3.1.2: coordinate with the owner's consultants and rely on their information.", "AIA B101–2017, §3.1.2"],
+["pjm-4.1", 2, "Scenario", "Midway through DD, the earned value report shows CPI = 0.85. What should the PM do?",
+ ["Nothing until CDs", "Find the cause, adjust staffing or scope, and discuss options with firm leadership and, if scope grew, the owner", "Hide it from the principal", "Stop work"], 1,
+ ["Waiting compounds the overrun.", "Correct.", "Not acceptable.", "Not necessary."],
+ "A CPI of 0.85 means each dollar of labor earns 85 cents of planned work.", "Earned value management"],
+["pjm-4.3", 2, "Multiple choice", "How long should a firm keep project records after completion?",
+ ["Until final payment", "At least as long as claims can be brought, considering the statute of repose, and per firm and insurer policy", "One year", "Records should be destroyed at closeout"], 1,
+ ["Claims can come much later.", "Correct.", "Too short.", "Destroys the firm's defense."],
+ "Retention periods track statutes of limitation and repose.", "Architect's Handbook of Professional Practice — records management"],
+["pjm-5.1", 2, "Multiple choice", "Which law requires federal agencies to select architects based on qualifications?",
+ ["The Davis-Bacon Act", "The Brooks Act", "The Miller Act", "The Sherman Act"], 1,
+ ["Davis-Bacon sets prevailing wages.", "Correct.", "Miller requires bonds on federal construction.", "Sherman is antitrust law."],
+ "Know which federal laws touch design and construction contracts.", "Brooks Act (40 U.S.C. §§1101–1104)"],
+["pjm-5.1", 2, "Multiple choice", "Which federal law requires performance and payment bonds on federal construction contracts above a threshold?",
+ ["The Brooks Act", "The Miller Act", "The FLSA", "The ADA"], 1,
+ ["QBS law.", "Correct.", "Wage law.", "Civil rights law."],
+ "Many states have 'Little Miller Acts' for state projects.", "Miller Act (40 U.S.C. §§3131–3134)"],
+["pjm-5.2", 2, "Multiple choice", "Which is a quality assurance activity rather than quality control?",
+ ["Checking a set of drawings against a checklist before issue", "Writing firm standards and training staff to use them", "A peer review of the CD set", "Redlining a consultant's drawings"], 1,
+ ["This is QC.", "Correct. QA builds systems that prevent errors.", "This is QC.", "This is QC."],
+ "QA prevents; QC detects.", "Architect's Handbook of Professional Practice — quality management"],
+["pjm-5.3", 2, "Multiple choice", "When should a constructability review be done?",
+ ["After bidding", "During design development and construction documents, while changes are still inexpensive", "Only on fast-track projects", "During closeout"], 1,
+ ["Too late.", "Correct.", "Useful on all projects.", "Too late."],
+ "Constructability reviews ask whether the building can be built as drawn.", "Architect's Handbook of Professional Practice — quality management"],
+["pjm-5.4", 2, "Scenario", "Late in CDs, the owner wants to cut the sustainable stormwater features that were a stated project goal. What is the architect's role?",
+ ["Cut them quietly", "Explain the effect on the stated goals, permits and long-term cost, and document the owner's decision", "Refuse to proceed", "Keep them without telling the owner"], 1,
+ ["The owner must decide knowingly.", "Correct.", "Not appropriate.", "The owner must decide."],
+ "Make trade-offs visible and record decisions.", "Architect's Handbook of Professional Practice — design quality"]
+], "y");
+
+ARE.QX("pa", [
+["pa-4.1", 2, "Multiple choice", "Under the IEBC work area method, a renovation reconfigures space covering 60% of the building's area. Which classification applies?",
+ ["Repair", "Alteration Level 1", "Alteration Level 2", "Alteration Level 3"], 3,
+ ["Repairs restore damaged elements.", "Level 1 replaces or covers existing materials.", "Level 2 applies when the work area is 50% or less.", "Correct. Work area over 50% of the building area is Level 3."],
+ "Requirements increase with each alteration level.", "2021 International Existing Building Code — work area method"],
+["pa-2.3", 2, "Multiple choice", "An owner wants to return a historic courthouse to its appearance in 1910, removing a 1960s addition. Which treatment is this?",
+ ["Preservation", "Rehabilitation", "Restoration", "Reconstruction"], 2,
+ ["Preservation keeps what exists.", "Rehabilitation adapts for a compatible use.", "Correct. Restoration depicts a particular period.", "Reconstruction recreates a vanished building."],
+ "The Secretary of the Interior's Standards define four treatments.", "Secretary of the Interior's Standards for the Treatment of Historic Properties"],
+["pa-4.1", 2, "Scenario", "An alteration upgrades a primary function area in an office building, costing $400,000. The accessible route to that area needs work. Under the 2010 ADA Standards and DOJ rules, how much must be spent on path-of-travel improvements before the cost is considered disproportionate?",
+ ["Nothing", "Up to $80,000 (20% of the alteration cost)", "Up to $400,000", "Unlimited"], 1,
+ ["Path of travel must be addressed.", "Correct. Beyond 20% is disproportionate, though accessible elements should still be prioritized.", "Too high.", "The rule caps it."],
+ "Prioritize entrance, route, restrooms, phones and fountains within the cap.", "28 CFR §36.403"],
+["pa-4.1", 2, "Multiple choice", "Why is a change of occupancy important under the existing building code?",
+ ["It never affects code requirements", "It can trigger upgrades to egress, fire protection, accessibility and structure, even with little construction", "It affects only zoning", "It only matters for new buildings"], 1,
+ ["It often does.", "Correct.", "It affects building codes too.", "It is about existing buildings."],
+ "Analyze the new occupancy early in a reuse project.", "2021 International Existing Building Code"],
+["pa-4.2", 2, "Multiple choice", "Who normally commissions a hazardous materials survey before renovation?",
+ ["The architect, as a Basic Service", "The owner, often with an environmental consultant", "The building official", "The tenant"], 1,
+ ["Not a Basic Service under B101.", "Correct.", "Not their role.", "Not usually."],
+ "B101 makes hazardous materials the owner's responsibility.", "AIA B101–2017, §5.5, §5.9 and §10.6"],
+["pa-4.2", 2, "Scenario", "Record drawings for a 1972 building show steel beams, but the architect's site visit finds concrete. What should the architect do?",
+ ["Trust the drawings", "Treat the record drawings as unreliable, recommend a field survey and structural investigation, and inform the owner", "Ignore the difference", "Design for steel and let the contractor adjust"], 1,
+ ["Field conditions win.", "Correct.", "Not acceptable.", "Leads to change orders."],
+ "Verify existing conditions before relying on them.", "Architect's Handbook of Professional Practice — existing buildings"],
+["pa-1.1", 2, "Multiple choice", "In a hot-arid climate, which site and building strategy is most effective?",
+ ["Large unshaded west windows", "Compact form with thermal mass, shaded courtyards and small, shaded openings", "Lightweight construction raised on stilts", "Dark roofs"], 1,
+ ["Increases heat gain.", "Correct.", "Suits hot-humid climates.", "Absorbs solar heat."],
+ "Mass exploits the large day–night temperature swing.", "Brown & DeKay, Sun, Wind & Light"],
+["pa-1.2", 2, "Multiple choice", "A site has a high water table at 4 ft below grade. Which program element is most affected?",
+ ["Roof color", "A planned basement and below-grade parking", "Window type", "Interior finishes"], 1,
+ ["Not related.", "Correct. Groundwater drives waterproofing, dewatering and cost.", "Not related.", "Not related."],
+ "Groundwater depth comes from the geotechnical report.", "Geotechnical practice"],
+["pa-1.3", 2, "Multiple choice", "Which site practice best preserves topsoil for reuse?",
+ ["Haul all topsoil off site", "Strip and stockpile topsoil, protected from erosion, for reuse in landscaped areas", "Mix topsoil with fill", "Pave over it"], 1,
+ ["Wasteful.", "Correct.", "Degrades it.", "Destroys it."],
+ "Protecting soil supports planting and stormwater infiltration.", "U.S. EPA construction site practices; SITES rating system"],
+["pa-2.1", 2, "Multiple choice", "Which occupancy group applies to a 120-seat restaurant?",
+ ["Group B", "Group A-2", "Group M", "Group A-3"], 1,
+ ["Business.", "Correct. A-2 covers food and drink consumption.", "Mercantile.", "A-3 covers places like libraries and galleries."],
+ "Restaurants with fewer than 50 occupants may be classified as Group B.", "2021 IBC §303.1 and §303.3"],
+["pa-2.2", 2, "Multiple choice", "What is a variance?",
+ ["A use allowed outright", "Relief from a zoning requirement granted because of a hardship unique to the property", "A rezoning of the district", "A building code waiver"], 1,
+ ["That is a permitted use.", "Correct.", "Rezoning changes the district.", "Codes have separate appeal processes."],
+ "Variances are granted by a zoning board after notice and a hearing.", "Zoning practice"],
+["pa-2.2", 2, "Calculation", "A lot is 10,000 sf with FAR 2.0 and a maximum lot coverage of 50%. If the owner wants the full FAR, what is the minimum number of stories?",
+ ["2", "3", "4", "5"], 2,
+ ["Two stories at 5,000 sf give only 10,000 sf.", "Three stories give 15,000 sf.", "Correct. 20,000 sf of floor area ÷ 5,000 sf footprint = 4 stories.", "More than needed."],
+ "FAR and coverage together set the minimum height.", "Zoning practice"],
+["pa-2.3", 2, "Multiple choice", "A deed restriction from 1965 limits the lot to one-story buildings, but zoning allows three. Which applies?",
+ ["Zoning, because it is newer", "Both apply; the more restrictive private restriction can still be enforced by those who benefit from it", "Neither", "Only the building code"], 1,
+ ["Zoning does not cancel private restrictions.", "Correct.", "Both apply.", "Not related."],
+ "Check the title report for covenants and restrictions.", "Real property practice"],
+["pa-3.1", 2, "Multiple choice", "Which data from a site survey is most important for laying out accessible routes?",
+ ["Tree species", "Spot elevations and slopes", "Soil color", "Adjacent building names"], 1,
+ ["Not for routes.", "Correct.", "Not related.", "Not related."],
+ "Accessible routes are limited by running and cross slope.", "2010 ADA Standards §403"],
+["pa-3.2", 2, "Scenario", "The geotechnical report recommends deep foundations at the north end, but the preferred building location is there. What should the architect do?",
+ ["Ignore the report", "Compare the cost and schedule of deep foundations with shifting the building, and present the options to the owner", "Specify shallow footings", "Ask the contractor"], 1,
+ ["Not acceptable.", "Correct.", "Contradicts the report.", "Too late."],
+ "Use reports to test site-planning options.", "Site analysis practice"],
+["pa-3.3", 2, "Multiple choice", "On a site plan, what does a wind rose show?",
+ ["Sun angles", "The frequency and speed of wind from each direction", "Rainfall", "Soil types"], 1,
+ ["That is a sun path diagram.", "Correct.", "Not shown.", "Not shown."],
+ "Use it to place entries, outdoor spaces and windbreaks.", "Site analysis practice"],
+["pa-4.3", 2, "Calculation", "A department needs 12 offices at 120 nsf, 2 conference rooms at 300 nsf and an open area of 1,800 nsf. What is the total net area?",
+ ["2,640 nsf", "3,240 nsf", "3,840 nsf", "4,200 nsf"], 2,
+ ["Check the offices: 12 × 120.", "Check each line.", "Correct. 1,440 + 600 + 1,800 = 3,840 nsf.", "Too high."],
+ "Sum net areas, then apply the efficiency factor for gross area.", "Programming practice"],
+["pa-4.4", 2, "Multiple choice", "In a school, which pair needs the strongest adjacency?",
+ ["Gym and library", "Kitchen and cafeteria", "Administration and boiler room", "Art room and loading dock"], 1,
+ ["Not essential.", "Correct.", "Not essential.", "Not essential."],
+ "Functional workflow drives the strongest adjacencies.", "Programming practice"],
+["pa-4.5", 2, "Scenario", "The owner wants occupancy in 14 months, but a realistic design, permit and construction schedule is 22 months. What should the architect recommend?",
+ ["Promise 14 months", "Explain the gap and options such as fast-track delivery, phasing or reducing scope", "Skip permitting", "Delay telling the owner"], 1,
+ ["Sets up failure.", "Correct.", "Not possible.", "Not acceptable."],
+ "Feasibility includes schedule, not only budget.", "Architect's Handbook of Professional Practice — feasibility"],
+["pa-4.6", 2, "Multiple choice", "Which structural system best suits a four-story building on poor soil where foundation loads must be minimized?",
+ ["Cast-in-place concrete frame with heavy masonry walls", "Light-gauge steel or wood framing", "Solid stone bearing walls", "Precast concrete double-tees with topping"], 1,
+ ["Heavy.", "Correct. Lighter systems reduce foundation loads.", "Heaviest.", "Heavy."],
+ "Building weight affects foundation size and cost.", "Ching, Building Structures Illustrated"]
+], "y");
+
+ARE.QX("ppd", [
+["ppd-2.2", 3, "Calculation", "A one-story sprinklered Group B building, Type V-B, has case values NS = 9,000 sf and S1 = 36,000 sf. Frontage increase If = 0.50. What is the allowable area? (Aa = At + NS × If)",
+ ["31,500 sf", "36,000 sf", "40,500 sf", "54,000 sf"], 2,
+ ["This subtracts.", "This ignores frontage.", "Correct. 36,000 + 9,000 × 0.50 = 40,500 sf.", "This multiplies the wrong value."],
+ "In a sprinklered building, At is the S1 or SM value; the frontage increase uses NS.", "2021 IBC §506.2.1"],
+["ppd-2.3", 2, "Multiple choice", "Which rated element can divide one structure into separate buildings for allowable height and area?",
+ ["Fire barrier", "Fire partition", "Fire wall", "Smoke barrier"], 2,
+ ["Fire barriers separate within a building.", "Fire partitions are for corridors and units.", "Correct. Fire walls create separate buildings.", "Smoke barriers control smoke."],
+ "Fire walls run from foundation through the roof and remain stable if one side collapses.", "2021 IBC §706"],
+["ppd-3.4", 2, "Multiple choice", "In Type II-B construction, what fire-resistance rating does Table 601 require for the primary structural frame?",
+ ["0 hours", "1 hour", "2 hours", "3 hours"], 0,
+ ["Correct. 'B' subtypes are unprotected.", "That is II-A.", "That is I-B.", "That is I-A."],
+ "Types I and II are noncombustible; A is protected, B is unprotected.", "2021 IBC Table 601"],
+["ppd-2.2", 3, "Calculation", "A building's perimeter is 600 ft. 300 ft faces a street at least 30 ft wide. What is the frontage increase? (If = [F/P − 0.25] × W/30)",
+ ["0.25", "0.50", "0.75", "1.00"], 0,
+ ["Correct. [300/600 − 0.25] × 30/30 = 0.25.", "This forgets the 0.25.", "This is the maximum.", "Not possible."],
+ "Use W no greater than 30 for the ratio.", "2021 IBC §506.3.3"],
+["ppd-2.3", 2, "Multiple choice", "Which element normally encloses an interior exit stairway?",
+ ["Fire partition", "Fire barrier", "Smoke partition", "Nonrated wall"], 1,
+ ["Fire partitions are for corridors and units.", "Correct.", "Smoke partitions do not have a fire rating.", "Exit enclosures are rated."],
+ "Exit stair enclosures are 2 hours when connecting four or more stories, 1 hour when fewer.", "2021 IBC §707 and §1023.2"],
+["ppd-2.3", 2, "Multiple choice", "What fire protection rating do doors in a 2-hour fire barrier usually need?",
+ ["20 minutes", "45 minutes", "1½ hours", "3 hours"], 2,
+ ["Too low.", "Too low.", "Correct.", "That is for 3- and 4-hour walls."],
+ "Opening protectives are set by Table 716.1(2).", "2021 IBC Table 716.1(2)"],
+["ppd-2.2", 2, "Multiple choice", "Why does sprinklering a building usually allow a larger allowable area?",
+ ["Codes reward sprinklers with no basis", "Automatic sprinklers control fires early, so the code permits larger tabular values (S1, SM)", "Sprinklers increase frontage", "They reduce occupant load"], 1,
+ ["There is a clear safety basis.", "Correct.", "Frontage is geometric.", "Occupant load is not affected."],
+ "The benefit is built into Tables 504.3, 504.4 and 506.2.", "2021 IBC Chapter 5"],
+["ppd-2.2", 2, "Calculation", "An assembly room with chairs only (not fixed) is 2,100 net sf. The load factor is 7 net sf per person. What is the occupant load?",
+ ["150", "210", "300", "420"], 2,
+ ["Check the division.", "Check the division.", "Correct. 2,100 ÷ 7 = 300.", "Too high."],
+ "Concentrated assembly (chairs only) uses 7 net sf per occupant.", "2021 IBC Table 1004.5"],
+["ppd-2.2", 2, "Multiple choice", "Under 2021 IBC §1007.1.1, how far apart must two required exits be in a building with an automatic sprinkler system throughout?",
+ ["At least half the maximum overall diagonal", "At least one-third the maximum overall diagonal", "At least 10 ft", "Any distance"], 1,
+ ["That applies without sprinklers.", "Correct.", "Not the rule.", "Remoteness is required."],
+ "Remoteness keeps one fire from blocking both exits.", "2021 IBC §1007.1.1"],
+["ppd-1.2", 2, "Multiple choice", "Which strategy most reduces cooling loads in an office in a hot climate?",
+ ["More west glass", "Shading and high-performance glazing with a low SHGC on east and west façades", "Dark exterior walls", "Larger skylights"], 1,
+ ["Increases loads.", "Correct.", "Absorbs heat.", "Increases gain."],
+ "Solar heat gain through glass drives cooling loads.", "ASHRAE Advanced Energy Design Guides"],
+["ppd-1.3", 2, "Scenario", "A new library sits in a neighborhood of brick houses with pitched roofs. The design team wants a modern building. How can it respond to context without imitation?",
+ ["Ignore the context", "Relate scale, massing, materials or rhythm to neighbors while using a contemporary language", "Copy a house exactly", "Use the tallest possible form"], 1,
+ ["Context matters to approvals and the community.", "Correct.", "Imitation is not required.", "May conflict with context."],
+ "Contextual design responds; it does not have to copy.", "Urban design practice"],
+["ppd-3.1", 2, "Multiple choice", "Which HVAC system distributes conditioned air from a central air handler and varies airflow to each zone?",
+ ["Constant-volume single zone", "Variable air volume (VAV)", "Radiant floor", "Packaged terminal units"], 1,
+ ["One zone, constant flow.", "Correct.", "Radiant moves heat through surfaces.", "Each unit serves one room."],
+ "VAV needs ceiling space for ducts and boxes.", "ASHRAE guidance"],
+["ppd-3.2", 2, "Multiple choice", "Which foundation is most likely where good bearing soil is far below the surface?",
+ ["Spread footings", "Driven piles or drilled piers", "Slab on grade only", "Strip footings"], 1,
+ ["Need good soil near the surface.", "Correct.", "Not a foundation for building loads on poor soil.", "Need good soil near the surface."],
+ "The geotechnical report recommends the foundation type.", "Geotechnical practice"],
+["ppd-3.3", 2, "Multiple choice", "Which system is used where accidental water discharge would be very costly, such as a data center?",
+ ["Wet pipe", "Preaction", "Deluge", "None"], 1,
+ ["Water is always in the pipes.", "Correct. Water enters only after a detection signal.", "Open heads discharge everywhere.", "Protection is required."],
+ "Preaction systems add a detection step.", "NFPA 13"],
+["ppd-3.4", 2, "Multiple choice", "Which exterior cladding gives the best drainage and drying in a wet climate?",
+ ["Face-sealed EIFS with no drainage", "A rainscreen with a drained, ventilated cavity", "Sealant-only joints", "Barrier wall with no WRB"], 1,
+ ["Relies on perfect seals.", "Correct.", "Seals fail over time.", "No backup layer."],
+ "Rainscreens manage water that gets past the cladding.", "Building science"],
+["ppd-4.1", 2, "Multiple choice", "Which plan configuration gives most rooms daylight and natural ventilation?",
+ ["A deep, square plan", "A narrow plan, about 40–60 ft deep, or one around courtyards", "A windowless core", "A circular plan of 200 ft diameter"], 1,
+ ["Deep plans leave interior rooms dark.", "Correct.", "No daylight.", "Deep center."],
+ "Narrow plans trade envelope area for daylight.", "Daylighting practice"],
+["ppd-4.3", 2, "Scenario", "The program needs a 400-seat auditorium, and the site is tight. Where is it best placed?",
+ ["On an upper floor with no direct exit access", "At ground level with direct access to exits and the street", "In the basement with one stair", "Wherever space remains"], 1,
+ ["Egress for 400 is difficult upstairs.", "Correct.", "Inadequate egress.", "Not a reasoned location."],
+ "Large assembly spaces need easy egress and public access.", "2021 IBC §1029 (assembly egress)"],
+["ppd-4.4", 2, "Multiple choice", "For a building near a busy highway, which design response best controls noise?",
+ ["Large operable windows facing the highway", "Place service spaces and solid walls toward the highway, and use acoustic glazing", "Lightweight cladding", "Open courtyards facing the noise"], 1,
+ ["Lets noise in.", "Correct.", "Weak sound isolation.", "Exposes outdoor space to noise."],
+ "Use the building itself as a buffer.", "Acoustics practice"],
+["ppd-5.2", 2, "Calculation", "A schematic estimate is $8,000,000. Construction midpoint is 2 years away and escalation is 4% per year, compounded. What is the escalated estimate?",
+ ["$8,320,000", "$8,640,000", "$8,652,800", "$9,000,000"], 2,
+ ["One year only.", "Simple, not compounded.", "Correct. 8,000,000 × 1.04² = $8,652,800.", "Too high."],
+ "Escalate to the midpoint of construction.", "Cost estimating practice"],
+["ppd-5.3", 2, "Multiple choice", "Which design change usually saves the most money with the least loss of quality?",
+ ["Removing insulation", "Reducing the perimeter-to-area ratio and repeating structural bays", "Eliminating code-required exits", "Using lower-grade roofing"], 1,
+ ["Increases energy cost.", "Correct.", "Not permitted.", "Raises maintenance and risk."],
+ "Simplicity and repetition lower cost.", "Value engineering practice"]
+], "y");
+
+ARE.QX("pdd", [
+["pdd-4.1", 2, "Multiple choice", "A 2-hour fire barrier encloses an exit stair. The partition schedule shows it stopping at the suspended ceiling. What is wrong?",
+ ["Nothing", "Fire barriers must continue through the ceiling space to the floor or roof deck above", "It should stop 6 in below the ceiling", "Only the door needs a rating"], 1,
+ ["This leaves a gap above the ceiling.", "Correct. IBC §707.5 requires continuity.", "Still discontinuous.", "The whole enclosure is rated."],
+ "Trace rated walls to the deck on sections and partition types.", "2021 IBC §707.5"],
+["pdd-4.1", 2, "Multiple choice", "What does the T rating of a firestop system measure?",
+ ["How long it stops flame only", "How long it stops flame and limits temperature rise on the unexposed side", "Its thickness", "Its tensile strength"], 1,
+ ["That is the F rating.", "Correct.", "Not a rating.", "Not related."],
+ "Through-penetration firestop systems are tested to ASTM E814 / UL 1479.", "2021 IBC §714; ASTM E814"],
+["pdd-1.5", 2, "Multiple choice", "How should a rated wall assembly be specified so that it keeps its rating?",
+ ["'Build a 1-hour wall' with no further detail", "By a listed, tested design number, built exactly as tested", "Any two layers of gypsum board", "By the contractor's choice"], 1,
+ ["Too vague to build or inspect.", "Correct.", "Not necessarily rated.", "Not acceptable for rated work."],
+ "Ratings come from ASTM E119 / UL 263 tests of specific assemblies.", "2021 IBC §703"],
+["pdd-2.3", 2, "Multiple choice", "What must the top of a rated partition under a steel deck include when the deck deflects?",
+ ["A rigid mortar joint", "A listed head-of-wall joint system that allows movement and keeps the rating", "Nothing", "Expanding foam from a hardware store"], 1,
+ ["Will crack.", "Correct.", "The joint is a weak point.", "Not listed."],
+ "Joints in rated assemblies use tested joint systems.", "2021 IBC §715; ASTM E1966"],
+["pdd-4.1", 2, "Multiple choice", "A duct passes through a 1-hour shaft wall. Which device is most likely required?",
+ ["Volume damper", "Fire damper, with an access panel", "Backdraft damper", "None"], 1,
+ ["Not a fire device.", "Correct.", "Not a fire device.", "Usually required."],
+ "Check §717 for where dampers are required and the exceptions.", "2021 IBC §717"],
+["pdd-1.2", 2, "Calculation", "A restroom group needs 70 cfm of exhaust per water closet. There are 6 water closets. What exhaust is needed?",
+ ["210 cfm", "350 cfm", "420 cfm", "700 cfm"], 2,
+ ["Check the multiplication.", "Five fixtures.", "Correct. 6 × 70 = 420 cfm.", "Too high."],
+ "Exhaust rates come from the mechanical code; this value is given for practice.", "Mechanical practice"],
+["pdd-1.3", 2, "Calculation", "A floor carries a 50 psf live load and a 15 psf dead load. Using 1.2D + 1.6L, what is the factored load?",
+ ["65 psf", "78 psf", "98 psf", "104 psf"], 2,
+ ["Unfactored.", "Check the factors.", "Correct. 1.2 × 15 + 1.6 × 50 = 18 + 80 = 98 psf.", "Check the factors."],
+ "Load and resistance factor design uses ASCE 7 load combinations.", "ASCE 7 load combinations"],
+["pdd-1.4", 2, "Multiple choice", "Which measure best predicts how well a partition blocks speech between offices?",
+ ["NRC", "STC", "SHGC", "VT"], 1,
+ ["Absorption.", "Correct.", "Solar.", "Daylight."],
+ "Seal gaps; small openings greatly reduce effective STC.", "ASTM E413"],
+["pdd-1.6", 2, "Scenario", "The plumbing riser and a structural column are drawn in the same place on the third floor. What should happen?",
+ ["Leave it for the field", "Resolve it in coordination, relocating the riser or the column, and update both sets", "Delete the riser", "Delete the column"], 1,
+ ["Costly in the field.", "Correct.", "Not acceptable.", "Not acceptable."],
+ "Coordination before issue avoids RFIs and change orders.", "Coordination practice"],
+["pdd-2.1", 2, "Multiple choice", "Where should finish information for each room be shown?",
+ ["On every elevation", "In a room finish schedule keyed to room numbers", "Only in the specifications", "In the meeting minutes"], 1,
+ ["Repetition invites conflict.", "Correct.", "Specs give product quality, not locations.", "Not a contract document."],
+ "Schedules organize repeated information.", "Construction documentation practice"],
+["pdd-2.2", 2, "Multiple choice", "Which drawing shows water, sewer, storm and gas connections from the street to the building?",
+ ["Landscape plan", "Site utility plan", "Floor plan", "Roof plan"], 1,
+ ["Planting.", "Correct.", "Building interior.", "Roof."],
+ "Civil drawings usually include grading and utility plans.", "Site documentation practice"],
+["pdd-2.4", 2, "Multiple choice", "In the U.S. National CAD Standard sheet numbering, which sheet type number commonly indicates elevations?",
+ ["1", "2", "3", "5"], 1,
+ ["Plans.", "Correct.", "Sections.", "Details."],
+ "Common: 0 general, 1 plans, 2 elevations, 3 sections, 4 large-scale views, 5 details, 6 schedules.", "U.S. National CAD Standard"],
+["pdd-2.5", 2, "Multiple choice", "After the contract is signed, the architect issues a minor clarification with no change in cost or time. Which document?",
+ ["Addendum", "Architect's supplemental instructions", "Change order", "Bid form"], 1,
+ ["Bidding phase.", "Correct.", "Changes cost or time.", "Bidding phase."],
+ "AIA G710 is used for supplemental instructions.", "AIA A201–2017, §7.4; AIA G710"],
+["pdd-3.1", 2, "Multiple choice", "What does a performance specification describe?",
+ ["A specific brand and model", "The required results and how they will be verified", "Only installation steps", "Only submittals"], 1,
+ ["That is proprietary.", "Correct.", "Part 3 covers that.", "Part 1 covers that."],
+ "Performance specs allow contractor choice and must include verification criteria.", "CSI Project Delivery Practice Guide"],
+["pdd-3.2", 2, "Multiple choice", "Which MasterFormat division covers doors, windows and hardware?",
+ ["Division 06", "Division 07", "Division 08", "Division 09"], 2,
+ ["Wood, plastics and composites.", "Thermal and moisture protection.", "Correct. Openings.", "Finishes."],
+ "Know the main divisions: 03 concrete, 04 masonry, 05 metals, 07 thermal and moisture, 08 openings, 09 finishes.", "CSI MasterFormat"],
+["pdd-3.3", 2, "Scenario", "The drawings show a 2-hour wall, but the specification section for gypsum board assemblies lists only standard board. What should be done?",
+ ["Nothing", "Add Type X or listed board and reference the tested assembly in the specification", "Note that drawings govern", "Let the contractor decide"], 1,
+ ["Leads to a noncompliant wall.", "Correct.", "Order of precedence is not coordination.", "Not acceptable."],
+ "Rated assemblies must be consistent across drawings and specifications.", "CSI practice; 2021 IBC §703"],
+["pdd-4.2", 2, "Multiple choice", "What is the minimum clear width of an accessible route under the 2010 ADA Standards?",
+ ["32 in", "36 in", "44 in", "48 in"], 1,
+ ["That is the door clear width.", "Correct. 36 in, which may reduce to 32 in for up to 24 in of length.", "Corridor width under the IBC for many occupancies.", "Not the minimum."],
+ "Know key clearances: 36 in route, 32 in door clear width, 60 in turning circle.", "2010 ADA Standards §403.5.1"],
+["pdd-4.2", 2, "Multiple choice", "What is the maximum running slope of an accessible ramp under the 2010 ADA Standards?",
+ ["1:8", "1:10", "1:12", "1:20"], 2,
+ ["Too steep.", "Too steep.", "Correct.", "This is the maximum for a walk that is not a ramp."],
+ "Maximum rise per ramp run is 30 in.", "2010 ADA Standards §405.2 and §405.6"],
+["pdd-5.1", 2, "Scenario", "At 100% CDs, the estimate is 3% under budget, but the contingency has been fully used. What should the architect advise?",
+ ["Bid immediately with no comment", "Advise the owner of the risk and consider bid alternates so the project can be adjusted at bid time", "Add scope to use the savings", "Remove all alternates"], 1,
+ ["Missing a risk.", "Correct.", "Increases risk.", "Removes flexibility."],
+ "Deductive alternates give the owner choices if bids come in high.", "Cost management practice"],
+["pdd-1.1", 2, "Multiple choice", "Why is a mock-up often specified for a complex curtain wall?",
+ ["For marketing photos", "To verify appearance, performance and installation before full production", "To replace shop drawings", "Because codes always require it"], 1,
+ ["Not the purpose.", "Correct. Mock-ups are often tested for air and water.", "Shop drawings are still needed.", "Not always required."],
+ "Mock-ups catch problems while they are cheap to fix.", "Construction quality practice"]
+], "y");
+
+ARE.QX("ce", [
+["ce-3.4", 2, "Multiple choice", "Under A201–2017, who serves as the Initial Decision Maker if the owner–contractor agreement names no one?",
+ ["The owner", "The architect", "A mediator", "The building official"], 1,
+ ["The owner is a party.", "Correct. §15.2.1.", "Mediation comes later.", "Not their role."],
+ "The IDM must not show partiality to either party (§1.1.8).", "AIA A201–2017, §15.2.1"],
+["ce-3.4", 2, "Multiple choice", "Under A201–2017, within how many days after the event must a claim normally be initiated?",
+ ["7 days", "10 days", "21 days", "30 days"], 2,
+ ["Too short.", "That is the IDM's response window.", "Correct. §15.1.3.1.", "Too long."],
+ "Late notice can waive the claim.", "AIA A201–2017, §15.1.3.1"],
+["ce-2.1", 2, "Multiple choice", "While a claim is pending, what must the contractor do under A201–2017?",
+ ["Stop work until it is resolved", "Proceed diligently with the work; the owner keeps paying undisputed amounts", "Demobilize", "Work only on disputed items"], 1,
+ ["Not permitted.", "Correct. §15.1.4.", "Not permitted.", "Not the rule."],
+ "Continuing performance keeps the project moving.", "AIA A201–2017, §15.1.4"],
+["ce-3.4", 2, "Multiple choice", "What comes before arbitration or litigation for most claims under A201–2017?",
+ ["A second initial decision", "Mediation, as a condition precedent", "Termination", "A new contract"], 1,
+ ["Not required.", "Correct. §15.3.1.", "Not required.", "Not required."],
+ "Initial decision → mediation → binding dispute resolution.", "AIA A201–2017, §15.3.1"],
+["ce-3.4", 2, "Multiple choice", "Under A201–2017, how soon after receiving a claim must the IDM take initial action?",
+ ["Within 3 days", "Within 10 days", "Within 21 days", "Within 30 days"], 1,
+ ["Too short.", "Correct. §15.2.2.", "That is the claimant's notice window.", "Too long."],
+ "The IDM may request data, reject, approve, suggest a compromise or advise it cannot decide.", "AIA A201–2017, §15.2.2"],
+["ce-3.4", 2, "Multiple choice", "What does the mutual waiver of consequential damages in A201–2017 do?",
+ ["Waives all damages", "Each party waives claims against the other for indirect losses such as lost profits and loss of use", "Waives the contractor's right to payment", "Waives the architect's fee"], 1,
+ ["Direct damages remain.", "Correct. §15.1.7.", "Not affected.", "The architect is not a party to A201's agreement."],
+ "Liquidated damages, if specified, are not barred by the waiver.", "AIA A201–2017, §15.1.7"],
+["ce-1.1", 2, "Multiple choice", "During bidding, a bidder asks the architect a question about the documents. How should the answer be given?",
+ ["Verbally to that bidder only", "By addendum to all bidders", "Not at all", "Through the bidder's subcontractor"], 1,
+ ["Unfair to other bidders.", "Correct.", "Questions should be answered.", "Not the process."],
+ "Every bidder must price the same information.", "AIA A701–2018"],
+["ce-1.2", 2, "Multiple choice", "What does a payment bond protect?",
+ ["The owner against defective work", "Subcontractors and suppliers who might not be paid by the contractor", "The architect's fee", "The lender"], 1,
+ ["That is the performance bond.", "Correct.", "Not covered.", "Not directly."],
+ "Payment bonds also protect the owner from liens by unpaid parties.", "AIA A312"],
+["ce-1.3", 2, "Multiple choice", "Bids come in over budget. Which document change gives the owner the quickest choice to reduce cost?",
+ ["A change order", "Accepting priced deductive alternates", "A new design", "Increasing retainage"], 1,
+ ["Too late before award.", "Correct.", "Takes time.", "Does not reduce cost."],
+ "Alternates are priced options chosen at award.", "AIA A701–2018"],
+["ce-2.2", 2, "Scenario", "The architect sees a contractor installing a product different from the one specified, with no substitution request. What should the architect do?",
+ ["Approve it to avoid delay", "Notify the contractor that the work does not conform and reject it as appropriate; the contractor may submit a substitution request", "Ignore it", "Pay for the new product"], 1,
+ ["Not acceptable.", "Correct.", "Not acceptable.", "Not the architect's role."],
+ "Substitutions follow the specified procedure.", "AIA A201–2017, §4.2.6; Division 01 substitution procedures"],
+["ce-2.3", 2, "Multiple choice", "How does the architect best judge whether the project is on schedule?",
+ ["Asking the owner", "Comparing observed progress with the contractor's schedule and the payment application", "Counting workers", "Reading the specifications"], 1,
+ ["Not reliable.", "Correct.", "Incomplete.", "Not related."],
+ "Field reports should record progress observed.", "AIA A201–2017, §4.2.2 and §3.10"],
+["ce-3.1", 2, "Multiple choice", "Which document does the contractor use to request clarification of the documents?",
+ ["Change order", "Request for information (RFI)", "Addendum", "Certificate of substantial completion"], 1,
+ ["Changes cost or time.", "Correct.", "Bidding.", "Closeout."],
+ "RFIs should be answered with reasonable promptness.", "Construction administration practice"],
+["ce-3.2", 2, "Multiple choice", "A submittal is required but the contractor proceeds with the work before it is reviewed. Who bears the risk?",
+ ["The architect", "The contractor", "The owner", "No one"], 1,
+ ["Not the architect.", "Correct. Work requiring submittals should not proceed before review.", "Not the owner.", "Someone bears it."],
+ "A201 requires the contractor not to perform such work until the submittal is approved.", "AIA A201–2017, §3.12.7"],
+["ce-3.2", 2, "Multiple choice", "Which are submittals under A201–2017?",
+ ["Contract documents", "Shop drawings, product data and samples", "Addenda", "Change orders"], 1,
+ ["Submittals are not contract documents.", "Correct.", "Addenda are part of the bidding documents.", "Change orders modify the contract."],
+ "Submittals show how the contractor will meet the documents.", "AIA A201–2017, §3.12"],
+["ce-3.3", 2, "Calculation", "The contract sum is $2,000,000 and change orders total $50,000. Work completed is 40% of the adjusted sum. Retainage is 5%. What is the retainage held?",
+ ["$40,000", "$41,000", "$82,000", "$102,500"], 1,
+ ["This ignores change orders.", "Correct. 2,050,000 × 0.40 = 820,000; 5% = $41,000.", "This uses 10%.", "This uses the full sum."],
+ "Retainage is applied to work completed and stored.", "AIA G702"],
+["ce-3.3", 2, "Multiple choice", "Materials stored off site are included in a payment application. What should the owner usually require first?",
+ ["Nothing", "Prior approval, plus evidence of title, insurance and protection of the stored materials", "A new bond", "A site visit by the building official"], 1,
+ ["Off-site storage is a risk.", "Correct.", "Not usually.", "Not related."],
+ "Payment for stored materials must be agreed and documented.", "AIA A201–2017, §9.3.2"],
+["ce-4.1", 2, "Multiple choice", "What does the architect issue when the work is substantially complete?",
+ ["Certificate of occupancy", "Certificate of Substantial Completion (G704)", "Final change order", "Bid tabulation"], 1,
+ ["Issued by the building official.", "Correct.", "Not required.", "Bidding."],
+ "The certificate sets the date the correction period and warranties start, among other things.", "AIA A201–2017, §9.8.4; AIA G704"],
+["ce-4.1", 2, "Multiple choice", "Which item is typically required before final payment?",
+ ["A new schedule of values", "Lien releases or waivers, warranties and consent of surety", "A bid bond", "A new design"], 1,
+ ["Not needed.", "Correct.", "Bidding.", "Not needed."],
+ "Closeout documents protect the owner after final payment.", "AIA A201–2017, §9.10.2"],
+["ce-4.2", 2, "Multiple choice", "What does building commissioning verify?",
+ ["Only the paint colors", "That systems are designed, installed and perform to the owner's project requirements", "Only code compliance", "The contractor's profit"], 1,
+ ["Not the purpose.", "Correct.", "Commissioning goes beyond code.", "Not related."],
+ "Commissioning starts in design, not at the end.", "ASHRAE Guideline 0"],
+["ce-2.1", 2, "Multiple choice", "Under A201–2017, may the architect stop the work?",
+ ["Yes, at any time", "No; the architect may reject nonconforming work, but the owner has the right to stop the work", "Only on Fridays", "Only if the contractor agrees"], 1,
+ ["The architect lacks this authority.", "Correct. §2.4 and §4.2.6.", "Not a rule.", "Not the rule."],
+ "Stopping work is the owner's right under specified conditions.", "AIA A201–2017, §2.4"]
+], "y");
+
 /* REFERENCE LIBRARY — glossary, formulas, calculators, sources */
 ARE.GLOSSARY = [
 // [term, category, definition, lessonId]
@@ -6226,7 +7093,7 @@ ARE.PODCAST.forDiv = (d) => ARE.PODCAST.eps.filter(e => e.divs.includes(d));
   };
   const numeric = (opts) => opts.every(o => /^[\s$~≈]*[\d.,]+\s*(%|sf|ft|in|cfm|h|hours|days|weeks|months|years|lb|psf|ach|minutes|occupants|fixtures)?\.?\s*$/i.test(String(o).replace(/<[^>]+>/g, "")));
   const mix = (q) => {
-    if (!q || /-x\d\d$/.test(q.id) || !Array.isArray(q.opts) || q.opts.length < 3) return;
+    if (!q || /-[xy]\d\d$/.test(q.id) || !Array.isArray(q.opts) || q.opts.length < 3) return;
     if (q.type !== "mc" && q.type !== "ms") return;
     if (q.fmt === "Calculation" || numeric(q.opts)) return;
     const o = perm(q.id, q.opts.length); const pos = (k) => o.indexOf(k);

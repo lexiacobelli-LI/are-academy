@@ -1,6 +1,6 @@
 import pathlib
 src = pathlib.Path(__file__).parent / "src"
-order = ["curriculum.js","lessons-a.js","lessons-b.js","questions-a.js","questions-b.js","lessons-c.js","cases.js","cases-b.js","lessons-d.js","questions-c.js","questions-d.js","lessons-e.js","lessons-f.js","qbank-x.js","qx-pcm.js","qx-pjm.js","qx-pa.js","qx-ppd.js","qx-pdd.js","qx-ce.js","reference.js","drive-refs.js","podcast.js","optmix.js","gen.js","store.js","engine.js","learn.js","ai.js","voice.js","exam-ui.js","tutor.js","studio.js","views.js","views-plus.js"]
+order = ["curriculum.js","lessons-a.js","lessons-b.js","questions-a.js","questions-b.js","lessons-c.js","cases.js","cases-b.js","lessons-d.js","questions-c.js","questions-d.js","lessons-e.js","lessons-f.js","qbank-x.js","qx-pcm.js","qx-pjm.js","qx-pa.js","qx-ppd.js","qx-pdd.js","qx-ce.js","lessons-g.js","lessons-h.js","qy-pcm.js","qy-pjm.js","qy-pa.js","qy-ppd.js","qy-pdd.js","qy-ce.js","reference.js","drive-refs.js","podcast.js","optmix.js","gen.js","store.js","engine.js","learn.js","ai.js","voice.js","exam-ui.js","tutor.js","studio.js","views.js","views-plus.js"]
 js = "\n".join((src/f).read_text() for f in order)
 css = (src/"style.css").read_text() + "\n" + (src/"design.css").read_text()
 html = f'''<title>ARE Academy</title>

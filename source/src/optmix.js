@@ -11,7 +11,7 @@
   };
   const numeric = (opts) => opts.every(o => /^[\s$~≈]*[\d.,]+\s*(%|sf|ft|in|cfm|h|hours|days|weeks|months|years|lb|psf|ach|minutes|occupants|fixtures)?\.?\s*$/i.test(String(o).replace(/<[^>]+>/g, "")));
   const mix = (q) => {
-    if (!q || /-x\d\d$/.test(q.id) || !Array.isArray(q.opts) || q.opts.length < 3) return;
+    if (!q || /-[xy]\d\d$/.test(q.id) || !Array.isArray(q.opts) || q.opts.length < 3) return;
     if (q.type !== "mc" && q.type !== "ms") return;
     if (q.fmt === "Calculation" || numeric(q.opts)) return;
     const o = perm(q.id, q.opts.length); const pos = (k) => o.indexOf(k);

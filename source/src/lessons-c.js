@@ -77,7 +77,7 @@ ARE.LESSONS.push({
 <li><strong>Decision log</strong>: owner approvals at each phase, signed where possible.</li>
 <li><strong>Emails and calls</strong>: confirm verbal directions in writing.</li>
 </ul>
-<p>Communication on a design-bid-build project runs through defined paths: the owner and contractor communicate through the architect on matters about the contract documents; consultants communicate through the architect.</p>
+<p>Communication on a design-bid-build project follows defined paths. Under A201–2017 §4.2.4, the owner and contractor must include the architect in all communications that affect the architect's services or responsibilities. Consultants communicate through the architect.</p>
 
 <h3>QA versus QC</h3>
 <p><strong>Quality assurance</strong> is the system that prevents errors: standards, checklists, templates, staffing, training and a quality plan for the project. <strong>Quality control</strong> checks the work: milestone reviews, cross-discipline coordination checks, code reviews and peer review by someone outside the team. Schedule QC reviews in the work plan (for example at 50% and 90% CDs) with time to fix what they find.</p>

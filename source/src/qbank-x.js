@@ -1,11 +1,11 @@
 /* ---------- Question bank expansion (v9): compact rows → standard question objects ----------
    Row: [objective, difficulty 1-3, format, stem, options, answer (index, or array for check-all), why-per-option, explanation, reference]
    All items are original. References name the document and section only where the section was checked. */
-ARE.QX = (div, rows) => rows.forEach((r, i) => {
+ARE.QX = (div, rows, pre = "x") => rows.forEach((r, i) => {
   const [obj, diff, fmt, q, opts, ans, why, explain, ref] = r;
   const lesson = (ARE.LESSONS.find(l => (l.obj || []).includes(obj)) || ARE.LESSONS.find(l => l.div === div) || {}).id;
   const ms = Array.isArray(ans);
-  const id = `q-${div}-x${String(i + 1).padStart(2, "0")}`;
+  const id = `q-${div}-${pre}${String(i + 1).padStart(2, "0")}`;
   // Fixed, per-question order so the correct answer isn't always in the same position. Numeric answers stay in ascending order.
   let order = opts.map((_, k) => k);
   if (fmt !== "Calculation") {
