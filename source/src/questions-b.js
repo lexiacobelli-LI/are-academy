@@ -117,7 +117,7 @@ Q({ id: "q-pdd-01", div: "pdd", obj: "pdd-2.3", lesson: "pdd-envelope", type: "h
 <text x="51" y="240" text-anchor="middle">1</text><text x="102" y="240" text-anchor="middle">2</text><text x="150" y="240" text-anchor="middle">3</text>
 <text x="165" y="240" text-anchor="middle">4</text><text x="197" y="240" text-anchor="middle">5</text><text x="234" y="240" text-anchor="middle">6</text><text x="257" y="240" text-anchor="middle">7</text>
 <text x="290" y="60">Interior ←</text><text x="290" y="80">→ Exterior</text>
-<text x="290" y="120" font-size="10">Layers are unlabeled;</text><text x="290" y="134" font-size="10">identify by position.</text>
+<text x="290" y="120" font-size="11">Layers are unlabeled;</text><text x="290" y="134" font-size="11">identify by position.</text>
 </g></svg>`,
   ans: "awb",
   explain: "Layer 4, applied to the face of the sheathing (3) and behind the exterior insulation (5), is the air and water-resistive barrier. Placing it inboard of the continuous insulation keeps it warm and protected; the drained cavity (6) behind the cladding (7) lets water escape.",

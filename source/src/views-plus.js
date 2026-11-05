@@ -14,12 +14,14 @@ const ACTS = ARE.ACTS = {};
 
 /* ---------- preferences (device-local) ---------- */
 const PREF_KEY = "are-prefs";
-ARE.prefs = (() => { try { return Object.assign({ theme: "auto", text: 100, motion: "auto" }, JSON.parse(localStorage.getItem(PREF_KEY) || "{}")); } catch (e) { return { theme: "auto", text: 100, motion: "auto" }; } })();
+ARE.prefs = (() => { try { return Object.assign({ theme: "auto", text: 100, motion: "auto", font: "standard", spacing: "normal" }, JSON.parse(localStorage.getItem(PREF_KEY) || "{}")); } catch (e) { return { theme: "auto", text: 100, motion: "auto", font: "standard", spacing: "normal" }; } })();
 ARE.applyPrefs = () => {
   const p = ARE.prefs, d = document.documentElement;
   if (p.theme === "auto") delete d.dataset.theme; else d.dataset.theme = p.theme;
-  d.style.fontSize = p.text !== 100 ? (p.text / 100 * 15) + "px" : "";
-  document.body.style.fontSize = p.text !== 100 ? (p.text / 100 * 15) + "px" : "";
+  d.style.fontSize = p.text !== 100 ? (p.text / 100 * 16) + "px" : "";
+  document.body.style.fontSize = p.text !== 100 ? (p.text / 100 * 16) + "px" : "";
+  d.classList.toggle("f-legible", p.font === "legible");
+  d.classList.toggle("sp-relaxed", p.spacing === "relaxed");
   d.classList.toggle("reduce-motion", p.motion === "reduce");
 };
 const savePrefs = () => { try { localStorage.setItem(PREF_KEY, JSON.stringify(ARE.prefs)); } catch (e) {} ARE.applyPrefs(); };
@@ -148,7 +150,7 @@ ${b.pairs.length ? sec("≠", "Don't confuse", b.pairs.map(p => `<div class="scr
 ${sec(8, "Visual reference", b.visual ? `<div class="figure lfig nfig">${b.visual.svg}</div><p class="muted" style="font-size:.85rem">From the lesson “${esc(b.lesson.title)}”. Schematic, not a construction detail.</p>` : (b.pairs.length ? "" : `<p class="muted">No diagram for this objective yet.</p>`))}
 ${sec(9, "Knowledge reinforcement", `${b.quick.map((qq, qi) => `<div class="panel stack qq" data-qq="${qi}" data-lesson="${b.lesson ? b.lesson.id : ""}"><b>${esc(qq.q)}</b><div class="opts">${qq.opts.map((o, oi) => `<button class="opt" data-act="nqq" data-qi="${qi}" data-oi="${oi}"><span class="mk">${String.fromCharCode(65 + oi)}</span><span>${esc(o)}</span></button>`).join("")}</div><div class="qq-fb" hidden></div></div>`).join("")}${b.reinforce.length ? `<button class="btn primary" data-act="qset" data-ids="${b.reinforce.join(",")}">Answer ${b.reinforce.length} check questions</button>` : ""}`)}
 ${sec(10, "Source references", `<ul class="src">${[b.sources.obj].concat(b.sources.hb.map(r => "AIA Architect's Handbook of Professional Practice, 15th ed., §" + r[0] + " p. " + r[1] + " — " + r[2])).concat(b.sources.refs.map(r => L.strip(r.t))).map(x => `<li>${esc(x)}</li>`).join("")}</ul>${b.lesson ? `<a class="btn small" href="#lesson-${b.lesson.id}">Open lesson: ${esc(b.lesson.title)}</a>` : ""}`)}
-${n.ai.length ? `<section class="nsec"><h3><span class="nnum">✦</span>Explained differently (AI)</h3>${n.ai.slice().reverse().map(a => `<div class="aibox"><div class="tu-md">${AI.md(a.text)}</div><p class="muted" style="font-size:.8rem">${fmtDate(a.t)} · ${esc(AI.label(a.provider))} · AI-written: verify against the lesson and primary sources.</p></div>`).join("")}</section>` : ""}
+${n.ai.length ? `<section class="nsec"><h3><span class="nnum">✦</span>Explained differently (AI)</h3>${n.ai.slice().reverse().map(a => `<div class="aibox"><div class="tu-md">${AI.md(a.text)}</div><p class="muted" style="font-size:0.8125rem">${fmtDate(a.t)} · ${esc(AI.label(a.provider))} · AI-written: verify against the lesson and primary sources.</p></div>`).join("")}</section>` : ""}
 <section class="nsec"><h3><span class="nnum">✎</span>My edits &amp; comments</h3><label class="f">Rewrite this note in your own words<textarea data-lnedit="${obj}" placeholder="Your version of the note">${esc(n.edit)}</textarea></label><label class="f">Comment<textarea data-lncomment="${obj}" placeholder="Questions, project examples, reminders">${esc(n.comment)}</textarea></label>
 <div class="row"><button class="btn small" data-act="nunder" data-obj="${obj}">${n.understood ? "✓ Marked understood" : "I understand this now"}</button><button class="btn small ${st.ready && !n.archived ? "primary" : ""}" data-act="narch" data-obj="${obj}" ${st.ready || n.archived ? "" : "disabled"}>${n.archived ? "Reopen note" : "Archive note"}</button></div>
 <p class="muted" style="font-size:.85rem">${n.archived ? "Archived notes return automatically if you miss this objective again." : "Archiving unlocks after 3 correct answers on 2 different days since your last miss, with no new misses and a score of 75%+. Marking “understood” alone doesn't archive it."}</p></section>
@@ -261,7 +263,10 @@ function vSettings() {
   return `<div class="stack" style="gap:6px"><span class="eyebrow">Everything here is free</span><h1>Settings</h1></div>
 <section class="panel stack"><h2>Appearance &amp; accessibility</h2>
 <div class="row"><span style="min-width:110px">Theme</span>${[["auto", "Match device"], ["light", "Light"], ["dark", "Dark"]].map(([k, t]) => `<button class="chip ${p.theme === k ? "on" : ""}" data-act="pref" data-k="theme" data-v="${k}">${t}</button>`).join("")}</div>
-<div class="row"><span style="min-width:110px">Text size</span>${[90, 100, 115, 130].map(v => `<button class="chip ${p.text === v ? "on" : ""}" data-act="pref" data-k="text" data-v="${v}" aria-label="Text size ${v}%">${v}%</button>`).join("")}</div>
+<div class="row"><span style="min-width:110px">Text size</span>${[100, 115, 130, 150, 175].map(v => `<button class="chip ${p.text === v ? "on" : ""}" data-act="pref" data-k="text" data-v="${v}" aria-label="Text size ${v}%">${v}%</button>`).join("")}</div>
+<div class="row"><span style="min-width:110px">Font</span>${[["standard", "Standard"], ["legible", "Easy-read (Atkinson Hyperlegible)"]].map(([k, t]) => `<button class="chip ${p.font === k ? "on" : ""}" data-act="pref" data-k="font" data-v="${k}">${t}</button>`).join("")}</div>
+<div class="row"><span style="min-width:110px">Spacing</span>${[["normal", "Normal"], ["relaxed", "Relaxed lines and letters"]].map(([k, t]) => `<button class="chip ${p.spacing === k ? "on" : ""}" data-act="pref" data-k="spacing" data-v="${k}">${t}</button>`).join("")}</div>
+<p class="muted" style="margin:0">Easy-read uses a typeface designed for low-vision readers, with distinct letter shapes (I, l, 1 and 0, O look different). Settings stay on this device.</p>
 <div class="row"><span style="min-width:110px">Motion</span>${[["auto", "Follow device"], ["reduce", "Reduce animations"]].map(([k, t]) => `<button class="chip ${p.motion === k ? "on" : ""}" data-act="pref" data-k="motion" data-v="${k}">${t}</button>`).join("")}</div></section>
 
 ${voicePanel()}

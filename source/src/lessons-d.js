@@ -51,7 +51,7 @@ ARE.LESSONS.push({
 <g class="tip" data-tip="Parking|Beside or behind the building, not between the building and the street. Keeps the street wall and a direct pedestrian entry."><rect x="470" y="170" width="140" height="70" class="dg-accent2"/><text x="540" y="210" text-anchor="middle">Parking</text></g>
 <g class="tip" data-tip="Pedestrian entry|Accessible route straight from the public sidewalk and from accessible parking."><circle cx="355" cy="180" r="9" class="hs-dot"/><text x="372" y="196">Entry</text></g>
 <text x="320" y="290" text-anchor="middle">Street (south) · public sidewalk</text>
-<text x="30" y="36" font-size="10">N ↑</text>
+<text x="30" y="36" font-size="11">N ↑</text>
 </g></svg>`,
   formulas: [
     { name: "Daylight depth (rule of thumb)", f: "Useful daylight depth ≈ 1.5–2.5 × window head height" },
@@ -336,7 +336,7 @@ ARE.LESSONS.push({
 <g class="tip" data-tip="Turning space|60 in diameter circle or T-shaped space (ADA 304)."><circle cx="300" cy="150" r="70" class="dg-air" opacity=".7"/><text x="300" y="154" text-anchor="middle">60 in turning</text></g>
 <g class="tip" data-tip="Lavatory|Rim or counter 34 in max above the floor, with knee and toe clearance (ADA 606)."><rect x="380" y="40" width="50" height="40" class="dg-accent2"/><text x="405" y="64" text-anchor="middle">Lav</text></g>
 <g class="tip" data-tip="Door|32 in clear width minimum, with maneuvering clearance on the pull side (ADA 404)."><line x1="440" y1="180" x2="440" y2="230" class="dg-line" stroke-width="6"/><text x="450" y="210">Door</text></g>
-<line x1="84" y1="30" x2="116" y2="30" class="dg-line"/><text x="100" y="22" text-anchor="middle" font-size="10">16–18″</text>
+<line x1="84" y1="30" x2="116" y2="30" class="dg-line"/><text x="100" y="22" text-anchor="middle" font-size="11">16–18″</text>
 </g></svg>`,
   formulas: [
     { name: "Grade slope", f: "% = Δ elevation ÷ distance × 100" },

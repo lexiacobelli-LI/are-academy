@@ -126,8 +126,8 @@ ARE.LESSONS.push({
 <rect x="60" y="30" width="20" height="150" class="dg-soft"/><rect x="80" y="30" width="110" height="150" class="dg-hatch"/>
 <rect x="190" y="30" width="12" height="150" class="dg-soft"/><rect x="202" y="30" width="60" height="150" class="dg-accent2"/>
 <rect x="262" y="30" width="18" height="150" class="dg-soft"/><rect x="280" y="30" width="16" height="150" class="dg-accent"/>
-<text x="70" y="198" text-anchor="middle" font-size="10">Gyp</text><text x="135" y="198" text-anchor="middle" font-size="10">Batt R-19</text>
-<text x="232" y="198" text-anchor="middle" font-size="10">ci R-10</text><text x="288" y="198" text-anchor="middle" font-size="10">Clad</text>
+<text x="70" y="198" text-anchor="middle" font-size="11">Gyp</text><text x="135" y="198" text-anchor="middle" font-size="11">Batt R-19</text>
+<text x="232" y="198" text-anchor="middle" font-size="11">ci R-10</text><text x="288" y="198" text-anchor="middle" font-size="11">Clad</text>
 <text x="360" y="60">R films ≈ 0.68 + 0.17</text><text x="360" y="84">R gyp 0.45 · sheathing 0.62</text><text x="360" y="108">R cladding ≈ 0.6</text>
 <text x="360" y="140" font-weight="600">R_T ≈ 31.5  →  U ≈ 0.032</text>
 <text x="360" y="166" font-size="11">(clear-field values; framing lowers the whole-wall value)</text>
