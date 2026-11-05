@@ -1050,6 +1050,18 @@ body.exam-mode .content{background:var(--bg)}
 .pod-act{display:flex; gap:6px; flex:none; flex-wrap:wrap; justify-content:flex-end}
 @media (max-width:620px){ .pod-ep{flex-direction:column; align-items:stretch} .pod-act{justify-content:flex-start} }
 
+/* ---------- v9 refinement: flatter, quieter surfaces ---------- */
+.hm-plan, .hm-ch, .badge.got, .pstep, .ncard, .hm{background:var(--surface)}
+.badge.got{border-color:var(--sun)}
+.panel, .hm, .ncard, .pstep, .nsec, .lessoncard, .divcard, .pod-ep, .qcard{box-shadow:none; border-radius:var(--r)}
+.panel:hover, .hm:hover, .ncard:hover{transform:none}
+h1{font-size:clamp(1.45rem, 1.15rem + .9vw, 1.85rem)}
+/* section tabs for pages that share one navigation item */
+.ptabs{display:flex; gap:2px; border-bottom:1px solid var(--line2); margin-bottom:-8px; overflow-x:auto; scrollbar-width:none}
+.ptabs a{padding:10px 14px; color:var(--muted); text-decoration:none; font-weight:600; font-size:var(--t-base); border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap; transition:color var(--dur) var(--ease), border-color var(--dur) var(--ease)}
+.ptabs a:hover{color:var(--ink)}
+.ptabs a.on{color:var(--accent); border-bottom-color:var(--accent)}
+
 </style>
 </head><body><div id="app"><p style="padding:24px">Loading ARE Academy…</p></div>
 <noscript><p style="padding:24px">ARE Academy needs JavaScript enabled.</p></noscript>
@@ -4948,6 +4960,772 @@ Object.entries(T).forEach(([id, list]) => {
 });
 })();
 
+/* ---------- Question bank expansion (v9): compact rows → standard question objects ----------
+   Row: [objective, difficulty 1-3, format, stem, options, answer (index, or array for check-all), why-per-option, explanation, reference]
+   All items are original. References name the document and section only where the section was checked. */
+ARE.QX = (div, rows) => rows.forEach((r, i) => {
+  const [obj, diff, fmt, q, opts, ans, why, explain, ref] = r;
+  const lesson = (ARE.LESSONS.find(l => (l.obj || []).includes(obj)) || ARE.LESSONS.find(l => l.div === div) || {}).id;
+  const ms = Array.isArray(ans);
+  const id = `q-${div}-x${String(i + 1).padStart(2, "0")}`;
+  // Fixed, per-question order so the correct answer isn't always in the same position. Numeric answers stay in ascending order.
+  let order = opts.map((_, k) => k);
+  if (fmt !== "Calculation") {
+    let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    const rnd = () => { h = (h + 0x6D2B79F5) >>> 0; let t = Math.imul(h ^ (h >>> 15), 1 | h); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    for (let k = order.length - 1; k > 0; k--) { const j = Math.floor(rnd() * (k + 1)); [order[k], order[j]] = [order[j], order[k]]; }
+  }
+  const pos = (k) => order.indexOf(k);
+  ARE.Q.push({ id, div, obj, lesson, type: ms ? "ms" : "mc", diff, fmt: ms ? "Check all that apply" : fmt, pick: ms ? ans.length : undefined, q,
+    opts: order.map(k => opts[k]), ans: ms ? ans.map(pos).sort((x, y) => x - y) : pos(ans), why: order.map(k => why[k]), explain, ref });
+});
+
+ARE.QX("pcm", [
+["pcm-1.1", 2, "Scenario", "A 20-person firm has backlog equal to 2 months of revenue, and its utilization rate has dropped from 68% to 55% over two quarters. What is the most appropriate first response?",
+ ["Hire two senior designers to be ready for future work", "Increase business development effort and review staffing against the backlog", "Raise billing rates on current projects", "Cut the marketing budget to save overhead"], 1,
+ ["Adding staff with falling utilization deepens the problem.", "Correct. Low backlog and falling utilization both point to a shortage of work; the response is more pursuit and right-sizing staff plans.", "Rates on signed contracts are fixed; this does not create work.", "Cutting marketing reduces the pipeline when it is already thin."],
+ "Backlog shows how much work is under contract; utilization shows how much staff time is billable. Read together, they tell the firm whether to grow, hold or pursue more work.", "Architect's Handbook of Professional Practice — firm financial management"],
+["pcm-1.1", 1, "Multiple choice", "Which measure best tells a firm how many months its current staff can stay busy on signed work?",
+ ["Net multiplier", "Backlog", "Current ratio", "Overhead rate"], 1,
+ ["The net multiplier measures revenue earned per dollar of direct labor.", "Correct. Backlog is contracted fee not yet earned, often stated in months of revenue.", "The current ratio is a liquidity measure.", "The overhead rate compares indirect expense with direct labor."],
+ "Firms track backlog to plan hiring and marketing ahead of need.", "Architect's Handbook of Professional Practice — financial management"],
+["pcm-1.2", 2, "Multiple choice", "A firm pays a project architect a salary of $72,000 and lists the title 'Manager' in her offer letter. She spends most of her time producing drawings under supervision. What decides whether she is exempt from overtime under the federal Fair Labor Standards Act?",
+ ["Her job title", "Whether she is licensed", "Her salary level and actual job duties", "Whether she works more than 40 hours"], 2,
+ ["Titles do not decide exempt status.", "Licensure alone does not decide it.", "Correct. Exemption depends on meeting both the salary test and the duties test.", "Hours worked determine overtime owed, not exempt status."],
+ "Misclassifying staff as exempt is a common employment-law exposure for design firms.", "U.S. Department of Labor, FLSA exemption rules (29 CFR Part 541)"],
+["pcm-1.2", 2, "Check all that apply", "A firm is growing from 12 to 22 employees. Which three federal employment laws begin to apply at 15 employees? Select three.",
+ ["Title VII of the Civil Rights Act", "Americans with Disabilities Act (Title I, employment)", "Family and Medical Leave Act", "Age Discrimination in Employment Act", "Genetic Information Nondiscrimination Act (Title II)", "Fair Labor Standards Act minimum wage"], [0, 1, 4],
+ ["Correct. Title VII applies to employers with 15 or more employees.", "Correct. ADA Title I applies at 15 or more employees.", "FMLA applies at 50 or more employees.", "ADEA applies at 20 or more employees.", "Correct. GINA employment provisions apply at 15 or more employees.", "FLSA coverage is not set by a 15-employee threshold."],
+ "Employee-count thresholds are a frequent PcM test point: 15 (Title VII, ADA, GINA), 20 (ADEA), 50 (FMLA).", "U.S. EEOC coverage thresholds; U.S. Department of Labor (FMLA)"],
+["pcm-1.3", 2, "Scenario", "An architect learns that a former employee, now at a competing firm, used the architect's copyrighted drawings for a new client without permission. Under the AIA Code of Ethics, what obligation does this situation mainly involve?",
+ ["Obligations to the public", "Obligations to the profession and to colleagues, including respect for intellectual property", "Obligations to the environment", "No ethical issue; it is only a legal matter"], 1,
+ ["Public obligations concern health, safety and welfare and the law.", "Correct. The Code addresses respect for others' professional work and intellectual property.", "Environmental obligations concern sustainable practice.", "The Code addresses this conduct directly, in addition to any legal remedy."],
+ "The AIA Code of Ethics is organized by obligation: general, to the public, to the client, to the profession, to colleagues and to the environment.", "AIA Code of Ethics and Professional Conduct"],
+["pcm-1.3", 1, "Multiple choice", "An architect is asked by a client to sign a certificate stating that construction complies with the documents in every respect. The architect has made only periodic site visits. What is the ethical and professional response?",
+ ["Sign it, because the client is paying for the service", "Decline, or revise the certificate to state only what the architect knows from site visits", "Sign it if the contractor also signs", "Sign it and add the cost to additional services"], 1,
+ ["Signing a statement the architect cannot know to be true is a misrepresentation.", "Correct. Architects should certify only what they have the knowledge to certify.", "The contractor's signature does not give the architect knowledge.", "Payment does not cure a false certification."],
+ "Certifications should be limited to the architect's actual knowledge, information and belief from observation.", "AIA Code of Ethics; AIA B101–2017 (certificates)"],
+["pcm-1.4", 2, "Scenario", "A roof leaks one year after completion. The detail met common industry practice in the region at the time of design. Which statement best describes the architect's exposure under the standard of care?",
+ ["The architect is liable because the roof failed", "The architect is not liable if the design met what a reasonably prudent architect would have done in similar circumstances", "The architect is liable unless the contractor admits fault", "The architect is never liable after substantial completion"], 1,
+ ["A failure alone does not prove negligence.", "Correct. Negligence requires a breach of the standard of care, not merely a bad outcome.", "Liability depends on the architect's own conduct, not an admission by others.", "Claims can be brought after completion within statutes of limitation and repose."],
+ "The standard of care measures conduct against peers, not perfection.", "AIA B101–2017, §2.2"],
+["pcm-1.4", 3, "Multiple choice", "Which clause in a proposed agreement best preserves the architect's standard of care?",
+ ["'The Architect shall perform its services to the highest standards in the industry.'", "'The Architect shall perform its services consistent with the professional skill and care ordinarily provided by architects practicing in the same or similar locality under the same or similar circumstances.'", "'The Architect certifies that the design complies with all applicable codes.'", "'The Architect shall ensure the Project is completed within budget.'"], 1,
+ ["'Highest standards' can be read as a heightened duty above ordinary care.", "Correct. This is the ordinary negligence standard.", "A certification of full code compliance is an absolute promise.", "Ensuring the budget is a guarantee of an outcome outside the architect's control."],
+ "Words like highest, ensure, certify and guarantee raise the duty and may not be covered by professional liability insurance.", "AIA B101–2017, §2.2"],
+["pcm-2.1", 2, "Calculation", "A firm's net operating revenue is $1,800,000 and direct labor is $600,000. What is its net multiplier?",
+ ["2.0", "2.5", "3.0", "3.5"], 2,
+ ["Check the division: 1,800,000 ÷ 600,000.", "Check the division.", "Correct. 1,800,000 ÷ 600,000 = 3.0.", "Too high."],
+ "Net multiplier = net operating revenue ÷ direct labor. It must exceed the break-even rate (1 + overhead rate) for the firm to profit.", "Architect's Handbook of Professional Practice — financial management"],
+["pcm-2.1", 2, "Multiple choice", "A firm shows a profit on its income statement but cannot make payroll this month. What is the most likely cause?",
+ ["Its overhead rate is too low", "Large accounts receivable that have not been collected", "Its utilization rate is too high", "It uses accrual accounting incorrectly"], 1,
+ ["A low overhead rate helps profitability.", "Correct. Profit recorded on an accrual basis is not cash until clients pay.", "High utilization improves earnings.", "Accrual accounting is normal; the issue is collection."],
+ "Cash flow and profit differ. Aging receivables are the most common cause of cash shortfalls in design firms.", "Architect's Handbook of Professional Practice — financial management"],
+["pcm-2.2", 2, "Multiple choice", "An architect retires and closes the practice. Its professional liability policy is claims-made. What should the architect buy to stay covered for claims on past projects?",
+ ["An occurrence policy", "An extended reporting period (tail) endorsement", "A builder's risk policy", "Additional general liability limits"], 1,
+ ["Professional liability for architects is almost always written claims-made.", "Correct. A tail lets claims be reported after the policy ends for work done while it was in force.", "Builder's risk covers the work under construction.", "General liability does not cover professional errors."],
+ "Claims-made coverage responds only while a policy is in force, so a tail is needed when coverage stops.", "Architect's Handbook of Professional Practice — risk management and insurance"],
+["pcm-2.2", 2, "Multiple choice", "Which insurance responds to a claim that the architect's design error caused the owner extra construction cost?",
+ ["Commercial general liability", "Professional liability (errors and omissions)", "Workers' compensation", "Property insurance"], 1,
+ ["CGL covers bodily injury and property damage from operations, and usually excludes professional services.", "Correct.", "Workers' compensation covers employee injuries.", "Property insurance covers the firm's own property."],
+ "Know which policy covers which risk: professional errors (PL), premises and operations (CGL), employees (WC), vehicles (auto).", "Architect's Handbook of Professional Practice — insurance"],
+["pcm-2.3", 2, "Scenario", "A firm wants to enter the healthcare market but has no healthcare projects in its portfolio. Which strategy carries the least risk?",
+ ["Bid on a large hospital as the prime architect", "Team with a firm experienced in healthcare on a smaller project while building staff expertise", "Lower fees to win the first healthcare project", "Rebrand the firm as a healthcare specialist immediately"], 1,
+ ["Without experience the firm is unlikely to be selected and faces high delivery risk.", "Correct. Teaming builds qualifications and spreads risk.", "Low fees add financial risk without adding expertise.", "Claims without a portfolio damage credibility."],
+ "Market entry typically uses teaming, targeted hiring and smaller projects before leading major commissions.", "Architect's Handbook of Professional Practice — marketing and business development"],
+["pcm-2.3", 1, "Multiple choice", "In a SWOT analysis, a new competitor opening an office in the firm's city is an example of a:",
+ ["Strength", "Weakness", "Opportunity", "Threat"], 3,
+ ["Strengths are internal advantages.", "Weaknesses are internal shortcomings.", "Opportunities are favorable external conditions.", "Correct. It is an external condition that may harm the firm."],
+ "Strengths and weaknesses are internal; opportunities and threats are external.", "Architect's Handbook of Professional Practice — strategic planning"],
+["pcm-3.1", 2, "Scenario", "A long-time client asks the firm to start design immediately on a verbal promise that a contract will follow. What is the best response?",
+ ["Begin full design to preserve the relationship", "Ask for a short written authorization defining initial scope and compensation before starting", "Refuse to work with the client again", "Start work and bill at double rates"], 1,
+ ["Working without written scope exposes the firm to unpaid work and disputes.", "Correct. A letter agreement or authorization protects both parties until the full agreement is signed.", "This is unnecessary and damages the relationship.", "Rates not agreed in writing are hard to collect."],
+ "Written authorization before work begins is basic risk management.", "Architect's Handbook of Professional Practice — owner-architect agreements"],
+["pcm-3.1", 2, "Multiple choice", "During a go/no-go review, which factor most strongly argues for declining a project?",
+ ["The client is new to the firm", "The project type matches the firm's strengths", "The client's budget and schedule are unrealistic and the client refuses to discuss them", "The project is in a nearby city"], 2,
+ ["A new client alone is not a reason to decline.", "Fit with the firm's strengths argues for pursuing it.", "Correct. Unrealistic constraints the client will not discuss signal high risk of loss and dispute.", "Location alone is rarely decisive."],
+ "Go/no-go decisions weigh fit, client, risk, fee and capacity.", "Architect's Handbook of Professional Practice — project selection"],
+["pcm-3.2", 2, "Multiple choice", "An owner needs construction to start before design is complete and wants a single point of responsibility for both design and construction. Which delivery method fits best?",
+ ["Design-bid-build", "Design-build", "Multiple prime contracts", "Owner-architect agreement with competitive bidding"], 1,
+ ["Design-bid-build requires complete documents before bidding.", "Correct. One entity provides design and construction and can overlap them.", "Multiple primes divide responsibility among several contractors.", "This is design-bid-build."],
+ "Design-build gives a single point of responsibility and allows fast-tracking.", "Architect's Handbook of Professional Practice — project delivery"],
+["pcm-3.2", 2, "Multiple choice", "When is hourly compensation with a not-to-exceed maximum most appropriate?",
+ ["When scope is fully defined and repetitive", "When scope is uncertain, such as early studies, but the owner needs a cost limit", "When the owner wants the architect to share savings", "For construction contract administration only"], 1,
+ ["A defined scope suits a stipulated sum.", "Correct. Hourly pay handles uncertainty while the cap protects the owner.", "Shared savings is an incentive arrangement.", "Hourly with a cap can be used in any phase."],
+ "Match compensation to how well the scope is defined.", "AIA B101–2017, Article 11; Architect's Handbook — compensation"],
+["pcm-3.3", 3, "Scenario", "A municipal client's contract requires the architect to indemnify the city for all claims 'arising out of the Project'. What is the most appropriate response?",
+ ["Accept it, since public clients do not negotiate", "Propose limiting the indemnity to claims caused by the architect's negligence, to the extent of that negligence", "Accept it and buy more general liability insurance", "Reject the project without discussion"], 1,
+ ["Many public owners will consider reasonable changes.", "Correct. Limiting indemnity to the architect's own negligence keeps it insurable.", "Broad indemnity for others' acts is not covered by professional liability insurance.", "Negotiation should come first."],
+ "Uninsurable contractual obligations are a major practice risk; review them with counsel and the insurance broker.", "Architect's Handbook of Professional Practice — risk management"],
+["pcm-3.3", 2, "Multiple choice", "Which is the most effective way for a firm to reduce the risk of fee disputes on projects with changing scope?",
+ ["Avoid documenting scope so it can change freely", "Define scope clearly in the agreement and get written authorization before performing additional services", "Absorb extra work to keep the client happy", "Bill all extra work at the end of the project"], 1,
+ ["Undefined scope causes disputes.", "Correct.", "Absorbing work erodes profit and sets expectations.", "Late billing surprises clients and is harder to collect."],
+ "Clear scope and written change authorization are the core controls for scope creep.", "AIA B101–2017, Article 4 (supplemental and additional services)"],
+["pcm-4.1", 2, "Multiple choice", "Two architects form a professional corporation. One makes a design error that leads to a claim. Which statement is correct?",
+ ["Neither architect is personally liable", "The architect who made the error can be personally liable for their own negligence", "Only the corporation is ever liable", "The other architect is personally liable for the error"], 1,
+ ["No entity shields a professional from their own negligence.", "Correct. The corporation shields owners from business debts and others' negligence, not their own.", "The negligent professional can also be named.", "Owners are generally not liable for a colleague's negligence in a corporation."],
+ "Entity choice affects tax and liability for business debts; it never removes liability for one's own professional negligence.", "Architect's Handbook of Professional Practice — business structures"],
+["pcm-4.1", 1, "Multiple choice", "Which business structure offers no protection for the owner's personal assets from business debts?",
+ ["Limited liability company", "Sole proprietorship", "Professional corporation", "Limited liability partnership"], 1,
+ ["An LLC shields members from business debts.", "Correct. The owner and the business are legally the same.", "A PC shields owners from business debts.", "An LLP shields partners from some partnership liabilities."],
+ "Sole proprietorships and general partnerships provide no liability shield.", "Architect's Handbook of Professional Practice — business structures"],
+["pcm-4.2", 2, "Multiple choice", "A firm keeps finding the same detailing errors on different projects. Which practice resource best addresses this?",
+ ["A larger project budget", "A firm-wide library of reviewed standard details with lessons learned", "More site visits", "A new logo and website"], 1,
+ ["Budget alone does not fix repeated errors.", "Correct. Standard details and lessons learned prevent repeat errors.", "Site visits find errors after they are built.", "Branding does not affect technical quality."],
+ "Knowledge management turns project experience into firm standards.", "Architect's Handbook of Professional Practice — knowledge management and quality"],
+["pcm-4.2", 2, "Multiple choice", "A firm is adopting BIM across all projects. Which document should it create first so teams model consistently?",
+ ["A marketing brochure", "A BIM execution plan or firm BIM standards defining roles, model content and exchange", "An employee handbook", "A project closeout checklist"], 1,
+ ["Marketing does not guide modeling.", "Correct. Standards and execution plans define level of development, file naming and responsibilities.", "Employee handbooks cover HR policies.", "Closeout checklists come at the end of projects."],
+ "Consistent processes depend on written standards that teams can follow.", "AIA E203/G202 (BIM protocol); Architect's Handbook — technology in practice"]
+]);
+
+ARE.QX("pjm", [
+["pjm-1.1", 2, "Scenario", "A university hires the firm for a research lab with complex mechanical and vibration-control needs. When assembling the team, what should the project manager prioritize first?",
+ ["The least expensive consultants available", "Consultants and staff with laboratory experience that matches the project's technical risks", "Staff who are currently least busy", "The largest possible team to show commitment"], 1,
+ ["Low cost does not address technical risk.", "Correct. Team selection should match the project's specific technical demands.", "Availability matters but comes after capability.", "Size is not a substitute for relevant expertise."],
+ "Team criteria: relevant expertise, availability, client requirements, and budget, in roughly that order for complex work.", "Architect's Handbook of Professional Practice — project management"],
+["pjm-1.1", 1, "Multiple choice", "The owner requires that the architect's consultants be pre-approved. Where should this requirement be recorded?",
+ ["Only in meeting minutes", "In the owner–architect agreement and reflected in the architect–consultant agreements", "In the specifications", "Nowhere; it is informal"], 1,
+ ["Minutes record discussion, not contract terms.", "Correct. Contract requirements must flow down to consultants.", "Specifications govern construction, not design team selection.", "Owner requirements should be documented."],
+ "Requirements in the prime agreement should flow down to consultant agreements (for example AIA C401).", "AIA B101–2017; AIA C401–2017"],
+["pjm-1.2", 2, "Calculation", "The CD phase budget is $90,000 of labor. The blended rate is $125/h. How many hours are available for CDs?",
+ ["580", "640", "720", "800"], 2,
+ ["Check: 90,000 ÷ 125.", "Check the division.", "Correct. 90,000 ÷ 125 = 720 hours.", "Too high."],
+ "Converting fee to hours lets the PM plan staffing by phase.", "Architect's Handbook of Professional Practice — work planning"],
+["pjm-1.2", 2, "Scenario", "Two projects need the same senior technical architect in the same month. What should the project manager do first?",
+ ["Have the architect work both projects at 150% effort", "Raise the conflict with firm leadership to set priorities and reassign or reschedule work", "Delay both projects", "Hire a temporary architect without telling either client"], 1,
+ ["Overloading staff increases errors.", "Correct. Resource conflicts across projects are resolved by firm-level prioritization.", "Delaying both harms both clients.", "Staffing changes should be planned and, where relevant, communicated."],
+ "Firm-wide resource planning balances staff across projects.", "Architect's Handbook of Professional Practice — resource management"],
+["pjm-2.1", 2, "Multiple choice", "What should a project work plan include?",
+ ["Only the construction schedule", "Scope, tasks, staffing, hours or fee by phase, schedule and deliverables", "The contractor's means and methods", "The owner's financing plan"], 1,
+ ["A work plan covers the design team's work, not only construction.", "Correct.", "Means and methods belong to the contractor.", "Owner financing is not part of the architect's work plan."],
+ "The work plan turns the fee into tasks, people, hours and dates so progress can be tracked.", "Architect's Handbook of Professional Practice — project work plans"],
+["pjm-2.1", 3, "Calculation", "Earned value is $40,000, actual cost is $50,000 and the budget at completion is $120,000. What is the estimate at completion (EAC = BAC ÷ CPI)?",
+ ["$96,000", "$120,000", "$150,000", "$160,000"], 2,
+ ["This assumes better-than-planned performance.", "This ignores the overrun to date.", "Correct. CPI = 40,000 ÷ 50,000 = 0.8; 120,000 ÷ 0.8 = $150,000.", "Check the CPI."],
+ "A CPI below 1.0 means the work is costing more than budgeted; the EAC projects that trend to the end.", "Project Management Institute earned value formulas; Architect's Handbook — project controls"],
+["pjm-2.2", 2, "Multiple choice", "Activity B has an early start of day 10 and a late start of day 14. What is its total float?",
+ ["0 days", "4 days", "10 days", "14 days"], 1,
+ ["Zero float would mean B is on the critical path.", "Correct. Total float = LS − ES = 14 − 10 = 4 days.", "This is the early start.", "This is the late start."],
+ "Activities with zero total float form the critical path.", "Critical path method"],
+["pjm-2.2", 2, "Scenario", "Agency review is expected to take 8 weeks, but the schedule shows 3. What should the project manager do?",
+ ["Keep 3 weeks to pressure the agency", "Revise the schedule to a realistic review duration and inform the owner of the effect", "Remove the review from the schedule", "Ask the contractor to absorb the delay"], 1,
+ ["An unrealistic schedule sets up failure.", "Correct. Schedules should reflect realistic durations, and the owner needs to know the impact.", "Required reviews cannot be skipped.", "There is no contractor during design."],
+ "Schedules must include realistic third-party durations such as permits and agency approvals.", "Architect's Handbook of Professional Practice — scheduling"],
+["pjm-2.3", 1, "Multiple choice", "The owner verbally approves a layout change during a site walk. What should the architect do?",
+ ["Rely on the verbal approval", "Confirm the decision in writing, such as meeting notes or a confirming email, and note any fee or schedule effect", "Wait for the owner to raise it again", "Tell only the consultants"], 1,
+ ["Verbal approvals are easily disputed.", "Correct. Written confirmation creates a record.", "Waiting creates uncertainty and delay.", "The owner and team all need the record."],
+ "Decisions are confirmed in writing and distributed to those affected.", "Architect's Handbook of Professional Practice — project communication"],
+["pjm-2.3", 2, "Multiple choice", "During construction under A201–2017, what does the contract require of the owner and contractor when they communicate about matters that affect the architect's services?",
+ ["Nothing; they may communicate privately", "They must include the architect in those communications", "They must communicate only through the lender", "They must copy the building official"], 1,
+ ["Leaving the architect out undermines its ability to administer the contract.", "Correct. A201–2017 §4.2.4 requires the owner and contractor to include the architect.", "Lenders are not parties to construction communication.", "The building official enforces codes, not the contract."],
+ "Including the architect keeps the record complete. (Earlier editions routed communications through the architect; 2017 requires inclusion.)", "AIA A201–2017, §4.2.4"],
+["pjm-3.1", 2, "Multiple choice", "Under B101–2017, when the owner asks for a service not included in basic or supplemental services, what must happen before the architect performs it?",
+ ["Nothing; architects must perform all requested work", "The owner must authorize it in writing as an Additional Service", "The contractor must agree", "The architect performs it and bills later without notice"], 1,
+ ["Services outside the agreement are not automatically included.", "Correct. Additional Services require the owner's written authorization.", "The contractor is not party to the owner–architect agreement.", "Working without authorization risks non-payment."],
+ "Basic, Supplemental and Additional Services are separate categories in B101.", "AIA B101–2017, Article 4"],
+["pjm-3.1", 2, "Multiple choice", "Under B101–2017, who owns the copyright in the architect's drawings and specifications?",
+ ["The owner, once paid", "The architect and its consultants, who grant the owner a license to use them for the project", "The contractor", "The building department"], 1,
+ ["Payment gives a license, not ownership.", "Correct. The architect retains copyright and grants a nonexclusive license.", "The contractor has no ownership.", "Filing does not transfer copyright."],
+ "The license is for the project; reuse on other projects needs agreement.", "AIA B101–2017, Article 7"],
+["pjm-3.2", 2, "Multiple choice", "What is the main purpose of AIA C401 in a project?",
+ ["It is the agreement between owner and contractor", "It is the agreement between architect and consultant, flowing down the prime agreement's obligations", "It is a change order form", "It is the general conditions"], 1,
+ ["Owner–contractor agreements are the A100 series.", "Correct.", "Change orders use G701.", "General conditions are A201."],
+ "Consultants should carry the same obligations and protections the architect accepted from the owner.", "AIA C401–2017"],
+["pjm-3.2", 3, "Scenario", "The owner–architect agreement requires $2 million in professional liability coverage. The structural engineer carries $1 million. What should the architect do?",
+ ["Nothing, since the architect's policy covers everything", "Require the consultant to meet the same coverage, or negotiate a change with the owner before signing", "Pay the consultant's claims personally", "Hide the difference from the owner"], 1,
+ ["The architect's policy may not respond to the consultant's errors, and the prime requirement may apply to consultants.", "Correct. Prime obligations should flow down, or be adjusted with the owner.", "This is not a risk strategy.", "Misrepresenting coverage is unethical."],
+ "Flow-down of insurance, scope and schedule is a core C401 issue.", "AIA C401–2017; Architect's Handbook — consultant agreements"],
+["pjm-3.3", 2, "Multiple choice", "Which document sets out the duties of the owner, contractor and architect during construction under the standard AIA family?",
+ ["B101", "A201 General Conditions", "C401", "G704"], 1,
+ ["B101 is the owner–architect agreement.", "Correct. A201 defines construction-phase roles and procedures.", "C401 is architect–consultant.", "G704 is the certificate of substantial completion."],
+ "The architect is not a party to the owner–contractor agreement but has roles defined in A201.", "AIA A201–2017"],
+["pjm-3.3", 2, "Multiple choice", "Under A201–2017, who is responsible for construction means, methods, techniques, sequences and procedures?",
+ ["The architect", "The owner", "The contractor", "The building official"], 2,
+ ["The architect does not control means and methods.", "The owner relies on the contractor for these.", "Correct. A201 places these solely with the contractor.", "The official checks code compliance."],
+ "Keeping means and methods with the contractor is central to the architect's risk position.", "AIA A201–2017, §3.3.1"],
+["pjm-3.4", 2, "Multiple choice", "Under B101–2017, the owner furnishes a site survey that later proves inaccurate. Which statement is correct?",
+ ["The architect is responsible for verifying every survey dimension", "The architect is entitled to rely on the accuracy of information the owner furnishes", "The contractor bears the cost", "The survey is the architect's work product"], 1,
+ ["B101 does not require the architect to verify owner-furnished services.", "Correct.", "Responsibility follows the contract, not the contractor.", "The survey is the owner's responsibility."],
+ "B101 lets the architect rely on owner-provided information but expects the architect to report errors it notices.", "AIA B101–2017, §3.1.2, §5.4 and §5.5"],
+["pjm-3.4", 2, "Scenario", "The owner hires its own food-service consultant. What is the architect's role?",
+ ["The architect is responsible for the consultant's design", "The architect coordinates its services with the owner's consultant", "The architect has no contact with the consultant", "The architect must re-engineer the kitchen"], 1,
+ ["The owner contracts with and is responsible for its own consultants.", "Correct. B101 requires coordination with services the owner provides.", "Coordination is required.", "Redesign is not required."],
+ "Coordination is not responsibility for another party's design.", "AIA B101–2017, §3.1.2"],
+["pjm-4.1", 2, "Scenario", "At the end of DD, the architect's estimate is 12% over the owner's budget. What should the project manager do first?",
+ ["Continue into CDs and hope bids come in low", "Notify the owner and review options such as scope reduction, value engineering or a budget increase", "Remove the cost estimate from the deliverables", "Ask the contractor to guarantee the price"], 1,
+ ["Hope is not a cost strategy.", "Correct. Budget variances should be raised early, with options.", "Hiding the estimate is a breach of duty.", "There is no contractor yet in design-bid-build."],
+ "Monitoring cost at each phase lets the team correct course while changes are cheap.", "AIA B101–2017, Article 6"],
+["pjm-4.1", 1, "Multiple choice", "Which tool best shows whether design progress is keeping pace with fee spent?",
+ ["The specification table of contents", "Earned value comparison of percent complete against budget spent", "The marketing plan", "The door schedule"], 1,
+ ["This is not a progress tool.", "Correct.", "Not related.", "Not related."],
+ "Comparing earned value with actual cost shows performance, not just spending.", "Architect's Handbook of Professional Practice — project controls"],
+["pjm-4.2", 2, "Scenario", "The owner keeps adding small requests, each 'just a quick change'. Together they have consumed 15% of the DD budget. What is the best response?",
+ ["Continue absorbing the requests", "Track the changes, tell the owner of the cumulative impact, and request authorization for Additional Services", "Stop answering the owner's emails", "Quietly reduce quality elsewhere"], 1,
+ ["Absorbing scope creep erodes profit.", "Correct. Document, communicate, and get authorization.", "This damages the relationship.", "Reducing quality violates the standard of care."],
+ "Scope creep is managed by tracking changes and getting written authorization.", "AIA B101–2017, §4.2"],
+["pjm-4.2", 2, "Multiple choice", "A change in the owner's program after DD approval most likely entitles the architect to:",
+ ["Nothing", "Compensation for Additional Services and an adjusted schedule", "Termination for cause", "A larger construction budget"], 1,
+ ["Program changes after approval usually require revisions outside the original scope.", "Correct.", "A change is not a breach by the owner.", "The construction budget is the owner's decision."],
+ "Revisions due to owner-directed changes after approval are an Additional Service under B101.", "AIA B101–2017, §4.2"],
+["pjm-4.3", 1, "Multiple choice", "Why should a firm keep a complete record of decisions, transmittals and approvals?",
+ ["Only for marketing", "To support project delivery, resolve disputes and defend claims", "Because building officials require it", "To increase fees"], 1,
+ ["Records serve more than marketing.", "Correct.", "Officials require permit documents, not the firm's whole record.", "Records do not raise fees."],
+ "Good records are a primary risk-management tool.", "Architect's Handbook of Professional Practice — project records"],
+["pjm-4.3", 2, "Multiple choice", "Which practice best protects the firm's project record?",
+ ["Storing files on individual laptops", "A consistent filing structure on a backed-up central system with version control", "Printing everything and discarding digital files", "Letting each consultant keep the only copy"], 1,
+ ["Personal devices are easily lost.", "Correct.", "Paper alone is hard to search and share.", "The firm needs its own complete record."],
+ "Consistent, backed-up records are part of firm policy.", "Architect's Handbook of Professional Practice — document management"],
+["pjm-4.4", 2, "Scenario", "The fire marshal and the building official interpret an exit requirement differently. What should the architect do?",
+ ["Follow whichever is cheaper", "Meet with both officials to reach a written, consistent interpretation before proceeding", "Ignore the fire marshal", "Ask the contractor to decide in the field"], 1,
+ ["Cost does not decide code compliance.", "Correct. Conflicting AHJ interpretations should be resolved and documented early.", "Both may have jurisdiction.", "Unresolved code issues cause rework."],
+ "Early meetings with all authorities having jurisdiction reduce later redesign.", "Architect's Handbook of Professional Practice — codes and regulations"],
+["pjm-4.4", 1, "Multiple choice", "Who is the authority having jurisdiction (AHJ) for enforcing the building code on most projects?",
+ ["The architect", "The building official of the jurisdiction", "The owner", "The contractor"], 1,
+ ["Architects design to the code but do not enforce it.", "Correct.", "Owners must comply but do not enforce.", "Contractors must comply but do not enforce."],
+ "AHJs include building officials, fire marshals, health departments and others, depending on the project.", "International Building Code, Chapter 1 (administration)"],
+["pjm-5.1", 2, "Multiple choice", "An architect licensed in one state is asked to seal drawings for a project in another state where she is not licensed. What is required?",
+ ["Nothing; one license is valid everywhere", "She must obtain a license in the project's jurisdiction before sealing", "She may seal if a local architect reviews the drawings", "She may seal if the owner agrees"], 1,
+ ["Licensure is by jurisdiction.", "Correct. NCARB certification can help her get a reciprocal license, but the license is required.", "Another architect's review does not license her.", "Owner consent does not replace licensure."],
+ "Practicing or sealing without a license in the jurisdiction violates registration laws.", "NCARB; state registration laws"],
+["pjm-5.1", 2, "Multiple choice", "What does 'responsible control' mean for an architect sealing documents?",
+ ["The architect owns the firm", "The architect exercised the level of control over the technical work required by the jurisdiction to seal it", "The architect reviewed the cover sheet", "The architect approved the fee"], 1,
+ ["Ownership is not required.", "Correct.", "A cursory review is not responsible control.", "Fee approval is unrelated."],
+ "Sealing work prepared without responsible control is a registration-law violation.", "NCARB Legislative Guidelines and Model Law"],
+["pjm-5.2", 2, "Multiple choice", "What is the difference between quality assurance and quality control?",
+ ["They are the same", "Quality assurance is the system of standards that prevents errors; quality control is the checking that finds them", "Quality control happens only during construction", "Quality assurance is performed by the contractor"], 1,
+ ["They are related but distinct.", "Correct.", "QC happens throughout design.", "QA is the firm's own process."],
+ "QA is preventive; QC is detective.", "Architect's Handbook of Professional Practice — quality management"],
+["pjm-5.2", 2, "Scenario", "A firm wants to reduce claims on its projects. Which step has the greatest effect?",
+ ["Increase professional liability limits only", "Build structured QC reviews at set milestones into every work plan", "Avoid documenting decisions", "Reduce the number of drawings"], 1,
+ ["Higher limits transfer risk but do not reduce errors.", "Correct. Planned reviews catch errors before issue.", "Poor records increase risk.", "Fewer drawings can mean less information, not fewer errors."],
+ "Budget time for QC; unplanned reviews get skipped under deadline pressure.", "Architect's Handbook of Professional Practice — quality management"],
+["pjm-5.3", 2, "Multiple choice", "Which review is most likely to catch a sprinkler main that conflicts with a ceiling height shown on the reflected ceiling plan?",
+ ["A spelling check of the specifications", "An interdisciplinary coordination review of architectural and fire protection drawings", "A cost estimate update", "A code review of exit widths"], 1,
+ ["Not related.", "Correct.", "Cost reviews do not compare spatial information.", "Exit widths do not involve ceiling space."],
+ "Overlaying disciplines at set milestones catches spatial conflicts.", "Architect's Handbook of Professional Practice — quality management"],
+["pjm-5.3", 2, "Multiple choice", "When should interdisciplinary coordination reviews happen?",
+ ["Only once, just before bidding", "At planned milestones during DD and CD, with time to fix issues", "Only after construction starts", "Only when the owner asks"], 1,
+ ["A single late review leaves no time to correct issues.", "Correct.", "Finding conflicts in the field is costly.", "Coordination is the design team's responsibility."],
+ "Plan reviews at milestones in the work plan.", "Architect's Handbook of Professional Practice — quality management"],
+["pjm-5.4", 2, "Scenario", "Value engineering proposes replacing the specified daylighting system with standard windows to cut cost. The owner's main goal was a daylit library. What should the architect do?",
+ ["Accept any change that reduces cost", "Explain how the change affects the owner's design objectives so the owner can make an informed decision", "Refuse to discuss cost reductions", "Make the change without telling the owner"], 1,
+ ["Cost is one goal among several.", "Correct. The architect protects design intent by explaining trade-offs.", "Cost discussions are part of the service.", "The owner must decide."],
+ "Maintaining design integrity means making the impact of changes on project goals visible.", "Architect's Handbook of Professional Practice — design quality"],
+["pjm-5.4", 1, "Multiple choice", "Which document best records the owner's design objectives so they can be checked throughout the project?",
+ ["The door hardware schedule", "The approved program and project goals statement", "The payment application", "The punch list"], 1,
+ ["Not related.", "Correct.", "Payment applications track construction cost.", "Punch lists track incomplete work."],
+ "Clear, written objectives are the benchmark for later decisions.", "Architect's Handbook of Professional Practice — programming"]
+]);
+
+ARE.QX("pa", [
+["pa-1.1", 2, "Multiple choice", "In a cold climate in the northern hemisphere, which orientation of the long axis of a building best captures winter sun?",
+ ["North–south", "East–west, with the main glazing facing south", "Northeast–southwest", "Orientation does not matter"], 1,
+ ["A north–south long axis exposes large east and west façades to low-angle sun.", "Correct. An east–west axis gives a long south façade for winter gain that is easy to shade in summer.", "This gives a less favorable compromise.", "Orientation strongly affects heating and cooling loads."],
+ "Elongate east–west and glaze south for passive heating; minimize west glazing.", "Brown & DeKay, Sun, Wind & Light"],
+["pa-1.1", 2, "Scenario", "A community center site sits next to a well-used public park and a transit stop. Which is the strongest socio-cultural opportunity for the design?",
+ ["Place parking between the building and the park", "Orient the main entry and public spaces toward the park and transit stop", "Screen the building from the park with a wall", "Locate service areas facing the transit stop"], 1,
+ ["Parking would cut the building off from the park.", "Correct. Linking public spaces to existing activity strengthens use and access.", "A wall rejects the asset.", "Service areas should face away from public approaches."],
+ "Site analysis looks for existing patterns of use and connection to build on.", "Architect's Handbook of Professional Practice — site analysis"],
+["pa-1.2", 2, "Multiple choice", "A geotechnical report shows expansive clay soils across the site. What does this most directly affect?",
+ ["Exterior color selection", "Foundation design and site drainage", "Parking ratio", "Window U-factor"], 1,
+ ["Not related.", "Correct. Expansive clays swell when wet and shrink when dry, so foundations and drainage must address movement.", "Parking is set by zoning.", "Not related."],
+ "Soil conditions drive foundation type, cost and drainage design.", "Geotechnical practice; Ching, Building Construction Illustrated"],
+["pa-1.2", 2, "Multiple choice", "Part of the site lies within a mapped 100-year floodplain. What is the most appropriate planning response?",
+ ["Ignore it if it has not flooded recently", "Locate the building outside the flood hazard area where possible, or elevate it as required by code and local ordinance", "Put the parking structure below grade in the floodplain", "Rely on the owner's insurance"], 1,
+ ["Recent history does not change the regulatory map.", "Correct.", "Below-grade space in a floodplain is high risk and often restricted.", "Insurance does not satisfy regulations."],
+ "Floodplain rules come from codes (IBC §1612 and ASCE 24) and local ordinances.", "2021 IBC §1612"],
+["pa-1.3", 2, "Multiple choice", "Which site strategy best reduces stormwater runoff from a new development?",
+ ["Increase impervious paving", "Use bioswales, permeable paving and rain gardens to infiltrate water on site", "Pipe all water directly to the street", "Remove existing trees"], 1,
+ ["Impervious surfaces increase runoff.", "Correct.", "Piping moves the problem downstream.", "Trees intercept rainfall and reduce runoff."],
+ "Low-impact development manages water where it falls.", "U.S. EPA green infrastructure guidance"],
+["pa-1.3", 1, "Multiple choice", "Which onsite resource can directly reduce a building's potable water use for toilets and irrigation?",
+ ["Solar panels", "Rainwater harvesting", "Geothermal wells", "A green roof alone"], 1,
+ ["Solar panels produce electricity.", "Correct. Captured rainwater can replace potable water for non-potable uses where permitted.", "Geothermal wells exchange heat.", "Green roofs retain water but do not supply it."],
+ "Non-potable reuse must meet local plumbing and health rules.", "U.S. EPA; local plumbing codes"],
+["pa-2.1", 2, "Multiple choice", "Early in programming, why should the architect identify the likely occupancy group?",
+ ["It decides the building's color scheme", "It affects allowable height and area, egress, fire protection and construction type", "It is only needed at permit submission", "It sets the owner's budget"], 1,
+ ["Not related.", "Correct.", "Waiting until permit risks major redesign.", "Budget is the owner's decision, though occupancy affects cost."],
+ "Occupancy classification under IBC Chapter 3 drives many later code requirements.", "2021 IBC Chapter 3"],
+["pa-2.1", 2, "Multiple choice", "A two-story building will combine offices and a 300-seat assembly hall. What does the code analysis need to address?",
+ ["Only the office requirements", "Mixed occupancies, using accessory, nonseparated or separated methods", "Only the assembly requirements", "Nothing until construction documents"], 1,
+ ["Both uses must be addressed.", "Correct. IBC §508 sets the options for mixed uses.", "Both uses must be addressed.", "Early analysis avoids redesign."],
+ "Mixed-use buildings are analyzed under IBC §508.", "2021 IBC §508"],
+["pa-2.2", 2, "Calculation", "A lot is 120 ft × 200 ft. The maximum floor area ratio is 1.5. What is the maximum gross floor area?",
+ ["24,000 sf", "30,000 sf", "36,000 sf", "40,000 sf"], 2,
+ ["This is the lot area.", "Check the multiplication.", "Correct. 24,000 × 1.5 = 36,000 sf.", "Too high."],
+ "FAR = gross floor area ÷ lot area.", "Zoning practice"],
+["pa-2.2", 2, "Multiple choice", "An existing gas station on a parcel was legal when built but does not meet the current zoning. What is it called?",
+ ["A variance", "A nonconforming use", "A conditional use", "An easement"], 1,
+ ["A variance is relief granted by the zoning board.", "Correct. It may usually continue but faces limits on expansion.", "A conditional use is permitted with approval under current zoning.", "An easement is a right to use land."],
+ "Nonconforming uses are 'grandfathered' but restricted.", "Zoning practice"],
+["pa-2.3", 2, "Multiple choice", "A title report shows a utility easement 15 ft wide across the middle of the lot. How does it affect the design?",
+ ["It can be built over freely", "Permanent structures generally cannot be built within it without the easement holder's agreement", "It only affects landscaping", "It expires when the lot is sold"], 1,
+ ["Building over an easement can block access the holder is entitled to.", "Correct.", "It can affect structures, not only landscaping.", "Most easements run with the land."],
+ "Easements, covenants and deed restrictions are site-specific constraints found in the title report and survey.", "Real property practice"],
+["pa-2.3", 2, "Scenario", "The site is in a local historic district. When should the architect engage the historic preservation commission?",
+ ["After construction documents are finished", "Early, during programming and schematic design", "Only if a neighbor complains", "Never; it is the owner's job"], 1,
+ ["Late review risks major redesign.", "Correct. Early engagement reveals design guidelines and approval steps.", "Review is usually mandatory.", "The architect normally leads design approvals."],
+ "Discretionary reviews add time and design constraints; plan for them early.", "Local historic district ordinances"],
+["pa-3.1", 2, "Multiple choice", "Which site attribute is quantitative?",
+ ["The character of the neighborhood", "Average slope across the building area", "Views toward the river", "The feel of the street"], 1,
+ ["This is qualitative.", "Correct. Slope can be measured.", "Views are qualitative.", "Qualitative."],
+ "Site analysis combines measurable data with qualitative observation.", "Architect's Handbook of Professional Practice — site analysis"],
+["pa-3.1", 2, "Calculation", "Two contours 2 ft apart are 40 ft apart horizontally. What is the slope?",
+ ["2%", "5%", "10%", "20%"], 1,
+ ["Check: 2 ÷ 40.", "Correct. 2 ÷ 40 = 0.05 = 5%.", "Too steep.", "Too steep."],
+ "Slope = rise ÷ run. Slopes over about 5% begin to need ramps or steps for accessible routes.", "Site grading practice"],
+["pa-3.2", 2, "Scenario", "The survey shows a large oak at the center of the buildable area, and the arborist's report rates it healthy and protected by local ordinance. What should the architect do?",
+ ["Assume it can be removed", "Combine both reports in the site analysis and test layouts that retain the tree or confirm removal permits and costs", "Ignore the arborist", "Locate the building on the tree"], 1,
+ ["Protected trees may not be removable.", "Correct. Synthesis means using reports together to test options.", "The report is critical information.", "This ignores the constraint."],
+ "Synthesizing reports means comparing them and resolving conflicts early.", "Architect's Handbook of Professional Practice — site analysis"],
+["pa-3.2", 2, "Multiple choice", "A traffic study recommends the site entry be at least 150 ft from the intersection. The best view faces the intersection. How should the architect proceed?",
+ ["Place the entry at the intersection for the view", "Locate the vehicle entry per the traffic study and orient the building or public spaces for the view", "Ignore the traffic study", "Close the intersection"], 1,
+ ["This conflicts with the study.", "Correct. Separate the vehicle entry from the building's orientation.", "The study is a key constraint.", "Not within the architect's control."],
+ "Separate competing requirements so each can be met.", "Site planning practice"],
+["pa-3.3", 2, "Multiple choice", "On a grading plan, how are existing and proposed contours usually shown?",
+ ["Existing solid, proposed dashed", "Existing dashed, proposed solid", "Both dotted", "Only proposed contours are shown"], 1,
+ ["This is reversed.", "Correct.", "Not standard.", "Both are needed to show cut and fill."],
+ "Read grading plans by comparing dashed existing and solid proposed contours.", "Site grading drafting standards"],
+["pa-3.3", 2, "Multiple choice", "On a topographic map, contour lines form a 'V' that points uphill. What does this indicate?",
+ ["A ridge", "A valley or drainage channel", "A flat area", "A cliff"], 1,
+ ["Ridge contours point downhill.", "Correct.", "Flat areas have widely spaced contours.", "Cliffs show as merging contours."],
+ "Contours point uphill in valleys and downhill on ridges.", "Site analysis drawing conventions"],
+["pa-4.1", 2, "Scenario", "An owner wants to convert a 1960s warehouse into offices. What should the architect evaluate first?",
+ ["The paint color", "Existing structure, envelope, systems, hazardous materials and code requirements for the change of occupancy", "The furniture budget", "The marketing name"], 1,
+ ["Not first.", "Correct. A change of occupancy can trigger significant upgrades.", "Furniture comes later.", "Not related."],
+ "Existing building work follows the International Existing Building Code in many U.S. jurisdictions.", "2021 International Existing Building Code"],
+["pa-4.1", 2, "Multiple choice", "A building built before 1980 is to be renovated. Which survey should the owner commission before demolition?",
+ ["An acoustic survey", "A hazardous materials survey for asbestos and lead", "A wind study", "A traffic study"], 1,
+ ["Not related to demolition safety.", "Correct. Asbestos and lead were common in older buildings.", "Not related.", "Not related."],
+ "Hazardous materials must be identified before they are disturbed.", "U.S. EPA asbestos (NESHAP) and lead regulations"],
+["pa-4.2", 2, "Multiple choice", "The owner's facility condition assessment rates the roof at end of life. How should this inform the program?",
+ ["It does not affect the program", "Include roof replacement in scope and budget, and consider it with other envelope upgrades", "Assume the contractor will repair it", "Delay all work until the roof fails"], 1,
+ ["Known deficiencies affect scope and cost.", "Correct.", "Scope must be defined in the documents.", "Waiting increases risk and cost."],
+ "Existing reports set baseline scope and budget for renovation.", "Architect's Handbook of Professional Practice — existing buildings"],
+["pa-4.2", 2, "Multiple choice", "A post-occupancy evaluation of the owner's existing clinic shows that waiting rooms are overcrowded. How should this be used?",
+ ["Ignore it, since the new clinic is a different building", "Use it to set waiting-room size and flow in the new program", "Use it only for marketing", "Share it only with the contractor"], 1,
+ ["Lessons from existing facilities are valuable.", "Correct.", "Its value is for programming.", "The contractor builds what is designed."],
+ "Evidence from existing facilities makes programs more accurate.", "Architect's Handbook of Professional Practice — programming"],
+["pa-4.3", 2, "Calculation", "A program has 18,000 net assignable square feet and a target efficiency of 0.75. What gross area should be planned?",
+ ["13,500 sf", "18,750 sf", "22,500 sf", "24,000 sf"], 3,
+ ["This multiplies instead of divides.", "Check the division.", "This is about 0.8 efficiency.", "Correct. 18,000 ÷ 0.75 = 24,000 sf."],
+ "Gross = net ÷ efficiency. Circulation, walls, mechanical and service spaces make up the difference.", "Programming practice"],
+["pa-4.3", 2, "Scenario", "The program exceeds the budget. How should the architect help the owner prioritize?",
+ ["Cut spaces evenly across the board", "Rank spaces by how essential they are to the mission and identify phased or shared spaces", "Remove all circulation", "Ignore the budget"], 1,
+ ["Even cuts can remove critical spaces.", "Correct.", "Circulation is required.", "The budget is a primary constraint."],
+ "Prioritization separates needs from wants.", "Architect's Handbook of Professional Practice — programming"],
+["pa-4.4", 2, "Multiple choice", "Which diagram best shows how strongly each pair of program spaces needs to be near each other?",
+ ["Stacking diagram", "Adjacency matrix", "Wall section", "Gantt chart"], 1,
+ ["Stacking diagrams assign departments to floors.", "Correct.", "Wall sections show construction.", "Gantt charts show schedules."],
+ "Adjacency matrices and bubble diagrams translate relationships into layout.", "Programming practice"],
+["pa-4.4", 2, "Scenario", "In a small hospital, which adjacency is most critical?",
+ ["Emergency department to the main lobby gift shop", "Emergency department to imaging and to the ambulance entry", "Cafeteria to surgery", "Administration to the loading dock"], 1,
+ ["Not critical.", "Correct.", "Not appropriate.", "Not critical."],
+ "Critical adjacencies come from workflow and patient safety.", "Healthcare planning guidelines (FGI Guidelines)"],
+["pa-4.5", 2, "Scenario", "The owner's budget allows $250/sf, but recent comparable projects cost $340/sf. What should the architect do?",
+ ["Proceed with the owner's number", "Tell the owner of the gap with evidence, and discuss reducing scope, adjusting quality, phasing or increasing the budget", "Design to $340/sf without telling the owner", "Reduce the contingency to zero"], 1,
+ ["This sets up a budget failure.", "Correct.", "The owner must make the decision.", "Removing contingency increases risk."],
+ "Testing feasibility early is one of programming's key purposes.", "Architect's Handbook of Professional Practice — feasibility"],
+["pa-4.5", 2, "Multiple choice", "Construction starts in 24 months, and escalation is expected at 4% per year. Which adjustment belongs in the estimate?",
+ ["None", "Escalation to the midpoint of construction", "A reduction for inflation", "Only a design contingency"], 1,
+ ["Ignoring escalation understates cost.", "Correct. Estimates are carried to the construction midpoint.", "Inflation raises cost.", "Contingency covers unknowns, not time."],
+ "Escalation and contingency are separate allowances.", "Cost estimating practice"],
+["pa-4.6", 2, "Multiple choice", "A building needs long column-free spans for a gymnasium. Which structural system is most suitable?",
+ ["Load-bearing wood studs at 16 in on center", "Steel long-span joists or trusses", "Flat-plate concrete with short spans", "Unreinforced masonry"], 1,
+ ["Short spans only.", "Correct.", "Flat plates suit short to moderate spans.", "Unsuitable for long spans."],
+ "Match system to span, height, fire rating and budget.", "Ching, Building Structures Illustrated"],
+["pa-4.6", 2, "Multiple choice", "Which comparison is most useful when choosing between HVAC alternatives during programming?",
+ ["Brand names only", "First cost, operating cost, space needs, flexibility and maintenance", "The color of the equipment", "The contractor's preference only"], 1,
+ ["Brands are not a basis for comparison.", "Correct.", "Not relevant.", "The owner's goals come first."],
+ "Life-cycle comparisons help owners choose systems.", "ASHRAE guidance; Architect's Handbook — building systems"],
+["pa-4.7", 2, "Multiple choice", "On a building section, a dashed line above a ceiling most often indicates:",
+ ["A wall in front of the cut", "Something hidden or beyond, such as ductwork above the ceiling", "A property line", "A centerline"], 1,
+ ["Not standard.", "Correct. Dashed lines show hidden or overhead elements.", "Property lines use a different line type.", "Centerlines use a long-short dash pattern."],
+ "Line types carry meaning; reading them is a common item type.", "U.S. National CAD Standard"],
+["pa-4.7", 2, "Multiple choice", "A sun path diagram shows the sun at its lowest midday altitude on which date in the northern hemisphere?",
+ ["March 21", "June 21", "September 22", "December 21"], 3,
+ ["Equinox: mid altitude.", "Summer solstice: highest.", "Equinox: mid altitude.", "Correct. The winter solstice has the lowest midday sun."],
+ "Use solstice angles to design overhangs: block high summer sun, admit low winter sun.", "Brown & DeKay, Sun, Wind & Light"]
+]);
+
+ARE.QX("ppd", [
+["ppd-1.1", 2, "Scenario", "A site slopes down from the street toward a creek at the rear. Where should the building and parking generally go?",
+ ["Building at the creek, parking at the street", "Building on the higher, flatter area near the street; parking and stormwater features arranged to protect the creek buffer", "Parking in the creek buffer", "Building straddling the creek"], 1,
+ ["This disturbs the most sensitive area.", "Correct. Build on the most suitable ground and protect the riparian zone.", "Buffers are typically protected.", "This is costly and usually prohibited."],
+ "Place improvements on the most buildable land and protect sensitive areas.", "Site planning practice; local riparian buffer ordinances"],
+["ppd-1.1", 2, "Multiple choice", "Where should a building's loading dock usually be placed?",
+ ["Facing the main pedestrian entry", "On a secondary street or the rear, with truck turning space and separation from public entries", "At the center of the main façade", "Next to the playground"], 1,
+ ["This conflicts with pedestrian use.", "Correct.", "Service functions are not placed on the primary façade.", "Unsafe."],
+ "Separate service, vehicle and pedestrian circulation.", "Site planning practice"],
+["ppd-1.2", 2, "Multiple choice", "Which design decision usually has the largest effect on lifetime energy use, and is cheapest to change early?",
+ ["Light fixture brand", "Building form, orientation and window-to-wall ratio", "Paint color inside", "Toilet accessory selection"], 1,
+ ["A small effect, decided later.", "Correct. Form and orientation are set in schematic design and drive loads.", "Small effect.", "Small effect."],
+ "Passive decisions come first and cost least when made early.", "ASHRAE Advanced Energy Design Guides; Architect's Handbook — sustainable design"],
+["ppd-1.2", 2, "Multiple choice", "What is embodied carbon?",
+ ["The carbon dioxide emitted by building operation each year", "The greenhouse gas emissions from extracting, making, transporting and installing materials", "Carbon stored in soil", "The weight of steel in a building"], 1,
+ ["This is operational carbon.", "Correct.", "This is sequestration.", "Not the definition."],
+ "Reuse of existing structures and lower-carbon materials reduce embodied carbon.", "Architecture 2030; Carbon Leadership Forum"],
+["ppd-1.3", 2, "Scenario", "The new building is on a main street lined with two-story shopfronts built to the sidewalk. Zoning allows a 30 ft setback. What design response best fits the context?",
+ ["Set the building back 30 ft behind parking", "Hold the street wall with the building at or near the sidewalk, with active ground-floor uses", "Build a blank wall at the sidewalk", "Turn the building's back to the street"], 1,
+ ["Breaks the established street wall.", "Correct.", "Blank walls deaden the street.", "Ignores the context."],
+ "Context includes scale, setback, rhythm and use patterns of neighboring buildings.", "Urban design practice"],
+["ppd-1.3", 1, "Multiple choice", "What does 'street wall' mean in urban design?",
+ ["A retaining wall at a street", "The continuous line formed by building fronts along a street", "A sound barrier", "A fence"], 1,
+ ["Not this meaning.", "Correct.", "Not this meaning.", "Not this meaning."],
+ "Zoning codes often set build-to lines to keep the street wall.", "Urban design practice"],
+["ppd-2.1", 2, "Calculation", "A lot is 100 ft × 150 ft with a maximum lot coverage of 45%. What is the largest allowed building footprint?",
+ ["4,500 sf", "6,000 sf", "6,750 sf", "8,250 sf"], 2,
+ ["This is 45% of 10,000.", "This is 40%.", "Correct. 15,000 × 0.45 = 6,750 sf.", "Too high."],
+ "Coverage limits the footprint; FAR limits total floor area.", "Zoning practice"],
+["ppd-2.1", 2, "Multiple choice", "A wetland on the site is protected by federal and local rules. What design response is expected?",
+ ["Fill it if the building needs the space", "Avoid it and its required buffer; get permits before any disturbance", "Drain it first", "Ignore it until construction"], 1,
+ ["Filling usually needs permits and may be prohibited.", "Correct.", "Draining is disturbance.", "Late discovery causes delay."],
+ "Avoid, then minimize, then mitigate impacts to protected resources.", "U.S. Clean Water Act Section 404; local ordinances"],
+["ppd-2.2", 2, "Calculation", "Under 2021 IBC Table 1004.5, a 7,500 sf gross business area uses a load factor of 150 gross. What is the occupant load?",
+ ["25", "50", "75", "150"], 1,
+ ["Check the division.", "Correct. 7,500 ÷ 150 = 50 occupants.", "Check the division.", "Too high."],
+ "Occupant load = area ÷ load factor; check gross versus net for each use.", "2021 IBC Table 1004.5"],
+["ppd-2.2", 2, "Multiple choice", "A room in a business occupancy has an occupant load of 60. Under 2021 IBC Table 1006.2.1, how many exits or exit access doorways does it need?",
+ ["One", "Two", "Three", "Four"], 1,
+ ["One exit is allowed only up to the table's maximum occupant load for one exit (49 for Group B).", "Correct. Above 49 occupants, two are required.", "Three are required above 500 occupants.", "Four are required above 1,000."],
+ "Know the occupant-load thresholds for the number of exits: 49, 500 and 1,000.", "2021 IBC §1006.2.1 and §1006.2.1.1"],
+["ppd-2.3", 2, "Multiple choice", "A project must meet the IBC, the IECC and accessibility requirements. How should conflicts be handled?",
+ ["Follow whichever is cheapest", "Meet each applicable requirement; where provisions differ, apply the code's conflict rule, which generally makes the most restrictive govern", "Follow only the IBC", "Let the contractor choose"], 1,
+ ["Cost does not decide compliance.", "Correct. Under IBC §102.1, a specific requirement governs over a general one, and where sections differ the most restrictive governs.", "Other adopted codes also apply.", "Compliance is the design team's responsibility."],
+ "Integrate codes early to avoid conflicting designs.", "2021 IBC §102.1"],
+["ppd-2.3", 2, "Scenario", "An accessible route from parking to the entry crosses a 30-inch rise. What is the most efficient design approach?",
+ ["Add a stair only", "Grade the walk at 5% or less so it is not a ramp, or provide a compliant ramp with landings and handrails", "Provide a lift only", "Ask for a waiver"], 1,
+ ["A stair is not accessible.", "Correct. A walk at or below 5% (1:20) avoids ramp requirements; steeper needs a ramp of no more than 1:12 with landings.", "Lifts are limited to specific situations.", "Waivers are rarely granted."],
+ "Accessible routes can be designed through grading.", "2010 ADA Standards §403 and §405; ICC A117.1"],
+["ppd-3.1", 2, "Multiple choice", "An owner wants individual temperature control in many small offices with low energy use and little ceiling space. Which system fits best?",
+ ["Single-zone constant-volume rooftop unit", "Variable refrigerant flow (VRF) with a dedicated outdoor air system", "Steam radiators only", "A single window unit for the building"], 1,
+ ["One zone cannot give individual control.", "Correct. VRF gives zone control with small refrigerant piping; DOAS supplies ventilation.", "Radiators do not cool or ventilate.", "Not suitable."],
+ "Match the system to zoning, energy, space and maintenance needs.", "ASHRAE guidance"],
+["ppd-3.1", 1, "Multiple choice", "Where should a building's main electrical room usually be located?",
+ ["Next to the main lobby for visibility", "Near the utility service entrance, with access for equipment replacement", "On the roof", "In a basement below the flood level"], 1,
+ ["Not required.", "Correct.", "Rarely suitable.", "Flood risk to critical equipment."],
+ "Locate service rooms for utility connection, access and protection.", "NFPA 70 (National Electrical Code)"],
+["ppd-3.2", 2, "Multiple choice", "Which structural system is generally most economical for a three-story office with 30 ft column bays?",
+ ["Post-tensioned concrete transfer slabs", "Steel frame with composite metal deck", "Load-bearing unreinforced masonry", "Heavy timber with 10 ft bays"], 1,
+ ["Transfer slabs are used where columns must shift.", "Correct.", "Not suitable for open offices at these spans.", "Bays are too small."],
+ "Common choices depend on spans, height, fire rating and local labor.", "Ching, Building Structures Illustrated"],
+["ppd-3.2", 2, "Multiple choice", "Which lateral system most restricts open floor plans?",
+ ["Moment frames", "Shear walls", "Braced frames at the core", "A rigid diaphragm"], 1,
+ ["Moment frames keep bays open.", "Correct. Shear walls must line up floor to floor and limit openings.", "Braces at the core leave the floor open.", "A diaphragm distributes loads."],
+ "Lateral systems shape the plan; set them early.", "Ching, Building Structures Illustrated"],
+["ppd-3.3", 2, "Multiple choice", "Two adjacent classrooms need good speech privacy. Which partition property matters most?",
+ ["NRC", "STC", "U-factor", "SHGC"], 1,
+ ["NRC is absorption within a room.", "Correct. STC rates airborne sound blocked by the partition.", "Thermal.", "Solar."],
+ "Block with mass, airtightness and decoupling; absorb with soft finishes.", "ASTM E413; ANSI/ASA S12.60 (classroom acoustics)"],
+["ppd-3.3", 2, "Multiple choice", "Which sprinkler system is used where pipes may freeze, such as an unheated parking garage?",
+ ["Wet pipe", "Dry pipe", "Deluge for all areas", "None is permitted"], 1,
+ ["Water in the pipes would freeze.", "Correct. Pipes hold pressurized air until a head opens.", "Deluge is for special hazards.", "Dry systems are permitted."],
+ "Wet, dry, preaction and deluge systems fit different hazards.", "NFPA 13"],
+["ppd-3.4", 2, "Multiple choice", "In a cold climate, which wall assembly best controls condensation inside the wall?",
+ ["Vapor-impermeable layers on both sides", "Continuous exterior insulation that keeps the sheathing warm, with a vapor-open or properly placed vapor retarder", "No air barrier", "Insulation only between studs, with a polyethylene sheet outside"], 1,
+ ["This traps moisture.", "Correct.", "Air leakage carries the most moisture.", "Exterior poly in a cold climate traps moisture inside."],
+ "Keep condensing surfaces warm and let assemblies dry in at least one direction.", "Building science; 2021 IECC/IRC vapor retarder provisions"],
+["ppd-3.4", 2, "Multiple choice", "A high-traffic school corridor needs a durable, low-maintenance wall finish. Which is best?",
+ ["Flat latex paint on gypsum board", "Glazed masonry or impact-resistant wall panels", "Wallpaper", "Exposed fiberglass insulation"], 1,
+ ["Easily damaged.", "Correct.", "Not durable.", "Not a finish."],
+ "Choose materials for durability, maintenance, budget and code.", "Materials selection practice"],
+["ppd-4.1", 2, "Multiple choice", "What is the main advantage of a compact, nearly square plan over a long, thin plan of the same area?",
+ ["More daylight", "Less exterior wall per floor area, lowering envelope cost and heat loss", "Better cross-ventilation", "More views"], 1,
+ ["Thin plans get more daylight.", "Correct.", "Thin plans ventilate better.", "Thin plans give more views."],
+ "Form trades envelope efficiency against daylight and ventilation.", "Building design practice"],
+["ppd-4.1", 2, "Scenario", "A three-story building needs two exit stairs. Where should they be placed?",
+ ["Next to each other at the center", "Separated by at least the required remoteness distance, at opposite ends of the floor", "Both at one end", "Wherever the plan has space"], 1,
+ ["Adjacent stairs could be blocked by one fire.", "Correct. Remoteness keeps both from being lost at once.", "Same problem.", "Remoteness is required."],
+ "Exits are separated by at least half the diagonal, or one-third in sprinklered buildings.", "2021 IBC §1007.1.1"],
+["ppd-4.2", 2, "Multiple choice", "Why should vertical shafts for ducts and pipes stack from floor to floor?",
+ ["To match the elevator color", "Stacking avoids horizontal offsets, saving space, cost and fire-rated construction", "Codes require shafts to be on the exterior", "To increase floor area"], 1,
+ ["Not related.", "Correct.", "No such requirement.", "Offsets use more space."],
+ "Integrate systems by stacking cores, shafts and wet areas.", "Building systems integration practice"],
+["ppd-4.2", 2, "Calculation", "The owner wants 9 ft ceilings. Light fixtures need 2 in, ducts need 20 in, the steel structure is 30 in deep and the slab is 4 in. What is the minimum floor-to-floor height?",
+ ["12 ft 0 in", "13 ft 0 in", "13 ft 8 in", "15 ft 0 in"], 2,
+ ["Too low for these systems.", "Still 8 in short.", "Correct. 108 + 2 + 20 + 30 + 4 = 164 in = 13 ft 8 in.", "More than needed."],
+ "Add ceiling height, fixture space, ducts, structure and slab to set floor-to-floor height early. It affects cost, envelope area and zoning height.", "Systems integration practice"],
+["ppd-4.3", 2, "Scenario", "A library program requires the children's area to be visible from the main desk. Which layout meets it best?",
+ ["Children's area on a separate floor", "Children's area adjacent to the main desk with clear sightlines", "Children's area behind the stacks", "Children's area off the loading dock"], 1,
+ ["No visual control.", "Correct.", "Blocks views.", "Unsafe."],
+ "Translate program requirements into adjacency and sightlines.", "Programming practice"],
+["ppd-4.3", 1, "Multiple choice", "During schematic design, which document confirms that the plan meets the program?",
+ ["The specifications", "An area tabulation comparing designed areas with the program", "The payment application", "The punch list"], 1,
+ ["Not yet developed.", "Correct.", "Construction phase.", "Construction phase."],
+ "Reconcile areas with the program at each phase.", "Programming practice"],
+["ppd-4.4", 2, "Multiple choice", "In a hot, humid climate, which strategy works best?",
+ ["High thermal mass with night flushing", "Lightweight, shaded construction with cross-ventilation and dehumidification", "Large unshaded west glazing", "Small courtyards with no shading"], 1,
+ ["Suits hot-arid climates with big day–night swings.", "Correct.", "Increases heat gain.", "Without shading, gain is high."],
+ "Match strategies to climate type.", "Brown & DeKay, Sun, Wind & Light"],
+["ppd-4.4", 2, "Multiple choice", "A horizontal overhang over south glazing in the northern hemisphere is designed mainly to:",
+ ["Block winter sun", "Block high summer sun while admitting low winter sun", "Block east morning sun", "Reflect light into the room"], 1,
+ ["Winter sun should be admitted.", "Correct.", "East and west sun need vertical shading.", "Light shelves do that."],
+ "Use horizontal shading on south, vertical or adjustable shading on east and west.", "Brown & DeKay, Sun, Wind & Light"],
+["ppd-5.1", 2, "Multiple choice", "Which tool best compares design alternatives against several weighted owner priorities?",
+ ["A Gantt chart", "A weighted decision matrix", "A door schedule", "A punch list"], 1,
+ ["Schedules time.", "Correct.", "Not related.", "Not related."],
+ "Weight criteria, score options, and sum the products.", "Decision analysis practice"],
+["ppd-5.1", 2, "Scenario", "Option A meets the program but exceeds the budget by 8%. Option B is within budget but omits a required meeting room. What should the architect recommend?",
+ ["Option B, because it is cheaper", "Present both with their trade-offs and test whether Option A can be adjusted to meet the budget", "Option A without mentioning cost", "Neither, and start over"], 1,
+ ["It fails the program.", "Correct. The owner needs clear trade-offs and a path to meet both goals.", "Hiding the cost is not acceptable.", "Not efficient."],
+ "Evaluate alternatives against program and budget together.", "Architect's Handbook of Professional Practice — design evaluation"],
+["ppd-5.2", 2, "Multiple choice", "At schematic design, which estimating method is most appropriate?",
+ ["Detailed quantity takeoff of every item", "Area or system-based (parametric) estimate", "Contractor's bid", "No estimate"], 1,
+ ["Not enough detail exists yet.", "Correct.", "No bids yet.", "An estimate is needed."],
+ "Estimates get more detailed as the design develops.", "AIA B101–2017, §6.3"],
+["ppd-5.2", 2, "Multiple choice", "A schematic design estimate carries a 15% design contingency. What is it for?",
+ ["Profit for the architect", "Scope and details not yet designed", "Contractor's overhead", "Escalation over time"], 1,
+ ["Not profit.", "Correct. It shrinks as the design develops.", "Included in contractor markups.", "Escalation is separate."],
+ "Design contingency, escalation and construction contingency are separate.", "Cost estimating practice"],
+["ppd-5.3", 2, "Scenario", "The design is 6% over budget. Which reduction affects the program least?",
+ ["Delete the required second exit", "Simplify the building form and standardize window sizes", "Reduce the number of classrooms", "Remove the accessible elevator"], 1,
+ ["Code required.", "Correct. Simpler forms and repetition cut cost without losing program.", "Program loss.", "Required for accessibility."],
+ "Look for savings in complexity first, then quality, then quantity.", "Value engineering practice"],
+["ppd-5.3", 2, "Multiple choice", "What does life-cycle cost analysis compare?",
+ ["Only first cost", "First cost plus operating, maintenance and replacement costs over the study period", "Only energy cost", "Only design fees"], 1,
+ ["Incomplete.", "Correct.", "Incomplete.", "Incomplete."],
+ "Life-cycle cost helps justify higher first cost when operating savings are large.", "ASTM E917; NIST Handbook 135"]
+]);
+
+ARE.QX("pdd", [
+["pdd-1.1", 2, "Multiple choice", "A curtain wall is attached to a steel frame that deflects under wind and floor loads. What must the curtain wall detail accommodate?",
+ ["Nothing; the frame is rigid", "Differential movement through slip connections and movement joints", "Only thermal expansion", "Only the weight of the glass"], 1,
+ ["Frames deflect.", "Correct. Connections must allow movement without stressing the glass.", "Structural movement matters too.", "Movement and loads both matter."],
+ "Integration details must allow for structure, thermal and moisture movement.", "Curtain wall design practice; AAMA guidance"],
+["pdd-1.1", 2, "Multiple choice", "Why coordinate the ceiling grid with lighting, sprinklers and diffusers on the reflected ceiling plan?",
+ ["To pick the ceiling color", "To place devices without conflicts and keep sprinkler coverage and lighting layouts working", "Codes require a 2 × 4 grid", "It only matters for cost"], 1,
+ ["Not the purpose.", "Correct.", "No such rule.", "It also affects function and code compliance."],
+ "The reflected ceiling plan is where many systems meet.", "Construction documentation practice"],
+["pdd-1.2", 2, "Calculation", "A space needs 6 air changes per hour. It is 40 ft × 30 ft with a 10 ft ceiling. What airflow is needed? (cfm = volume × ACH ÷ 60)",
+ ["600 cfm", "1,200 cfm", "2,000 cfm", "7,200 cfm"], 1,
+ ["Check the volume: 40 × 30 × 10.", "Correct. 12,000 cf × 6 ÷ 60 = 1,200 cfm.", "Check the math.", "This forgets to divide by 60."],
+ "Air changes per hour convert to cfm through the room volume.", "HVAC practice"],
+["pdd-1.2", 2, "Calculation", "A room needs 50 foot-candles. Each fixture delivers 4,000 lumens. The room is 600 sf, and the combined coefficient of utilization and light loss factor is 0.6. How many fixtures are needed? (N = E × A ÷ (lumens × CU × LLF))",
+ ["8", "10", "13", "15"], 2,
+ ["Too few.", "Check: 50 × 600 ÷ (4,000 × 0.6).", "Correct. 30,000 ÷ 2,400 = 12.5, so 13 fixtures.", "More than needed."],
+ "The lumen method sizes general lighting; always round up.", "IES lumen method"],
+["pdd-1.3", 2, "Calculation", "Joists span 16 ft and are spaced 2 ft on center. What tributary area does one joist carry?",
+ ["16 sf", "24 sf", "32 sf", "64 sf"], 2,
+ ["This uses 1 ft width.", "Check the width.", "Correct. 16 ft × 2 ft = 32 sf.", "Too high."],
+ "Tributary area = span × half the distance to each neighboring member (the spacing).", "Structural practice"],
+["pdd-1.3", 2, "Multiple choice", "A steel beam's depth is often estimated early with a span-to-depth rule. For a floor beam spanning 30 ft, which depth is a reasonable first guess (span ÷ 20 to ÷ 24)?",
+ ["6 in", "10 in", "16 to 18 in", "36 in"], 2,
+ ["Far too shallow.", "Too shallow.", "Correct. 360 in ÷ 20 to 24 ≈ 15–18 in.", "Too deep."],
+ "Rules of thumb set early depths before the engineer sizes members.", "Structural rules of thumb"],
+["pdd-1.4", 2, "Multiple choice", "A conference room needs better speech clarity. Which change works best?",
+ ["Add sound-absorbing ceiling and wall panels to reduce reverberation", "Increase the partition STC only", "Use harder surfaces", "Raise the ceiling with hard finishes"], 0,
+ ["Correct. Absorption shortens reverberation time and improves clarity.", "STC blocks sound between rooms, not within.", "Hard surfaces increase reverberation.", "Larger hard volumes increase reverberation."],
+ "Reverberation is controlled with absorption (NRC); isolation with STC.", "Acoustics practice"],
+["pdd-1.4", 2, "Multiple choice", "Where should a fire alarm horn-strobe be located in a corridor?",
+ ["Anywhere the owner chooses", "As required by NFPA 72 and the code for visibility and audibility", "Only at exit doors", "Only in mechanical rooms"], 1,
+ ["Locations are regulated.", "Correct.", "Coverage is needed throughout.", "Coverage is needed in occupied areas."],
+ "Specialty systems follow their own standards, referenced by the building code.", "NFPA 72"],
+["pdd-1.5", 2, "Multiple choice", "At a window head in a rainscreen wall, what must lap over what?",
+ ["The window head flashing laps over the WRB above", "The WRB above laps over the head flashing", "They butt together with sealant only", "No flashing is needed"], 1,
+ ["Reverse lap directs water behind the flashing.", "Correct. Upper layers lap over lower ones so water drains out.", "Sealant alone fails over time.", "Flashing is essential."],
+ "Shingle-lap every layer in the drainage plane.", "Building science; window installation guidance (ASTM E2112)"],
+["pdd-1.5", 2, "Multiple choice", "Steel shelf angles support brick at each floor. What is needed below each angle?",
+ ["Nothing", "A horizontal movement (soft) joint with flashing", "A solid mortar joint", "Rigid insulation only"], 1,
+ ["Brick grows and the frame shortens; without a joint the brick is crushed.", "Correct.", "Mortar would transfer load.", "Insulation does not allow movement."],
+ "Masonry veneer needs movement joints at supports.", "Brick Industry Association Technical Notes"],
+["pdd-1.6", 2, "Scenario", "The structural engineer adds a deep transfer beam at a corridor where the mechanical engineer has routed the main duct. What should the architect do?",
+ ["Let the contractor resolve it", "Hold a coordination meeting to resolve the conflict, reroute or penetrate as allowed, and update all disciplines' drawings", "Lower the corridor ceiling without telling anyone", "Remove the beam"], 1,
+ ["Conflicts should be resolved before issue.", "Correct.", "Changes must be coordinated.", "The beam is structurally needed."],
+ "The architect leads coordination across disciplines.", "AIA B101–2017, §3.1.2; coordination practice"],
+["pdd-1.6", 1, "Multiple choice", "What does BIM clash detection do?",
+ ["Checks code compliance automatically", "Finds physical conflicts between modeled elements for the team to resolve", "Sets the construction schedule", "Prices the project"], 1,
+ ["Not its function.", "Correct.", "Not its function.", "Not its function."],
+ "Clash detection still needs human review.", "BIM practice"],
+["pdd-2.1", 2, "Multiple choice", "Which drawing best communicates where each door, frame and hardware set goes?",
+ ["Building section", "Door schedule keyed to the floor plans", "Site plan", "Wall section"], 1,
+ ["Sections show vertical relationships.", "Correct.", "Site plans show the site.", "Wall sections show assemblies."],
+ "Schedules organize repeated information; plans key to them.", "Construction documentation practice"],
+["pdd-2.1", 2, "Multiple choice", "Where should information about the type of a partition (studs, layers, rating) be shown?",
+ ["On each floor plan in full", "In a partition type schedule, with tags on plans", "Only in the specifications", "Only in a model"], 1,
+ ["Repeating it is error-prone.", "Correct.", "Specifications describe products, not configuration.", "Contract drawings must show it."],
+ "Say it once, in the right place, and reference it.", "U.S. National CAD Standard; construction documentation practice"],
+["pdd-2.2", 2, "Multiple choice", "Which drawing shows finished floor elevations, spot grades and drainage slopes?",
+ ["Landscape plan", "Grading and drainage plan", "Roof plan", "Life safety plan"], 1,
+ ["Planting.", "Correct.", "Roofs only.", "Egress."],
+ "Site documents include site, grading, utility and landscape plans.", "Site documentation practice"],
+["pdd-2.2", 2, "Multiple choice", "Who usually prepares the boundary and topographic survey used as the base for site drawings?",
+ ["The architect", "A licensed surveyor hired by the owner", "The contractor", "The building official"], 1,
+ ["Architects do not survey.", "Correct. B101 makes the owner responsible for furnishing surveys.", "Not during design.", "Not their role."],
+ "The architect relies on owner-furnished surveys.", "AIA B101–2017, §5.4"],
+["pdd-2.3", 2, "Multiple choice", "Which drawing best shows how the roof membrane, insulation, parapet and wall barriers connect?",
+ ["Floor plan", "Enlarged parapet detail", "Building elevation", "Door schedule"], 1,
+ ["Not enough scale.", "Correct.", "Shows appearance.", "Not related."],
+ "Details show continuity of control layers at transitions.", "Construction documentation practice"],
+["pdd-2.3", 2, "Multiple choice", "A wall section shows the air barrier stopping at the floor slab edge. What is the risk?",
+ ["None", "A break in air-barrier continuity causing air leakage and condensation", "Higher roof cost", "Lower sound rating only"], 1,
+ ["Discontinuity is a defect.", "Correct.", "Not related.", "The main risk is air and moisture."],
+ "Trace each control layer continuously around the envelope in the details.", "Building science"],
+["pdd-2.4", 2, "Multiple choice", "In the U.S. National CAD Standard, which sheet discipline designator is used for architectural drawings?",
+ ["S", "A", "M", "C"], 1,
+ ["Structural.", "Correct.", "Mechanical.", "Civil."],
+ "Consistent sheet organization helps the set read clearly.", "U.S. National CAD Standard"],
+["pdd-2.4", 2, "Multiple choice", "Drawings and specifications state the same requirement differently. What is the best way to prevent this?",
+ ["Repeat everything in both", "Show quantity, location and arrangement on drawings, and quality and performance in specifications", "Put everything in general notes", "Leave it to the contractor"], 1,
+ ["Repetition creates conflicts.", "Correct.", "Notes get missed.", "Not the contractor's job."],
+ "Drawings show 'how much and where'; specifications say 'what quality'.", "CSI Project Delivery Practice Guide"],
+["pdd-2.5", 2, "Multiple choice", "During bidding, the architect must correct a door hardware error. What document is issued?",
+ ["Change order", "Addendum", "Construction change directive", "Field order"], 1,
+ ["Change orders come after the contract.", "Correct. Addenda modify bidding documents before bids are received.", "After the contract.", "After the contract."],
+ "Addenda before the contract; ASIs, CCDs and change orders after.", "AIA A701–2018"],
+["pdd-2.5", 2, "Multiple choice", "How should a revision issued after the permit set be shown on the drawings?",
+ ["Erase the old work silently", "With revision clouds, delta tags and an updated revision block", "In a separate email only", "No marking is needed"], 1,
+ ["Silent changes cause errors.", "Correct.", "The drawings must show the change.", "Changes must be traceable."],
+ "Traceable revisions protect everyone.", "Construction documentation practice"],
+["pdd-3.1", 2, "Multiple choice", "In CSI SectionFormat, what does Part 2 contain?",
+ ["General requirements and submittals", "Products, materials and fabrication", "Execution and installation", "Payment"], 1,
+ ["That is Part 1.", "Correct.", "That is Part 3.", "Payment is in Division 01 and the contract."],
+ "Part 1 General, Part 2 Products, Part 3 Execution.", "CSI SectionFormat"],
+["pdd-3.1", 2, "Multiple choice", "A public owner requires competition among manufacturers. Which specification method fits?",
+ ["Proprietary with one product and no substitutions", "Performance or descriptive specification, or proprietary with several named products 'or equal'", "Sole source", "No specification"], 1,
+ ["Restricts competition.", "Correct.", "Restricts competition.", "Not acceptable."],
+ "Public work usually requires open or multiple-name specifications.", "CSI Project Delivery Practice Guide"],
+["pdd-3.2", 2, "Multiple choice", "Which MasterFormat division covers general requirements such as submittal procedures and temporary facilities?",
+ ["Division 00", "Division 01", "Division 08", "Division 09"], 1,
+ ["Procurement and contracting requirements.", "Correct.", "Openings.", "Finishes."],
+ "Division 01 applies to all technical sections.", "CSI MasterFormat"],
+["pdd-3.2", 2, "Multiple choice", "Where are bidding instructions and bid forms found in the project manual?",
+ ["Division 01", "Division 00 (Procurement and Contracting Requirements)", "Division 03", "Division 26"], 1,
+ ["General requirements.", "Correct.", "Concrete.", "Electrical."],
+ "Division 00 is not technically 'specifications', but it is part of the project manual.", "CSI MasterFormat"],
+["pdd-3.3", 2, "Scenario", "The drawings call for 'solid surface' countertops, but the specifications only include plastic laminate. What should the architect do before issue?",
+ ["Nothing; the contractor will ask", "Add or correct the specification section and use consistent terms on drawings and specs", "Delete the countertop from the drawings", "Note that drawings govern"], 1,
+ ["Gaps cause RFIs and claims.", "Correct.", "Not appropriate.", "An order-of-precedence clause is not a substitute for coordination."],
+ "Use the same terms in drawings and specifications, and check every product shown is specified.", "CSI Project Delivery Practice Guide"],
+["pdd-3.3", 1, "Multiple choice", "What is the best way to link a drawing note to a specification section?",
+ ["Repeat the full specification on the drawing", "Use a consistent generic term or keynote that matches the section", "Use a brand name only", "Leave notes off"], 1,
+ ["Repetition creates conflicts.", "Correct.", "Brands may not match the specs.", "Notes are needed."],
+ "Keynoting ties drawings to the project manual.", "CSI practice"],
+["pdd-4.1", 2, "Multiple choice", "A 1-hour fire-rated wall has a duct passing through it. What must be provided?",
+ ["Nothing", "A listed fire damper (or other method allowed by IBC Section 717)", "A larger duct", "Sealant only"], 1,
+ ["The rating must be maintained.", "Correct.", "Size does not maintain the rating.", "Sealant alone does not meet the requirement for ducts."],
+ "Penetrations and openings in rated assemblies must keep the rating.", "2021 IBC §714 and §717"],
+["pdd-4.1", 2, "Multiple choice", "What maximum riser height does the 2021 IBC allow for stairs in most occupancies?",
+ ["6 in", "7 in", "7¾ in", "8 in"], 1,
+ ["Too low as a maximum.", "Correct. Risers are 4 to 7 in with treads at least 11 in for most stairs.", "Residential exception only.", "Too high."],
+ "Stair geometry is a common detail-level code check.", "2021 IBC §1011.5.2"],
+["pdd-4.2", 2, "Multiple choice", "What clear floor space is required at a lavatory for a forward approach under the 2010 ADA Standards?",
+ ["24 in × 36 in", "30 in × 48 in", "36 in × 60 in", "60 in diameter"], 1,
+ ["Too small.", "Correct.", "Larger than required.", "That is a turning space."],
+ "Accessibility applies at the detail level: clearances, heights and knee space.", "2010 ADA Standards §305 and §606"],
+["pdd-4.2", 2, "Multiple choice", "What is the maximum height of an accessible operable part, such as a light switch, for an unobstructed forward or side reach under the 2010 ADA Standards?",
+ ["36 in", "42 in", "48 in", "54 in"], 2,
+ ["Lower than required.", "Lower than the maximum.", "Correct.", "This was an older side-reach limit."],
+ "Reach ranges set mounting heights for controls.", "2010 ADA Standards §308 and §309"],
+["pdd-5.1", 2, "Scenario", "The CD estimate is 5% over the owner's budget. Under B101–2017, if bids later exceed the budget, which is one of the owner's options?",
+ ["Require the architect to pay the difference", "Authorize rebidding, approve an increase, or work with the architect to revise scope, among other options", "Terminate the contractor", "Nothing can be done"], 1,
+ ["Not an option in B101.", "Correct. B101 lists several owner options.", "There is no contract yet.", "B101 sets out options."],
+ "If the owner chooses to revise scope, the architect modifies the documents without additional pay.", "AIA B101–2017, Article 6"],
+["pdd-5.1", 2, "Multiple choice", "Which estimate type is expected at the end of construction documents?",
+ ["Order-of-magnitude per square foot", "Updated estimate based on the developed documents", "No estimate", "Contractor's final payment"], 1,
+ ["Too rough for CDs.", "Correct.", "An estimate is a basic service.", "Not an estimate."],
+ "Estimates are updated at the end of each design phase.", "AIA B101–2017, §3.4.4"]
+]);
+
+ARE.QX("ce", [
+["ce-1.1", 2, "Scenario", "The low bid is 18% below the other bids. What should the architect advise the owner?",
+ ["Award immediately", "Ask the bidder to confirm its bid and review it for errors or omissions before award", "Reject all bids", "Award to the second bidder without discussion"], 1,
+ ["A large gap often signals a mistake.", "Correct. A bid review protects the owner from a contractor who cannot perform at that price.", "Unnecessary as a first step.", "The low bidder must be considered first."],
+ "The architect advises; the owner decides on award.", "AIA B101–2017, §3.5; AIA A701–2018"],
+["ce-1.1", 1, "Multiple choice", "Who issues addenda during bidding?",
+ ["The owner's lender", "The architect", "The bidders", "The building official"], 1,
+ ["Not their role.", "Correct.", "Bidders ask questions; they do not issue addenda.", "Not their role."],
+ "Addenda go to all bidders so everyone prices the same documents.", "AIA A701–2018"],
+["ce-1.2", 2, "Multiple choice", "A private owner wants to prequalify contractors. Which criteria are most relevant?",
+ ["Logo design", "Experience with similar projects, financial capacity, bonding capacity, safety record and references", "Number of social media followers", "Office location only"], 1,
+ ["Not relevant.", "Correct.", "Not relevant.", "Location can matter, but it is not enough alone."],
+ "Prequalification lowers the risk of awarding to an unqualified bidder.", "AIA A305 (Contractor's Qualification Statement)"],
+["ce-1.2", 2, "Multiple choice", "What does a bid bond guarantee?",
+ ["That the work is free of defects", "That the bidder will enter into the contract and provide required bonds if awarded", "That subcontractors will be paid", "That the project finishes on time"], 1,
+ ["Not a bond's role.", "Correct.", "That is a payment bond.", "That relates to the performance bond and contract."],
+ "Bid, performance and payment bonds protect the owner at different stages.", "AIA A310"],
+["ce-1.3", 2, "Multiple choice", "An owner wants to keep the option of adding a canopy if bids allow. What should the documents include?",
+ ["An allowance", "An add alternate", "A contingency", "A unit price"], 1,
+ ["Allowances cover items not yet selected.", "Correct. Alternates are priced options the owner may accept.", "Contingencies cover unknowns.", "Unit prices price quantities of work."],
+ "Alternates give the owner choices at award.", "AIA A701–2018"],
+["ce-1.3", 2, "Multiple choice", "The documents include a $20,000 allowance for signage. The final signage costs $24,000. What happens?",
+ ["The contractor absorbs the $4,000", "The contract sum is adjusted by change order for the $4,000 difference", "The architect pays the difference", "The allowance cannot change"], 1,
+ ["Allowances are adjusted to actual cost.", "Correct.", "Not the architect's cost.", "Allowances are adjusted."],
+ "Allowance adjustments are made by change order.", "AIA A201–2017, §3.8"],
+["ce-2.1", 2, "Multiple choice", "Under A201–2017, what is the purpose of the architect's site visits?",
+ ["To supervise the contractor's workers", "To become generally familiar with progress and quality and to determine whether the work is generally in accordance with the documents", "To make exhaustive inspections", "To direct construction methods"], 1,
+ ["Supervision is the contractor's role.", "Correct.", "Exhaustive inspections are not required.", "Means and methods belong to the contractor."],
+ "Site visits are observations, not supervision or continuous inspection.", "AIA A201–2017, §4.2.2"],
+["ce-2.1", 2, "Scenario", "On a site visit the architect sees a worker on a high scaffold without fall protection. What should the architect do?",
+ ["Ignore it; safety is the contractor's job", "Tell the contractor's superintendent immediately and document the observation", "Stop all work on the site", "Direct the worker personally"], 1,
+ ["The architect should not ignore an obvious hazard.", "Correct. Report it to the party responsible for safety and record it.", "The architect lacks authority to stop the work.", "Directing workers takes on control of safety."],
+ "The contractor is responsible for safety; the architect reports observed hazards.", "AIA A201–2017, Article 10"],
+["ce-2.2", 2, "Scenario", "The architect sees that installed roof insulation is thinner than specified. What should the architect do?",
+ ["Approve it to keep the schedule", "Notify the contractor and the owner, and reject work that does not conform", "Wait until the punch list", "Quietly reduce the payment"], 1,
+ ["Not acceptable.", "Correct. The architect may reject nonconforming work.", "Waiting allows it to be covered up.", "Payment decisions must be documented."],
+ "The architect has authority to reject work that does not conform.", "AIA A201–2017, §4.2.6"],
+["ce-2.2", 2, "Multiple choice", "Work is covered before an inspection the documents required. The architect asks for it to be uncovered. Who pays?",
+ ["The owner", "The contractor", "The architect", "Shared equally"], 1,
+ ["Not when the contractor ignored a requirement to leave it uncovered.", "Correct. The contractor uncovers and replaces it at its own expense.", "Not the architect.", "No."],
+ "If no inspection was required and the work conforms, the owner pays.", "AIA A201–2017, §12.1"],
+["ce-2.3", 2, "Calculation", "The schedule of values lists drywall at $200,000. The contractor reports 60% complete, and the architect agrees. Previous payments for drywall total $80,000. What is earned this period, before retainage?",
+ ["$40,000", "$80,000", "$120,000", "$200,000"], 0,
+ ["Correct. 60% × 200,000 = 120,000 earned to date, minus 80,000 already billed = $40,000.", "This is the previous amount.", "This is earned to date.", "This is the full value."],
+ "Payment applications track work completed to date against the schedule of values.", "AIA G702/G703"],
+["ce-2.3", 1, "Multiple choice", "Which document does the contractor use to allocate the contract sum to parts of the work for payment?",
+ ["The punch list", "The schedule of values", "The project manual index", "The bid bond"], 1,
+ ["Used at completion.", "Correct.", "Not for payment.", "Not for payment."],
+ "The schedule of values is the basis for progress payments.", "AIA A201–2017, §9.2"],
+["ce-3.1", 2, "Multiple choice", "The architect needs to clarify a detail with no change in cost or time. Which document should be issued?",
+ ["Change order", "Architect's supplemental instructions (ASI)", "Construction change directive", "Addendum"], 1,
+ ["Change orders change sum or time.", "Correct.", "CCDs direct changes before agreement on cost or time.", "Addenda are issued during bidding."],
+ "Minor changes not involving sum or time can be ordered by the architect.", "AIA A201–2017, §7.4; AIA G710"],
+["ce-3.1", 2, "Scenario", "The owner and contractor agree a change is needed but disagree on the price. Work must proceed now. What document is used?",
+ ["A change order", "A construction change directive", "An ASI", "A field report"], 1,
+ ["Needs agreement on price.", "Correct. A CCD directs the change, with the adjustment determined later.", "ASIs cannot change sum or time.", "Reports record observations."],
+ "CCDs keep work moving when price or time is disputed.", "AIA A201–2017, §7.3; AIA G714"],
+["ce-3.2", 2, "Multiple choice", "A shop drawing shows a deviation from the documents that the contractor did not identify. The architect stamps it 'reviewed'. Is the deviation approved?",
+ ["Yes", "No. The contractor is not relieved of responsibility for deviations not specifically identified and approved in writing", "Only if the owner signs", "Only for structural items"], 1,
+ ["Review does not approve unidentified deviations.", "Correct.", "Owner signature does not change this.", "Applies to all submittals."],
+ "Submittals are not contract documents; deviations must be called out.", "AIA A201–2017, §3.12.8"],
+["ce-3.2", 2, "Multiple choice", "What is the purpose of the architect's submittal review?",
+ ["To check all dimensions and quantities", "To check conformance with the design concept and the information in the documents", "To approve construction means and methods", "To check the contractor's safety plan"], 1,
+ ["Dimensions and quantities are the contractor's responsibility.", "Correct.", "Not included.", "Not included."],
+ "Limited-purpose review protects both the architect and the design intent.", "AIA A201–2017, §4.2.7"],
+["ce-3.3", 2, "Calculation", "Work completed and stored to date is $500,000. Retainage is 10%. Previous certificates total $360,000. What is the current payment due?",
+ ["$40,000", "$90,000", "$140,000", "$450,000"], 1,
+ ["Check the retainage.", "Correct. 500,000 − 50,000 retainage = 450,000; minus 360,000 = $90,000.", "This ignores retainage.", "This is the total earned less retainage."],
+ "Current payment = earned to date − retainage − previous certificates.", "AIA G702"],
+["ce-3.3", 2, "Multiple choice", "When the architect certifies a payment, what does the certification represent?",
+ ["That the architect inspected every part of the work", "That, to the best of the architect's knowledge from site visits and the application, the work has progressed as indicated and the quality is in accordance with the documents", "That the contractor has paid all subcontractors", "That the work is complete"], 1,
+ ["Exhaustive inspection is not required.", "Correct.", "The architect does not verify this.", "Progress payments are not completion."],
+ "Certification is limited to the architect's knowledge, information and belief.", "AIA A201–2017, §9.4.2"],
+["ce-3.4", 2, "Scenario", "The owner wants to keep a nonconforming but acceptable finish rather than have it replaced. What is the appropriate step?",
+ ["Nothing; accept it informally", "The owner may accept the work, with the contract sum reduced as appropriate by change order", "The architect accepts it without the owner", "The contractor must always replace it"], 1,
+ ["Informal acceptance invites disputes.", "Correct.", "The owner decides.", "Not always; the owner may accept it."],
+ "A201 allows the owner to accept nonconforming work with an adjustment.", "AIA A201–2017, §12.3"],
+["ce-3.4", 2, "Multiple choice", "Within one year after substantial completion, the owner finds a defect. What must the contractor do under A201–2017?",
+ ["Nothing; the warranty has ended", "Correct it promptly after written notice from the owner", "Pay the architect", "Only report it"], 1,
+ ["The correction period runs one year.", "Correct.", "Not related.", "Correction is required."],
+ "The one-year correction period is separate from warranties and from statutes of limitation.", "AIA A201–2017, §12.2.2"],
+["ce-4.1", 2, "Multiple choice", "Who prepares the initial punch list at substantial completion under A201–2017?",
+ ["The architect", "The contractor, with the architect adding items found at inspection", "The owner", "The building official"], 1,
+ ["The architect inspects and may add items.", "Correct.", "Not under A201.", "Not their role."],
+ "The architect inspects to determine substantial completion.", "AIA A201–2017, §9.8.2 and §9.8.3"],
+["ce-4.1", 2, "Multiple choice", "What normally triggers release of retainage?",
+ ["Start of construction", "Substantial completion or final completion, as the contract specifies", "The first payment application", "The architect's last site visit"], 1,
+ ["Too early.", "Correct.", "Too early.", "Not a trigger."],
+ "Final payment requires closeout documents such as lien waivers, warranties and record documents.", "AIA A201–2017, §9.8 and §9.10"],
+["ce-4.2", 2, "Multiple choice", "A year after occupancy, the owner reports high energy bills. What service would best identify the cause?",
+ ["A new cost estimate", "Post-occupancy evaluation and retro-commissioning of building systems", "A new design competition", "A punch list"], 1,
+ ["Not diagnostic.", "Correct.", "Not related.", "Construction phase."],
+ "Evaluation after occupancy closes the loop between design intent and performance.", "ASHRAE Guideline 0 (commissioning)"],
+["ce-4.2", 1, "Multiple choice", "What is the main purpose of a post-occupancy evaluation?",
+ ["To find someone to blame", "To learn how the building performs for users and feed lessons into future projects", "To prepare a marketing brochure", "To close the construction contract"], 1,
+ ["Not the purpose.", "Correct.", "A side benefit at most.", "Closeout is separate."],
+ "POEs inform both the owner's operations and the firm's future designs.", "Architect's Handbook of Professional Practice — post-occupancy evaluation"]
+]);
+
 /* REFERENCE LIBRARY — glossary, formulas, calculators, sources */
 ARE.GLOSSARY = [
 // [term, category, definition, lessonId]
@@ -5435,6 +6213,48 @@ ARE.PODCAST.forDiv = (d) => ARE.PODCAST.eps.filter(e => e.divs.includes(d));
   };
 })();
 
+/* ---------- Answer-position balancing for the original bank (v9) ----------
+   Most early items had the correct choice in the second position. Choices are reordered with a fixed,
+   per-question permutation (the same on every device). Saved answers are migrated: attempts recorded
+   before v9 store the chosen index in the old order and are remapped once (marked v: 2). */
+(function () {
+  ARE.OPTPERM = {};
+  const seedOf = (id) => { let h = 7; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+  const perm = (id, n) => {
+    let h = seedOf(id); const rnd = () => { h = (h + 0x6D2B79F5) >>> 0; let t = Math.imul(h ^ (h >>> 15), 1 | h); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const o = Array.from({ length: n }, (_, k) => k); for (let k = n - 1; k > 0; k--) { const j = Math.floor(rnd() * (k + 1)); [o[k], o[j]] = [o[j], o[k]]; } return o;
+  };
+  const numeric = (opts) => opts.every(o => /^[\s$~≈]*[\d.,]+\s*(%|sf|ft|in|cfm|h|hours|days|weeks|months|years|lb|psf|ach|minutes|occupants|fixtures)?\.?\s*$/i.test(String(o).replace(/<[^>]+>/g, "")));
+  const mix = (q) => {
+    if (!q || /-x\d\d$/.test(q.id) || !Array.isArray(q.opts) || q.opts.length < 3) return;
+    if (q.type !== "mc" && q.type !== "ms") return;
+    if (q.fmt === "Calculation" || numeric(q.opts)) return;
+    const o = perm(q.id, q.opts.length); const pos = (k) => o.indexOf(k);
+    q.opts = o.map(k => q.opts[k]); if (Array.isArray(q.why) && q.why.length === o.length) q.why = o.map(k => q.why[k]);
+    q.ans = Array.isArray(q.ans) ? q.ans.map(pos).sort((a, b) => a - b) : pos(q.ans);
+    ARE.OPTPERM[q.id] = o;
+  };
+  (ARE.Q || []).forEach(mix);
+  (ARE.CASES || []).forEach(c => (c.questions || []).forEach(mix));
+  // Remap a saved state's stored choice indices from the old order. Idempotent.
+  ARE.migrateOpts = (S) => {
+    (S && Array.isArray(S.attempts) ? S.attempts : []).forEach(a => {
+      if (a.v === 2) return;
+      const o = ARE.OPTPERM[a.q];
+      if (o && typeof a.ch === "number" && a.ch >= 0 && a.ch < o.length) a.ch = o.indexOf(a.ch);
+      a.v = 2;
+    });
+    return S;
+  };
+  ARE.migrateSession = (s) => {
+    if (!s || s.v2) return s;
+    Object.keys(s.resp || {}).forEach(id => { const o = ARE.OPTPERM[id]; const r = s.resp[id]; if (!o) return;
+      if (typeof r === "number") s.resp[id] = o.indexOf(r); else if (Array.isArray(r)) s.resp[id] = r.map(x => o.indexOf(x)); });
+    Object.keys(s.strike || {}).forEach(id => { const o = ARE.OPTPERM[id]; const r = s.strike[id]; if (o && Array.isArray(r)) s.strike[id] = r.map(x => o.indexOf(x)); });
+    s.v2 = true; return s;
+  };
+})();
+
 /* ============================================================
    ALGORITHMIC QUESTION GENERATORS
    Each generator builds an original calculation item from a seed, so
@@ -5664,6 +6484,7 @@ function sanitize(s) {
   if (!Array.isArray(b.attempts)) b.attempts = [];
   b.game = Object.assign(E.blank().game, s.game || {});
   if (!Array.isArray(b.cards)) b.cards = [];
+  if (ARE.migrateOpts) ARE.migrateOpts(b);
   return b;
 }
 E.sanitize = sanitize;
@@ -5797,7 +6618,7 @@ E.saveSession = (s) => {
   if (s) { const j = JSON.stringify(s); lsSet(LS_SESSION, j); ARE.Store && ARE.Store.put("session", j).catch(() => {}); }
   else { lsDel(LS_SESSION); ARE.Store && ARE.Store.del("session").catch(() => {}); }
 };
-E.loadSession = () => { try { return JSON.parse(lsGet(LS_SESSION) || "null"); } catch (e) { return null; } };
+E.loadSession = () => { try { const s = JSON.parse(lsGet(LS_SESSION) || "null"); return ARE.migrateSession ? ARE.migrateSession(s) : s; } catch (e) { return null; } };
 
 /* ---------- indexes ---------- */
 E.rebuild = () => {
@@ -5937,7 +6758,7 @@ E.record = (qid, ok, mode, extra) => {
   const q = E.QMAP[qid]; if (!q) return;
   const t = Date.now();
   const prev = E.S.srs[qid] ? Object.assign({}, E.S.srs[qid]) : null;
-  const a = { q: qid, ok, d: q.diff || 1, t, m: mode };
+  const a = { q: qid, ok, d: q.diff || 1, t, m: mode, v: 2 };
   if (extra && extra.conf) a.c = extra.conf;
   if (extra && extra.chosen !== undefined && extra.chosen !== null && typeof extra.chosen === "number") a.ch = extra.chosen;
   E.S.attempts.push(a);
@@ -7592,10 +8413,9 @@ const NAV = [["dashboard", "Home"], ["today", "Today's Study Plan"], ["library",
 /* nav groups: [title, [[route, label], ...]] — order = priority */
 const NAVG = [
   [null, [["dashboard", "Home"], ["today", "Today's Plan"]]],
-  ["Learn", [["library", "Study Library"], ["divisions", "ARE Divisions"], ["studio", "Video Lessons"], ["podcast", "Podcast"], ["flashcards", "Flashcards"], ["reference", "Reference Library"]]],
+  ["Learn", [["divisions", "Divisions & Lessons"], ["flashcards", "Flashcards"], ["studio", "Video Lessons"], ["podcast", "Podcast"], ["reference", "Reference Library"]]],
   ["Practice", [["exams", "Practice Exams"], ["cases", "Case Studies"]]],
-  ["Notes", [["lnotes", "Learning Notes"], ["notes", "My Notes"]]],
-  ["Progress", [["tracker", "Competency"], ["analytics", "Analytics"], ["planner", "Study Planner"]]]
+  ["Review", [["lnotes", "Notes"], ["tracker", "Progress"], ["planner", "Study Planner"]]]
 ];
 const BADGE = { exams: "dueBadge", flashcards: "fcBadge", lnotes: "lnBadge" };
 let railPref = (() => { try { return JSON.parse(localStorage.getItem("are-rail") || "{}"); } catch (e) { return {}; } })();
@@ -7620,7 +8440,7 @@ function shell() {
     <main class="main" id="main" tabindex="-1"></main>
   </div>
 </div>
-<nav class="bottomnav" id="bottomNav" aria-label="Main">${[["dashboard", "Home"], ["today", "Today"], ["library", "Learn"], ["exams", "Practice"], ["more", "More"]].map(([k, l]) => `<a href="#${k === "more" ? "dashboard" : k}" data-bn="${k}" ${k === "more" ? 'role="button" aria-haspopup="dialog" aria-label="More pages"' : ""}>${icon(k === "more" ? "menu" : k === "library" ? "library" : k)}<span>${l}</span>${k === "exams" ? '<i class="bn-dot" id="bnDue" hidden></i>' : ""}</a>`).join("")}</nav>
+<nav class="bottomnav" id="bottomNav" aria-label="Main">${[["dashboard", "Home"], ["today", "Today"], ["library", "Learn"], ["exams", "Practice"], ["more", "More"]].map(([k, l]) => `<a href="#${k === "more" ? "dashboard" : k === "library" ? "divisions" : k}" data-bn="${k}" ${k === "more" ? 'role="button" aria-haspopup="dialog" aria-label="More pages"' : ""}>${icon(k === "more" ? "menu" : k === "library" ? "library" : k)}<span>${l}</span>${k === "exams" ? '<i class="bn-dot" id="bnDue" hidden></i>' : ""}</a>`).join("")}</nav>
 <div class="sheet-scrim" id="moreScrim" hidden></div>
 <div class="sheet" id="moreSheet" role="dialog" aria-modal="true" aria-label="All pages" hidden><div class="sheet-grab" aria-hidden="true"></div>
 ${NAVG.slice(1).map(([g, items]) => `<div class="sh-group"><h3>${g}</h3><div class="sh-grid">${items.map(([k, l]) => `<a href="#${k}" data-sheet>${icon(k)}<span>${esc(l)}</span></a>`).join("")}</div></div>`).join("")}
@@ -7653,8 +8473,13 @@ function updateSync() {
 E.onSync = (reloaded) => { updateSync(); if (reloaded) { toast("Progress loaded from your account"); route(); } };
 
 /* ---------- routing ---------- */
+/* Pages that share one navigation item are shown with tabs. */
+const PTABS = { divisions: [["divisions", "By division"], ["library", "All lessons"]], lnotes: [["lnotes", "Learning notes"], ["notes", "My notes & bookmarks"]], tracker: [["tracker", "Competency"], ["analytics", "Analytics"]] };
+const PTAB_OF = { divisions: "divisions", library: "divisions", lnotes: "lnotes", notes: "lnotes", tracker: "tracker", analytics: "tracker" };
+function ptabs(h) { const g = PTAB_OF[h]; if (!g) return ""; return `<nav class="ptabs" aria-label="Section">${PTABS[g].map(([k, t]) => `<a href="#${k}" class="${k === h ? "on" : ""}" ${k === h ? 'aria-current="page"' : ""}>${t}</a>`).join("")}</nav>`; }
 function navKey(h) {
-  if (h.startsWith("div-")) return "divisions"; if (h.startsWith("lesson-")) return "library"; if (h.startsWith("note-")) return "lnotes";
+  if (PTAB_OF[h]) return PTAB_OF[h];
+  if (h.startsWith("div-")) return "divisions"; if (h.startsWith("lesson-")) return "divisions"; if (h.startsWith("note-")) return "lnotes";
   if (h.startsWith("case-")) return "cases"; if (h === "quiz") return SESSION && SESSION.caseId ? "cases" : "exams"; return h;
 }
 function route() {
@@ -7688,9 +8513,9 @@ function route() {
   ARE.CTX = { page: h.split("-")[0], lesson: h.startsWith("lesson-") ? h.slice(7) : null, div: h.startsWith("div-") ? h.slice(4) : (h.startsWith("lesson-") && E.LMAP[h.slice(7)] ? E.LMAP[h.slice(7)].div : null), caseId: h.startsWith("case-") ? h : null, note: h.startsWith("note-") ? h.slice(5) : null };
   if (h === "quiz" && SESSION && !SESSION.done) { const q = E.QMAP[SESSION.qids[SESSION.i]]; ARE.CTX = { page: "quiz", qid: q.id, answered: !!SESSION.checked[q.id], chosen: typeof SESSION.resp[q.id] === "number" ? SESSION.resp[q.id] : null, div: q.div, caseId: q.case || null }; }
   document.body.classList.toggle("exam-mode", h === "quiz" && !!SESSION && SESSION.mode === "exam" && !SESSION.done);
-  { const bk = ["dashboard", "today", "exams"].includes(nk) ? nk : ["library", "divisions", "studio", "flashcards", "reference"].includes(nk) ? "library" : nk === "cases" ? "exams" : "more"; $$("#bottomNav a").forEach(a => { const on = a.dataset.bn === bk; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }); }
+  { const bk = ["dashboard", "today", "exams"].includes(nk) ? nk : ["divisions", "studio", "podcast", "flashcards", "reference"].includes(nk) ? "library" : nk === "cases" ? "exams" : "more"; $$("#bottomNav a").forEach(a => { const on = a.dataset.bn === bk; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }); }
   if (h !== "quiz" && ARE.UI) ARE.UI.hideTools();
-  main.innerHTML = `<div class="wrap${h === "quiz" && SESSION && SESSION.mode === "exam" && !SESSION.done ? " wide" : ""}">${html}</div>`;
+  main.innerHTML = `<div class="wrap${h === "quiz" && SESSION && SESSION.mode === "exam" && !SESSION.done ? " wide" : ""}">${ptabs(h)}${html}</div>`;
   const due = E.dueIds().length; const b = $("#dueBadge"); if (b) b.textContent = due ? String(due) : ""; const bd = $("#bnDue"); if (bd) bd.hidden = !due;
   const fcd = fcDue().length; const fb = $("#fcBadge"); if (fb) fb.textContent = fcd ? String(fcd) : "";
   const lnb = $("#lnBadge"); if (lnb) { const n = ARE.L.activeNotes().length; lnb.textContent = n ? String(n) : ""; }
@@ -8108,7 +8933,7 @@ ${logs.length ? `<div class="list" style="font-size:.88rem">${logs.slice().rever
 function startSession(o) {
   o.qids = (o.qids || []).filter(id => E.ensureQ(id));
   if (!o.qids.length) { toast("No questions available for that selection yet."); return; }
-  const s = { id: Date.now(), title: o.title, mode: o.mode, qids: o.qids, i: 0, resp: {}, checked: {}, start: Date.now(), limit: o.limit || 0, div: o.div || null, caseId: o.caseId || null, lessonId: o.lessonId || null, back: o.back || "#exams", done: false, meta: {}, form: o.form || null, planStep: o.planStep, conf: {}, strike: {}, hl: {}, view: "item", maxSeen: 0, lockBefore: 0, breakUsed: false, onBreak: null, breakMin: o.breakMin || 0 };
+  const s = { id: Date.now(), v2: true, title: o.title, mode: o.mode, qids: o.qids, i: 0, resp: {}, checked: {}, start: Date.now(), limit: o.limit || 0, div: o.div || null, caseId: o.caseId || null, lessonId: o.lessonId || null, back: o.back || "#exams", done: false, meta: {}, form: o.form || null, planStep: o.planStep, conf: {}, strike: {}, hl: {}, view: "item", maxSeen: 0, lockBefore: 0, breakUsed: false, onBreak: null, breakMin: o.breakMin || 0 };
   if (ARE.UI) ARE.UI.resetTools();
   s.qids.forEach(id => {
     const q = E.QMAP[id];
@@ -8968,7 +9793,7 @@ ARE.HOME = () => {
   const ch = L.dailyChallenge();
   return `<section class="home" aria-label="Today at a glance">
 <a class="hm hm-streak" href="#analytics"><span class="hm-k">Streak</span><b>${st.days}<small> day${st.days === 1 ? "" : "s"}</small></b><span class="hm-s">${st.today ? "Today counts ✓" : st.need ? st.need + " more answers today" : "Study today to keep it"}</span></a>
-<a class="hm" href="#tracker"><span class="hm-k">ARE progress</span><b>${pct(ov.readiness)}</b>${bar(ov.readiness)}<span class="hm-s">Level ${lv.lv} · ${E.S.game.xp || 0} XP</span></a>
+<a class="hm" href="#tracker"><span class="hm-k">ARE progress</span><b>${pct(ov.readiness)}</b>${bar(ov.readiness)}<span class="hm-s">Readiness estimate</span></a>
 <a class="hm hm-plan" href="#today"><span class="hm-k">Today's goal</span><b>${plan ? done + "/" + plan.steps.length : "Plan"}<small>${plan ? " steps" : ""}</small></b>${plan ? bar(done / plan.steps.length, "var(--ok)") : ""}<span class="hm-s">${plan ? (plan.finished ? "Done for today ✓" : "Continue your plan") : "Build a 15–60 min session"}</span></a>
 <a class="hm" href="#flashcards"><span class="hm-k">Needs review</span><b>${due}</b><span class="hm-s">${notes} learning note${notes === 1 ? "" : "s"} open</span></a>
 ${next ? `<a class="hm hm-wide" href="#lesson-${next.id}"><span class="hm-k">Next lesson</span><b class="hm-t">${esc(next.title)}</b><span class="hm-s">${divCode(next.div)} · ${next.minutes} min</span></a>` : ""}
@@ -9164,9 +9989,7 @@ function vAnalytics() {
   const lvls = (A.levels || []).slice(-30);
   return `<div class="stack" style="gap:6px"><span class="eyebrow">How well you know it, and how well it's sticking</span><h1>Learning Analytics</h1></div>
 <div class="grid g4"><div class="panel kpi"><b>${A.retention === null ? "—" : pct(A.retention)}</b><span>Long-term retention (correct after 6+ days, ${A.retentionN} items)</span></div><div class="panel kpi"><b>${cal.accuracy === null ? "—" : pct(cal.accuracy)}</b><span>Confidence calibration (${cal.n} rated answers)</span></div><div class="panel kpi"><b>${A.srs.mature}</b><span>Mature review items (21+ day interval)</span></div><div class="panel kpi"><b>${A.reviewAcc === null ? "—" : pct(A.reviewAcc)}</b><span>Spaced-review accuracy</span></div></div>
-<section class="panel stack"><h2>Level ${lv.lv} · ${G.xp || 0} XP</h2>${bar(lv.into / lv.need)}<p class="muted" style="font-size:.88rem">${lv.need - lv.into} XP to level ${lv.lv + 1}. XP comes from correct answers (more for harder items), remembering items after long gaps, completing lessons and practice exams, and closing learning notes. Time spent and wrong answers earn nothing.</p>
-<div class="grid g4"><div class="kpi"><b>${st.days}</b><span>Current streak</span></div><div class="kpi"><b>${G.bests.streak || 0}</b><span>Best streak</span></div><div class="kpi"><b>${wk.n}<small class="muted">/${wk.goal}</small></b><span>Questions this week (goal)</span></div><div class="kpi"><b>${G.bests.dayXP || 0}</b><span>Best day XP</span></div></div>
-<div class="row" style="align-items:center"><label class="f" style="flex-direction:row;gap:8px;align-items:center">Weekly goal <input type="number" id="weekGoal" min="20" max="1000" step="10" value="${wk.goal}" style="width:90px"> questions</label>${bar(Math.min(1, wk.n / wk.goal), "var(--ok)")}</div></section>
+
 <section class="stack"><h2>Achievements <small class="muted">${Object.keys(G.badges).length}/${L.BADGES.length}</small></h2><div class="grid g4 badges">${L.BADGES.map(b => `<div class="badge ${G.badges[b.id] ? "got" : ""}"><span class="bi" aria-hidden="true">${G.badges[b.id] ? "★" : "☆"}</span><b>${esc(b.t)}</b><small>${esc(b.d)}</small>${G.badges[b.id] ? `<small class="mono">${fmtDate(G.badges[b.id])}</small>` : ""}</div>`).join("")}</div>
 <p class="muted" style="font-size:.85rem">Personal bests: ${ARE.DIVISIONS.map(d => G.bests["form-" + d.id] ? d.code + " " + pct(G.bests["form-" + d.id]) : null).filter(Boolean).join(" · ") || "finish a practice exam form to set one"}.</p></section>
 <section class="panel stack"><h2>Confidence vs. results</h2><p class="muted" style="font-size:.88rem">Rate your confidence before checking practice answers. Being sure and wrong points to a misconception; being unsure and right means you need more retrieval practice, not more reading.</p>
@@ -9309,6 +10132,7 @@ E.merge = (a, b) => {
   (older.cards || []).forEach(c => { if (!m.cards.some(x => x.id === c.id)) m.cards.push(c); });
   m.pod = Object.assign({}, older.pod || {}, m.pod || {});
   m.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0);
+  if (ARE.migrateOpts) ARE.migrateOpts(m);
   return m;
 };
 const SY = ARE.SYNC = { cfg: (() => { try { return Object.assign({ token: "", gist: "" }, JSON.parse(localStorage.getItem("are-gist") || "{}")); } catch (e) { return { token: "", gist: "" }; } })(), status: "", busy: false };

@@ -449,3 +449,15 @@ body.exam-mode .content{background:var(--bg)}
 .pod-main{display:grid; gap:8px; min-width:0}
 .pod-act{display:flex; gap:6px; flex:none; flex-wrap:wrap; justify-content:flex-end}
 @media (max-width:620px){ .pod-ep{flex-direction:column; align-items:stretch} .pod-act{justify-content:flex-start} }
+
+/* ---------- v9 refinement: flatter, quieter surfaces ---------- */
+.hm-plan, .hm-ch, .badge.got, .pstep, .ncard, .hm{background:var(--surface)}
+.badge.got{border-color:var(--sun)}
+.panel, .hm, .ncard, .pstep, .nsec, .lessoncard, .divcard, .pod-ep, .qcard{box-shadow:none; border-radius:var(--r)}
+.panel:hover, .hm:hover, .ncard:hover{transform:none}
+h1{font-size:clamp(1.45rem, 1.15rem + .9vw, 1.85rem)}
+/* section tabs for pages that share one navigation item */
+.ptabs{display:flex; gap:2px; border-bottom:1px solid var(--line2); margin-bottom:-8px; overflow-x:auto; scrollbar-width:none}
+.ptabs a{padding:10px 14px; color:var(--muted); text-decoration:none; font-weight:600; font-size:var(--t-base); border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap; transition:color var(--dur) var(--ease), border-color var(--dur) var(--ease)}
+.ptabs a:hover{color:var(--ink)}
+.ptabs a.on{color:var(--accent); border-bottom-color:var(--accent)}

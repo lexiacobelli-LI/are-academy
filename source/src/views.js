@@ -54,10 +54,9 @@ const NAV = [["dashboard", "Home"], ["today", "Today's Study Plan"], ["library",
 /* nav groups: [title, [[route, label], ...]] — order = priority */
 const NAVG = [
   [null, [["dashboard", "Home"], ["today", "Today's Plan"]]],
-  ["Learn", [["library", "Study Library"], ["divisions", "ARE Divisions"], ["studio", "Video Lessons"], ["podcast", "Podcast"], ["flashcards", "Flashcards"], ["reference", "Reference Library"]]],
+  ["Learn", [["divisions", "Divisions & Lessons"], ["flashcards", "Flashcards"], ["studio", "Video Lessons"], ["podcast", "Podcast"], ["reference", "Reference Library"]]],
   ["Practice", [["exams", "Practice Exams"], ["cases", "Case Studies"]]],
-  ["Notes", [["lnotes", "Learning Notes"], ["notes", "My Notes"]]],
-  ["Progress", [["tracker", "Competency"], ["analytics", "Analytics"], ["planner", "Study Planner"]]]
+  ["Review", [["lnotes", "Notes"], ["tracker", "Progress"], ["planner", "Study Planner"]]]
 ];
 const BADGE = { exams: "dueBadge", flashcards: "fcBadge", lnotes: "lnBadge" };
 let railPref = (() => { try { return JSON.parse(localStorage.getItem("are-rail") || "{}"); } catch (e) { return {}; } })();
@@ -82,7 +81,7 @@ function shell() {
     <main class="main" id="main" tabindex="-1"></main>
   </div>
 </div>
-<nav class="bottomnav" id="bottomNav" aria-label="Main">${[["dashboard", "Home"], ["today", "Today"], ["library", "Learn"], ["exams", "Practice"], ["more", "More"]].map(([k, l]) => `<a href="#${k === "more" ? "dashboard" : k}" data-bn="${k}" ${k === "more" ? 'role="button" aria-haspopup="dialog" aria-label="More pages"' : ""}>${icon(k === "more" ? "menu" : k === "library" ? "library" : k)}<span>${l}</span>${k === "exams" ? '<i class="bn-dot" id="bnDue" hidden></i>' : ""}</a>`).join("")}</nav>
+<nav class="bottomnav" id="bottomNav" aria-label="Main">${[["dashboard", "Home"], ["today", "Today"], ["library", "Learn"], ["exams", "Practice"], ["more", "More"]].map(([k, l]) => `<a href="#${k === "more" ? "dashboard" : k === "library" ? "divisions" : k}" data-bn="${k}" ${k === "more" ? 'role="button" aria-haspopup="dialog" aria-label="More pages"' : ""}>${icon(k === "more" ? "menu" : k === "library" ? "library" : k)}<span>${l}</span>${k === "exams" ? '<i class="bn-dot" id="bnDue" hidden></i>' : ""}</a>`).join("")}</nav>
 <div class="sheet-scrim" id="moreScrim" hidden></div>
 <div class="sheet" id="moreSheet" role="dialog" aria-modal="true" aria-label="All pages" hidden><div class="sheet-grab" aria-hidden="true"></div>
 ${NAVG.slice(1).map(([g, items]) => `<div class="sh-group"><h3>${g}</h3><div class="sh-grid">${items.map(([k, l]) => `<a href="#${k}" data-sheet>${icon(k)}<span>${esc(l)}</span></a>`).join("")}</div></div>`).join("")}
@@ -115,8 +114,13 @@ function updateSync() {
 E.onSync = (reloaded) => { updateSync(); if (reloaded) { toast("Progress loaded from your account"); route(); } };
 
 /* ---------- routing ---------- */
+/* Pages that share one navigation item are shown with tabs. */
+const PTABS = { divisions: [["divisions", "By division"], ["library", "All lessons"]], lnotes: [["lnotes", "Learning notes"], ["notes", "My notes & bookmarks"]], tracker: [["tracker", "Competency"], ["analytics", "Analytics"]] };
+const PTAB_OF = { divisions: "divisions", library: "divisions", lnotes: "lnotes", notes: "lnotes", tracker: "tracker", analytics: "tracker" };
+function ptabs(h) { const g = PTAB_OF[h]; if (!g) return ""; return `<nav class="ptabs" aria-label="Section">${PTABS[g].map(([k, t]) => `<a href="#${k}" class="${k === h ? "on" : ""}" ${k === h ? 'aria-current="page"' : ""}>${t}</a>`).join("")}</nav>`; }
 function navKey(h) {
-  if (h.startsWith("div-")) return "divisions"; if (h.startsWith("lesson-")) return "library"; if (h.startsWith("note-")) return "lnotes";
+  if (PTAB_OF[h]) return PTAB_OF[h];
+  if (h.startsWith("div-")) return "divisions"; if (h.startsWith("lesson-")) return "divisions"; if (h.startsWith("note-")) return "lnotes";
   if (h.startsWith("case-")) return "cases"; if (h === "quiz") return SESSION && SESSION.caseId ? "cases" : "exams"; return h;
 }
 function route() {
@@ -150,9 +154,9 @@ function route() {
   ARE.CTX = { page: h.split("-")[0], lesson: h.startsWith("lesson-") ? h.slice(7) : null, div: h.startsWith("div-") ? h.slice(4) : (h.startsWith("lesson-") && E.LMAP[h.slice(7)] ? E.LMAP[h.slice(7)].div : null), caseId: h.startsWith("case-") ? h : null, note: h.startsWith("note-") ? h.slice(5) : null };
   if (h === "quiz" && SESSION && !SESSION.done) { const q = E.QMAP[SESSION.qids[SESSION.i]]; ARE.CTX = { page: "quiz", qid: q.id, answered: !!SESSION.checked[q.id], chosen: typeof SESSION.resp[q.id] === "number" ? SESSION.resp[q.id] : null, div: q.div, caseId: q.case || null }; }
   document.body.classList.toggle("exam-mode", h === "quiz" && !!SESSION && SESSION.mode === "exam" && !SESSION.done);
-  { const bk = ["dashboard", "today", "exams"].includes(nk) ? nk : ["library", "divisions", "studio", "flashcards", "reference"].includes(nk) ? "library" : nk === "cases" ? "exams" : "more"; $$("#bottomNav a").forEach(a => { const on = a.dataset.bn === bk; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }); }
+  { const bk = ["dashboard", "today", "exams"].includes(nk) ? nk : ["divisions", "studio", "podcast", "flashcards", "reference"].includes(nk) ? "library" : nk === "cases" ? "exams" : "more"; $$("#bottomNav a").forEach(a => { const on = a.dataset.bn === bk; a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }); }
   if (h !== "quiz" && ARE.UI) ARE.UI.hideTools();
-  main.innerHTML = `<div class="wrap${h === "quiz" && SESSION && SESSION.mode === "exam" && !SESSION.done ? " wide" : ""}">${html}</div>`;
+  main.innerHTML = `<div class="wrap${h === "quiz" && SESSION && SESSION.mode === "exam" && !SESSION.done ? " wide" : ""}">${ptabs(h)}${html}</div>`;
   const due = E.dueIds().length; const b = $("#dueBadge"); if (b) b.textContent = due ? String(due) : ""; const bd = $("#bnDue"); if (bd) bd.hidden = !due;
   const fcd = fcDue().length; const fb = $("#fcBadge"); if (fb) fb.textContent = fcd ? String(fcd) : "";
   const lnb = $("#lnBadge"); if (lnb) { const n = ARE.L.activeNotes().length; lnb.textContent = n ? String(n) : ""; }
@@ -570,7 +574,7 @@ ${logs.length ? `<div class="list" style="font-size:.88rem">${logs.slice().rever
 function startSession(o) {
   o.qids = (o.qids || []).filter(id => E.ensureQ(id));
   if (!o.qids.length) { toast("No questions available for that selection yet."); return; }
-  const s = { id: Date.now(), title: o.title, mode: o.mode, qids: o.qids, i: 0, resp: {}, checked: {}, start: Date.now(), limit: o.limit || 0, div: o.div || null, caseId: o.caseId || null, lessonId: o.lessonId || null, back: o.back || "#exams", done: false, meta: {}, form: o.form || null, planStep: o.planStep, conf: {}, strike: {}, hl: {}, view: "item", maxSeen: 0, lockBefore: 0, breakUsed: false, onBreak: null, breakMin: o.breakMin || 0 };
+  const s = { id: Date.now(), v2: true, title: o.title, mode: o.mode, qids: o.qids, i: 0, resp: {}, checked: {}, start: Date.now(), limit: o.limit || 0, div: o.div || null, caseId: o.caseId || null, lessonId: o.lessonId || null, back: o.back || "#exams", done: false, meta: {}, form: o.form || null, planStep: o.planStep, conf: {}, strike: {}, hl: {}, view: "item", maxSeen: 0, lockBefore: 0, breakUsed: false, onBreak: null, breakMin: o.breakMin || 0 };
   if (ARE.UI) ARE.UI.resetTools();
   s.qids.forEach(id => {
     const q = E.QMAP[id];

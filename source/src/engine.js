@@ -31,6 +31,7 @@ function sanitize(s) {
   if (!Array.isArray(b.attempts)) b.attempts = [];
   b.game = Object.assign(E.blank().game, s.game || {});
   if (!Array.isArray(b.cards)) b.cards = [];
+  if (ARE.migrateOpts) ARE.migrateOpts(b);
   return b;
 }
 E.sanitize = sanitize;
@@ -164,7 +165,7 @@ E.saveSession = (s) => {
   if (s) { const j = JSON.stringify(s); lsSet(LS_SESSION, j); ARE.Store && ARE.Store.put("session", j).catch(() => {}); }
   else { lsDel(LS_SESSION); ARE.Store && ARE.Store.del("session").catch(() => {}); }
 };
-E.loadSession = () => { try { return JSON.parse(lsGet(LS_SESSION) || "null"); } catch (e) { return null; } };
+E.loadSession = () => { try { const s = JSON.parse(lsGet(LS_SESSION) || "null"); return ARE.migrateSession ? ARE.migrateSession(s) : s; } catch (e) { return null; } };
 
 /* ---------- indexes ---------- */
 E.rebuild = () => {
@@ -304,7 +305,7 @@ E.record = (qid, ok, mode, extra) => {
   const q = E.QMAP[qid]; if (!q) return;
   const t = Date.now();
   const prev = E.S.srs[qid] ? Object.assign({}, E.S.srs[qid]) : null;
-  const a = { q: qid, ok, d: q.diff || 1, t, m: mode };
+  const a = { q: qid, ok, d: q.diff || 1, t, m: mode, v: 2 };
   if (extra && extra.conf) a.c = extra.conf;
   if (extra && extra.chosen !== undefined && extra.chosen !== null && typeof extra.chosen === "number") a.ch = extra.chosen;
   E.S.attempts.push(a);

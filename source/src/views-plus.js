@@ -36,7 +36,7 @@ ARE.HOME = () => {
   const ch = L.dailyChallenge();
   return `<section class="home" aria-label="Today at a glance">
 <a class="hm hm-streak" href="#analytics"><span class="hm-k">Streak</span><b>${st.days}<small> day${st.days === 1 ? "" : "s"}</small></b><span class="hm-s">${st.today ? "Today counts ✓" : st.need ? st.need + " more answers today" : "Study today to keep it"}</span></a>
-<a class="hm" href="#tracker"><span class="hm-k">ARE progress</span><b>${pct(ov.readiness)}</b>${bar(ov.readiness)}<span class="hm-s">Level ${lv.lv} · ${E.S.game.xp || 0} XP</span></a>
+<a class="hm" href="#tracker"><span class="hm-k">ARE progress</span><b>${pct(ov.readiness)}</b>${bar(ov.readiness)}<span class="hm-s">Readiness estimate</span></a>
 <a class="hm hm-plan" href="#today"><span class="hm-k">Today's goal</span><b>${plan ? done + "/" + plan.steps.length : "Plan"}<small>${plan ? " steps" : ""}</small></b>${plan ? bar(done / plan.steps.length, "var(--ok)") : ""}<span class="hm-s">${plan ? (plan.finished ? "Done for today ✓" : "Continue your plan") : "Build a 15–60 min session"}</span></a>
 <a class="hm" href="#flashcards"><span class="hm-k">Needs review</span><b>${due}</b><span class="hm-s">${notes} learning note${notes === 1 ? "" : "s"} open</span></a>
 ${next ? `<a class="hm hm-wide" href="#lesson-${next.id}"><span class="hm-k">Next lesson</span><b class="hm-t">${esc(next.title)}</b><span class="hm-s">${divCode(next.div)} · ${next.minutes} min</span></a>` : ""}
@@ -232,9 +232,7 @@ function vAnalytics() {
   const lvls = (A.levels || []).slice(-30);
   return `<div class="stack" style="gap:6px"><span class="eyebrow">How well you know it, and how well it's sticking</span><h1>Learning Analytics</h1></div>
 <div class="grid g4"><div class="panel kpi"><b>${A.retention === null ? "—" : pct(A.retention)}</b><span>Long-term retention (correct after 6+ days, ${A.retentionN} items)</span></div><div class="panel kpi"><b>${cal.accuracy === null ? "—" : pct(cal.accuracy)}</b><span>Confidence calibration (${cal.n} rated answers)</span></div><div class="panel kpi"><b>${A.srs.mature}</b><span>Mature review items (21+ day interval)</span></div><div class="panel kpi"><b>${A.reviewAcc === null ? "—" : pct(A.reviewAcc)}</b><span>Spaced-review accuracy</span></div></div>
-<section class="panel stack"><h2>Level ${lv.lv} · ${G.xp || 0} XP</h2>${bar(lv.into / lv.need)}<p class="muted" style="font-size:.88rem">${lv.need - lv.into} XP to level ${lv.lv + 1}. XP comes from correct answers (more for harder items), remembering items after long gaps, completing lessons and practice exams, and closing learning notes. Time spent and wrong answers earn nothing.</p>
-<div class="grid g4"><div class="kpi"><b>${st.days}</b><span>Current streak</span></div><div class="kpi"><b>${G.bests.streak || 0}</b><span>Best streak</span></div><div class="kpi"><b>${wk.n}<small class="muted">/${wk.goal}</small></b><span>Questions this week (goal)</span></div><div class="kpi"><b>${G.bests.dayXP || 0}</b><span>Best day XP</span></div></div>
-<div class="row" style="align-items:center"><label class="f" style="flex-direction:row;gap:8px;align-items:center">Weekly goal <input type="number" id="weekGoal" min="20" max="1000" step="10" value="${wk.goal}" style="width:90px"> questions</label>${bar(Math.min(1, wk.n / wk.goal), "var(--ok)")}</div></section>
+
 <section class="stack"><h2>Achievements <small class="muted">${Object.keys(G.badges).length}/${L.BADGES.length}</small></h2><div class="grid g4 badges">${L.BADGES.map(b => `<div class="badge ${G.badges[b.id] ? "got" : ""}"><span class="bi" aria-hidden="true">${G.badges[b.id] ? "★" : "☆"}</span><b>${esc(b.t)}</b><small>${esc(b.d)}</small>${G.badges[b.id] ? `<small class="mono">${fmtDate(G.badges[b.id])}</small>` : ""}</div>`).join("")}</div>
 <p class="muted" style="font-size:.85rem">Personal bests: ${ARE.DIVISIONS.map(d => G.bests["form-" + d.id] ? d.code + " " + pct(G.bests["form-" + d.id]) : null).filter(Boolean).join(" · ") || "finish a practice exam form to set one"}.</p></section>
 <section class="panel stack"><h2>Confidence vs. results</h2><p class="muted" style="font-size:.88rem">Rate your confidence before checking practice answers. Being sure and wrong points to a misconception; being unsure and right means you need more retrieval practice, not more reading.</p>
@@ -377,6 +375,7 @@ E.merge = (a, b) => {
   (older.cards || []).forEach(c => { if (!m.cards.some(x => x.id === c.id)) m.cards.push(c); });
   m.pod = Object.assign({}, older.pod || {}, m.pod || {});
   m.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0);
+  if (ARE.migrateOpts) ARE.migrateOpts(m);
   return m;
 };
 const SY = ARE.SYNC = { cfg: (() => { try { return Object.assign({ token: "", gist: "" }, JSON.parse(localStorage.getItem("are-gist") || "{}")); } catch (e) { return { token: "", gist: "" }; } })(), status: "", busy: false };
