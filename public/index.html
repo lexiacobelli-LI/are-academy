@@ -9137,7 +9137,7 @@ ARE.DEEP["pcm-ethics"] = {
 <tr><td>Architect has a financial interest in a product or contractor</td><td>Disclose to the client in writing before acting; let the client decide.</td></tr>
 <tr><td>Asked to seal drawings prepared by others outside your control</td><td>Decline. Seal only work prepared under your responsible control.</td></tr>
 <tr><td>Owner wants to replace another architect still under contract</td><td>Confirm the first agreement has ended before accepting.</td></tr>
-<tr><td>Practicing in a state where you are not licensed</td><td>Do not offer or perform services there until licensed; reciprocity through NCARB certification helps.</td></tr>
+<tr><td>Practicing in a state where you are not licensed</td><td>Do not practice there until licensed. Some jurisdictions let an out-of-state architect (often an NCARB Certificate holder) offer services or compete for a commission first if the board is notified; check that jurisdiction's rules. NCARB certification makes reciprocity easier.</td></tr>
 </tbody></table>` },
     { h: "Licensure and the board's role", html: `
 <p>Each state or jurisdiction licenses architects and enforces its own rules of conduct, which are often based on the NCARB Model Rules. Boards can reprimand, fine, suspend or revoke a license. Requirements for initial licensure follow NCARB's path: an accredited degree (or an alternative), the Architectural Experience Program (AXP) and the ARE. Continuing education is required to renew in most jurisdictions. An NCARB Certificate makes it easier to obtain reciprocal licenses in other jurisdictions.</p>` }
@@ -9171,7 +9171,7 @@ ARE.DEEP["pcm-fees"] = {
   ],
   tips: [
     "To get a fee from cost and a profit percentage of the fee, divide by (1 − profit %). Multiplying cost by (1 + profit %) gives profit as a percentage of cost instead.",
-    "If the stem gives a multiplier on direct personnel expense, the multiplier already covers benefits, overhead and profit.",
+    "If the stem gives a multiplier on direct personnel expense, the multiplier covers overhead and profit (benefits are already in DPE). A multiplier on direct salary expense covers benefits, overhead and profit.",
     "Scope exclusions belong in the agreement, not in a later email."
   ]
 };
@@ -9191,8 +9191,8 @@ ARE.DEEP["pjm-schedule"] = {
     { h: "Building the work plan step by step", html: `
 <ol>
 <li><b>Start from the fee.</b> Fee − consultants − reimbursables − target profit = the labor budget the team can spend.</li>
-<li><b>Split by phase.</b> Apply the phase split in the agreement (B101 §11.5 sets percentages for stipulated-sum work; a typical split is SD 15%, DD 20%, CD 40%, bidding 5%, CA 20%).</li>
-<li><b>Convert dollars to hours.</b> Phase labor ÷ blended billing rate (or salary rate, if the budget is in salary dollars).</li>
+<li><b>Split by phase.</b> Apply the phase percentages the parties entered in B101 §11.5 (the form leaves them blank; a typical split is SD 15%, DD 20%, CD 40%, bidding 5%, CA 20%).</li>
+<li><b>Convert dollars to hours.</b> Because profit is already deducted, divide phase labor by the average cost rate: salary rate × (1 + overhead rate). (If you skipped the profit deduction, divide the fee amount by the blended billing rate instead.)</li>
 <li><b>List tasks and deliverables</b> for each phase and assign hours, staff and dates.</li>
 <li><b>Set milestones</b> for owner reviews, consultant coordination, internal QC and agency submissions.</li>
 </ol>
@@ -9235,7 +9235,7 @@ ARE.DEEP["pjm-contracts"] = {
 </tbody></table>
 <p>Throughout, the architect coordinates with the owner's consultants and may rely on the information they provide (§3.1.2), contacts the governmental authorities and utilities that must approve the work (§3.1.5), and is not responsible for owner directives or acceptance of nonconforming work given without its written approval (§3.1.4).</p>` },
     { h: "Owner responsibilities", html: `
-<p>Article 5 of B101–2017 assigns the owner duties that the architect relies on: provide a program and the owner's budget (§5.2), designate a representative, furnish site surveys and geotechnical information, coordinate the owner's own consultants, and respond to submittals promptly. When the owner is late or its information is wrong, the resulting extra work is an Additional Service (§4.2.1.4).</p>` }
+<p>Article 5 of B101–2017 assigns the owner duties that the architect relies on: provide a program (§5.1) and the owner's budget (§5.2), designate a representative, furnish site surveys and geotechnical information, coordinate the owner's own consultants, and respond to submittals promptly. When the owner is late or its information is wrong, the resulting extra work is an Additional Service (§4.2.1.4).</p>` }
   ],
   tips: [
     "\"Who provides the survey / geotechnical report?\" The owner, under B101 Article 5.",
@@ -9609,7 +9609,7 @@ ARE.DEEP["ppd-heightarea"] = {
   ]
 };
 ARE.DEEP_TERMS.push(
-  ["Construction type", "Codes", "IBC classification (I to V, A or B) based on materials and fire resistance of building elements.", "ppd-heightarea"],
+  ["Construction type", "Codes", "IBC classification (Types I, II, III and V, each A or B; Type IV as IV-A, IV-B, IV-C or IV-HT) based on materials and fire resistance of building elements.", "ppd-heightarea"],
   ["Fire wall", "Codes", "A rated wall with structural stability that divides a structure into separate buildings (IBC §706).", "ppd-heightarea"],
   ["Accessory occupancy", "Codes", "A minor use, no more than 10% of a story's area, treated as part of the main occupancy (IBC §508.2).", "ppd-heightarea"],
   ["Grade plane", "Codes", "The reference plane representing the average finished ground level next to the building, used to measure height.", "ppd-heightarea"],
@@ -9874,7 +9874,7 @@ ARE.DEEP["ce-changes"] = {
   tips: [
     "A change order needs all three signatures; a CCD needs only owner and architect.",
     "When the contractor signs a CCD, it becomes a change order on the agreed terms (§7.3.7).",
-    "Minor changes (§7.4) cannot change cost or time; if the contractor thinks they do, it must say so before proceeding."
+    "Minor changes (§7.4) cannot change cost or time; if the contractor thinks they do, it must notify the architect and not proceed with the change. Doing the work without that notice waives any adjustment."
   ]
 };
 ARE.DEEP_TERMS.push(
@@ -9969,7 +9969,7 @@ deepAdd("pdd-envelope", [
 <p>The energy code requires a continuous air barrier on the building envelope. Under the IECC, air barrier <b>materials</b> must have an air permeance no greater than 0.004 cfm/ft² at 1.57 psf (75 Pa); assemblies and whole-building testing are alternative ways to show compliance. Every transition (wall to roof, wall to window, wall to foundation) and every penetration must be sealed and shown in details.</p>
 <p>Field verification is cheaper than repairs: build a <b>mock-up</b> of a typical wall with a window and test it before the work proceeds. Common tests are water penetration under pressure (ASTM E1105) and hose testing of curtain wall joints (AAMA 501.2). Whole-building air-leakage testing (ASTM E779) measures the result after enclosure.</p>` },
   { h: "Checking condensation risk", html: `
-<p>A dew-point (Glaser) analysis plots the temperature through the wall at design conditions and checks whether any surface falls below the dew point where moist air can reach it. It is a quick screening tool. For walls with unusual layers, high interior humidity (pools, hospitals) or mass masonry retrofits, use transient hygrothermal modeling (WUFI is common), which accounts for rain, solar drying and stored moisture over time.</p>` }
+<p>A steady-state dew-point analysis plots the temperature through the wall at design conditions and checks whether any surface falls below the dew point where moist air can reach it. The related Glaser method compares vapor pressure with saturation vapor pressure layer by layer. It is a quick screening tool. For walls with unusual layers, high interior humidity (pools, hospitals) or mass masonry retrofits, use transient hygrothermal modeling (WUFI is common), which accounts for rain, solar drying and stored moisture over time.</p>` }
 ], ["Mock-ups are built and tested before the real work, so problems are fixed once."]);
 ARE.DEEP_TERMS.push(["Mock-up", "Construction admin", "A full-size sample of an assembly built and tested to set the standard for the work.", "pdd-envelope"],
   ["Dew point", "Building science", "The temperature at which air becomes saturated and moisture condenses.", "pdd-envelope"]);
@@ -10038,18 +10038,18 @@ deepAdd("ce-payment", [
 
 deepAdd("ppd-heightarea", [
   { h: "Worked allowable-area check (illustrative values)", html: `
-<p>Suppose Table 506.2 gives a tabular area A<sub>t</sub> of 36,000 sf (SM) and a nonsprinklered value NS of 9,000 sf for a three-story, sprinklered building. The building has 160 ft of its 400 ft perimeter on a public way 30 ft wide. <i>(These numbers are for practice; take real values from the code table for the actual occupancy and construction type.)</i></p>
+<p>Suppose Table 506.2 gives a tabular area A<sub>t</sub> of 36,000 sf (SM) and a nonsprinklered value NS of 12,000 sf for a three-story, sprinklered building. The building has 160 ft of its 400 ft perimeter on a public way 30 ft wide. <i>(These numbers are for practice; take real values from the code table for the actual occupancy and construction type.)</i></p>
 <table class="tbl"><thead><tr><th>Step</th><th>Calculation</th><th>Result</th></tr></thead><tbody>
 <tr><td>Frontage factor</td><td>I<sub>f</sub> = [160/400 − 0.25] × 30/30</td><td>0.15</td></tr>
-<tr><td>Area per story</td><td>A<sub>t</sub> + NS × I<sub>f</sub> = 36,000 + 9,000 × 0.15</td><td>37,350 sf</td></tr>
-<tr><td>Total building area</td><td>37,350 × S<sub>a</sub> (3 stories)</td><td>112,050 sf</td></tr>
+<tr><td>Area per story</td><td>A<sub>t</sub> + NS × I<sub>f</sub> = 36,000 + 12,000 × 0.15</td><td>37,800 sf</td></tr>
+<tr><td>Total building area</td><td>37,800 × S<sub>a</sub> (3 stories)</td><td>113,400 sf</td></tr>
 </tbody></table>
 <p>Also check any per-story limit the adopted code applies. If the design exceeds either limit, raise the construction type, add frontage or divide the building with fire walls.</p>` }
 ]);
 
 deepAdd("ppd-envelope", [
   { h: "Glazing area and daylight", html: `
-<p>The 2021 IECC prescriptive path limits vertical fenestration to 30% of the gross above-grade wall area, or 40% where daylight-responsive controls are provided, and skylights to 3% of the roof area (5% with daylight controls). Exceeding these requires the performance path or trade-offs.</p>
+<p>The 2021 IECC prescriptive path limits vertical fenestration to 30% of the gross above-grade wall area, or 40% in Climate Zones 0–7 where enough floor area is in daylight zones, daylight-responsive controls are installed and the glazing VT is at least 1.1 × SHGC (C402.4.1.1). Skylights are limited to 3% of the roof area, or 6% where daylight-responsive controls serve the toplit zones (C402.4.1.2). Exceeding these requires the performance path or trade-offs.</p>
 <p>Daylight from side windows reaches roughly 1.5 to 2.5 times the window head height into a room; a light shelf or high-reflectance ceiling pushes it toward the upper end. Higher heads, light-colored surfaces and narrow floor plates spread daylight further; glare control (shades, louvers) keeps it usable.</p>` }
 ], ["Prescriptive window-to-wall limits push large glazing designs to the performance path."]);
 ARE.DEEP_TERMS.push(["Window-to-wall ratio", "Energy", "Glazed area divided by gross exterior wall area; limited in the energy code's prescriptive path.", "ppd-envelope"],

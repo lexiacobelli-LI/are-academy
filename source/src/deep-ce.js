@@ -80,7 +80,7 @@ ARE.DEEP["ce-changes"] = {
   tips: [
     "A change order needs all three signatures; a CCD needs only owner and architect.",
     "When the contractor signs a CCD, it becomes a change order on the agreed terms (§7.3.7).",
-    "Minor changes (§7.4) cannot change cost or time; if the contractor thinks they do, it must say so before proceeding."
+    "Minor changes (§7.4) cannot change cost or time; if the contractor thinks they do, it must notify the architect and not proceed with the change. Doing the work without that notice waives any adjustment."
   ]
 };
 ARE.DEEP_TERMS.push(

@@ -103,7 +103,7 @@ ARE.DEEP["pcm-ethics"] = {
 <tr><td>Architect has a financial interest in a product or contractor</td><td>Disclose to the client in writing before acting; let the client decide.</td></tr>
 <tr><td>Asked to seal drawings prepared by others outside your control</td><td>Decline. Seal only work prepared under your responsible control.</td></tr>
 <tr><td>Owner wants to replace another architect still under contract</td><td>Confirm the first agreement has ended before accepting.</td></tr>
-<tr><td>Practicing in a state where you are not licensed</td><td>Do not offer or perform services there until licensed; reciprocity through NCARB certification helps.</td></tr>
+<tr><td>Practicing in a state where you are not licensed</td><td>Do not practice there until licensed. Some jurisdictions let an out-of-state architect (often an NCARB Certificate holder) offer services or compete for a commission first if the board is notified; check that jurisdiction's rules. NCARB certification makes reciprocity easier.</td></tr>
 </tbody></table>` },
     { h: "Licensure and the board's role", html: `
 <p>Each state or jurisdiction licenses architects and enforces its own rules of conduct, which are often based on the NCARB Model Rules. Boards can reprimand, fine, suspend or revoke a license. Requirements for initial licensure follow NCARB's path: an accredited degree (or an alternative), the Architectural Experience Program (AXP) and the ARE. Continuing education is required to renew in most jurisdictions. An NCARB Certificate makes it easier to obtain reciprocal licenses in other jurisdictions.</p>` }
@@ -137,7 +137,7 @@ ARE.DEEP["pcm-fees"] = {
   ],
   tips: [
     "To get a fee from cost and a profit percentage of the fee, divide by (1 − profit %). Multiplying cost by (1 + profit %) gives profit as a percentage of cost instead.",
-    "If the stem gives a multiplier on direct personnel expense, the multiplier already covers benefits, overhead and profit.",
+    "If the stem gives a multiplier on direct personnel expense, the multiplier covers overhead and profit (benefits are already in DPE). A multiplier on direct salary expense covers benefits, overhead and profit.",
     "Scope exclusions belong in the agreement, not in a later email."
   ]
 };

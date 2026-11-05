@@ -137,7 +137,7 @@ ARE.DEEP["ppd-heightarea"] = {
   ]
 };
 ARE.DEEP_TERMS.push(
-  ["Construction type", "Codes", "IBC classification (I to V, A or B) based on materials and fire resistance of building elements.", "ppd-heightarea"],
+  ["Construction type", "Codes", "IBC classification (Types I, II, III and V, each A or B; Type IV as IV-A, IV-B, IV-C or IV-HT) based on materials and fire resistance of building elements.", "ppd-heightarea"],
   ["Fire wall", "Codes", "A rated wall with structural stability that divides a structure into separate buildings (IBC §706).", "ppd-heightarea"],
   ["Accessory occupancy", "Codes", "A minor use, no more than 10% of a story's area, treated as part of the main occupancy (IBC §508.2).", "ppd-heightarea"],
   ["Grade plane", "Codes", "The reference plane representing the average finished ground level next to the building, used to measure height.", "ppd-heightarea"],

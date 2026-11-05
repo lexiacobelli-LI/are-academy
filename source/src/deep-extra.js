@@ -59,7 +59,7 @@ deepAdd("pdd-envelope", [
 <p>The energy code requires a continuous air barrier on the building envelope. Under the IECC, air barrier <b>materials</b> must have an air permeance no greater than 0.004 cfm/ft² at 1.57 psf (75 Pa); assemblies and whole-building testing are alternative ways to show compliance. Every transition (wall to roof, wall to window, wall to foundation) and every penetration must be sealed and shown in details.</p>
 <p>Field verification is cheaper than repairs: build a <b>mock-up</b> of a typical wall with a window and test it before the work proceeds. Common tests are water penetration under pressure (ASTM E1105) and hose testing of curtain wall joints (AAMA 501.2). Whole-building air-leakage testing (ASTM E779) measures the result after enclosure.</p>` },
   { h: "Checking condensation risk", html: `
-<p>A dew-point (Glaser) analysis plots the temperature through the wall at design conditions and checks whether any surface falls below the dew point where moist air can reach it. It is a quick screening tool. For walls with unusual layers, high interior humidity (pools, hospitals) or mass masonry retrofits, use transient hygrothermal modeling (WUFI is common), which accounts for rain, solar drying and stored moisture over time.</p>` }
+<p>A steady-state dew-point analysis plots the temperature through the wall at design conditions and checks whether any surface falls below the dew point where moist air can reach it. The related Glaser method compares vapor pressure with saturation vapor pressure layer by layer. It is a quick screening tool. For walls with unusual layers, high interior humidity (pools, hospitals) or mass masonry retrofits, use transient hygrothermal modeling (WUFI is common), which accounts for rain, solar drying and stored moisture over time.</p>` }
 ], ["Mock-ups are built and tested before the real work, so problems are fixed once."]);
 ARE.DEEP_TERMS.push(["Mock-up", "Construction admin", "A full-size sample of an assembly built and tested to set the standard for the work.", "pdd-envelope"],
   ["Dew point", "Building science", "The temperature at which air becomes saturated and moisture condenses.", "pdd-envelope"]);
@@ -128,18 +128,18 @@ deepAdd("ce-payment", [
 
 deepAdd("ppd-heightarea", [
   { h: "Worked allowable-area check (illustrative values)", html: `
-<p>Suppose Table 506.2 gives a tabular area A<sub>t</sub> of 36,000 sf (SM) and a nonsprinklered value NS of 9,000 sf for a three-story, sprinklered building. The building has 160 ft of its 400 ft perimeter on a public way 30 ft wide. <i>(These numbers are for practice; take real values from the code table for the actual occupancy and construction type.)</i></p>
+<p>Suppose Table 506.2 gives a tabular area A<sub>t</sub> of 36,000 sf (SM) and a nonsprinklered value NS of 12,000 sf for a three-story, sprinklered building. The building has 160 ft of its 400 ft perimeter on a public way 30 ft wide. <i>(These numbers are for practice; take real values from the code table for the actual occupancy and construction type.)</i></p>
 <table class="tbl"><thead><tr><th>Step</th><th>Calculation</th><th>Result</th></tr></thead><tbody>
 <tr><td>Frontage factor</td><td>I<sub>f</sub> = [160/400 − 0.25] × 30/30</td><td>0.15</td></tr>
-<tr><td>Area per story</td><td>A<sub>t</sub> + NS × I<sub>f</sub> = 36,000 + 9,000 × 0.15</td><td>37,350 sf</td></tr>
-<tr><td>Total building area</td><td>37,350 × S<sub>a</sub> (3 stories)</td><td>112,050 sf</td></tr>
+<tr><td>Area per story</td><td>A<sub>t</sub> + NS × I<sub>f</sub> = 36,000 + 12,000 × 0.15</td><td>37,800 sf</td></tr>
+<tr><td>Total building area</td><td>37,800 × S<sub>a</sub> (3 stories)</td><td>113,400 sf</td></tr>
 </tbody></table>
 <p>Also check any per-story limit the adopted code applies. If the design exceeds either limit, raise the construction type, add frontage or divide the building with fire walls.</p>` }
 ]);
 
 deepAdd("ppd-envelope", [
   { h: "Glazing area and daylight", html: `
-<p>The 2021 IECC prescriptive path limits vertical fenestration to 30% of the gross above-grade wall area, or 40% where daylight-responsive controls are provided, and skylights to 3% of the roof area (5% with daylight controls). Exceeding these requires the performance path or trade-offs.</p>
+<p>The 2021 IECC prescriptive path limits vertical fenestration to 30% of the gross above-grade wall area, or 40% in Climate Zones 0–7 where enough floor area is in daylight zones, daylight-responsive controls are installed and the glazing VT is at least 1.1 × SHGC (C402.4.1.1). Skylights are limited to 3% of the roof area, or 6% where daylight-responsive controls serve the toplit zones (C402.4.1.2). Exceeding these requires the performance path or trade-offs.</p>
 <p>Daylight from side windows reaches roughly 1.5 to 2.5 times the window head height into a room; a light shelf or high-reflectance ceiling pushes it toward the upper end. Higher heads, light-colored surfaces and narrow floor plates spread daylight further; glare control (shades, louvers) keeps it usable.</p>` }
 ], ["Prescriptive window-to-wall limits push large glazing designs to the performance path."]);
 ARE.DEEP_TERMS.push(["Window-to-wall ratio", "Energy", "Glazed area divided by gross exterior wall area; limited in the energy code's prescriptive path.", "ppd-envelope"],

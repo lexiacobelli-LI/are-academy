@@ -7,8 +7,8 @@ ARE.DEEP["pjm-schedule"] = {
     { h: "Building the work plan step by step", html: `
 <ol>
 <li><b>Start from the fee.</b> Fee − consultants − reimbursables − target profit = the labor budget the team can spend.</li>
-<li><b>Split by phase.</b> Apply the phase split in the agreement (B101 §11.5 sets percentages for stipulated-sum work; a typical split is SD 15%, DD 20%, CD 40%, bidding 5%, CA 20%).</li>
-<li><b>Convert dollars to hours.</b> Phase labor ÷ blended billing rate (or salary rate, if the budget is in salary dollars).</li>
+<li><b>Split by phase.</b> Apply the phase percentages the parties entered in B101 §11.5 (the form leaves them blank; a typical split is SD 15%, DD 20%, CD 40%, bidding 5%, CA 20%).</li>
+<li><b>Convert dollars to hours.</b> Because profit is already deducted, divide phase labor by the average cost rate: salary rate × (1 + overhead rate). (If you skipped the profit deduction, divide the fee amount by the blended billing rate instead.)</li>
 <li><b>List tasks and deliverables</b> for each phase and assign hours, staff and dates.</li>
 <li><b>Set milestones</b> for owner reviews, consultant coordination, internal QC and agency submissions.</li>
 </ol>
@@ -51,7 +51,7 @@ ARE.DEEP["pjm-contracts"] = {
 </tbody></table>
 <p>Throughout, the architect coordinates with the owner's consultants and may rely on the information they provide (§3.1.2), contacts the governmental authorities and utilities that must approve the work (§3.1.5), and is not responsible for owner directives or acceptance of nonconforming work given without its written approval (§3.1.4).</p>` },
     { h: "Owner responsibilities", html: `
-<p>Article 5 of B101–2017 assigns the owner duties that the architect relies on: provide a program and the owner's budget (§5.2), designate a representative, furnish site surveys and geotechnical information, coordinate the owner's own consultants, and respond to submittals promptly. When the owner is late or its information is wrong, the resulting extra work is an Additional Service (§4.2.1.4).</p>` }
+<p>Article 5 of B101–2017 assigns the owner duties that the architect relies on: provide a program (§5.1) and the owner's budget (§5.2), designate a representative, furnish site surveys and geotechnical information, coordinate the owner's own consultants, and respond to submittals promptly. When the owner is late or its information is wrong, the resulting extra work is an Additional Service (§4.2.1.4).</p>` }
   ],
   tips: [
     "\"Who provides the survey / geotechnical report?\" The owner, under B101 Article 5.",
