@@ -551,3 +551,44 @@ h3.sub{font-size:var(--t-md, 1.06rem); margin:22px 0 8px}
 @media (max-width:980px){ .lesson{grid-template-columns:minmax(0,1fr)} .lesson-toc{display:none} }
 body.tutor-docked .lesson{grid-template-columns:minmax(0,1fr)}
 .sec{grid-template-columns:minmax(0,1fr)}
+/* ---------- v20 readiness ---------- */
+.rtabs{gap:6px; flex-wrap:wrap} .rtabs .chip.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.st-pill{display:inline-block; padding:2px 8px; border-radius:999px; font:600 .8125rem var(--f-body); white-space:nowrap; border:1px solid transparent}
+.st-none{background:var(--surface2, #EEE); color:var(--muted)} .st-thin{background:#EFE9DA; color:#6B5A2E}
+.st-weak{background:var(--bad-soft); color:var(--bad)} .st-recall{background:#F4E7CF; color:#7A4E12}
+.st-applied{background:var(--ok-soft); color:var(--ok)} .st-retained{background:var(--ok); color:#fff}
+.stbar{display:flex; height:12px; border-radius:6px; overflow:hidden; background:var(--surface2, #EEE)}
+.stbar span{display:block; min-width:3px}
+.stbar .st-none{background:var(--line)} .stbar .st-thin{background:#D9CFB4} .stbar .st-weak{background:var(--bad)} .stbar .st-recall{background:#D9A24A} .stbar .st-applied{background:#7FB08F} .stbar .st-retained{background:var(--ok)}
+.stlegend{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:var(--t-sm); color:var(--muted)}
+.stlegend i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:-1px}
+.stlegend i.st-none{background:var(--line)} .stlegend i.st-thin{background:#D9CFB4} .stlegend i.st-weak{background:var(--bad)} .stlegend i.st-recall{background:#D9A24A} .stlegend i.st-applied{background:#7FB08F} .stlegend i.st-retained{background:var(--ok)}
+.kv{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px} .kv div{display:grid} .kv b{font-size:1.35rem} .kv span{color:var(--muted); font-size:var(--t-sm)}
+.spark{width:100%; height:auto; max-height:90px}
+.rtbl td{vertical-align:top}
+.gap-row{border-top:1px solid var(--line); padding-top:10px} .gap-row:first-child{border-top:0; padding-top:0}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .st-thin{background:#3A3528; color:#E5D8B5} :root:not([data-theme="light"]) .st-recall{background:#3D2F1A; color:#F0C98A} }
+:root[data-theme="dark"] .st-thin{background:#3A3528; color:#E5D8B5} :root[data-theme="dark"] .st-recall{background:#3D2F1A; color:#F0C98A}
+.qaf-row{border-top:1px solid var(--line); padding:8px 0} .qaf-row > summary{cursor:pointer; line-height:1.6}
+/* ---------- v20 simulations ---------- */
+.sim-meters{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px 18px}
+.sm{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 8px; align-items:center}
+.sm-k{grid-column:1 / -1; font-size:var(--t-sm); color:var(--muted)} .sm-k i{font-style:normal}
+.sm-bar{height:8px; border-radius:4px; background:var(--surface2, #EEE); overflow:hidden} .sm-bar span{display:block; height:100%; transition:width .4s}
+.sm-d{font:600 .8125rem var(--f-mono); min-width:2.2em; text-align:right} .sm-d.up{color:var(--ok)} .sm-d.down{color:var(--bad)}
+.sim-node .opt.dim{opacity:.55} .sim-node .opt.picked{border-color:var(--accent); background:var(--accent-soft, var(--surface2))}
+.sim-doc > summary{cursor:pointer}
+.sim-card h2{font-size:1.15rem}
+.qfig{margin:12px 0 4px} .qfig svg{width:100%; height:auto; max-height:360px}
+.qcard, .quiz > .stack, .qcard .qstem{min-width:0} .figure{max-width:100%}
+@media (max-width:760px){ .qfig svg, #hotFig svg{min-width:34rem} }
+#hotFig, .qfig{display:block; width:100%; max-width:100%; overflow-x:auto} .qcard > *{min-width:0; max-width:100%}
+/* ---------- v20 calculations ---------- */
+.calc > summary{cursor:pointer; line-height:1.6} .calc-body{display:grid; gap:14px; margin-top:12px}
+.calc-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px} .calc-grid p, .calc-grid ul{margin:4px 0 0} .calc-grid ul{padding-left:18px}
+.calc-practice p{margin:6px 0} .calc-practice input{max-width:160px}
+.calc-fb{margin:8px 0 0; padding:8px 10px; border-radius:var(--r, 8px)} .calc-fb.ok{background:var(--ok-soft); color:var(--ok)} .calc-fb.bad{background:var(--bad-soft); color:var(--bad)}
+.savesec{font-size:.8125rem; padding:2px 8px; min-height:0; margin-left:8px; vertical-align:middle; font-weight:500}
+.saved-p{border-left:3px solid var(--accent); padding:4px 0 4px 12px; margin:10px 0} .saved-p p{margin:4px 0}
+@media (pointer:coarse){ .savesec{min-height:32px; padding:6px 10px} }
+.savesec{min-height:30px}

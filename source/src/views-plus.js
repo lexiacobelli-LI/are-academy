@@ -38,7 +38,7 @@ ARE.HOME = () => {
   const ch = L.dailyChallenge();
   return `<section class="home" aria-label="Today at a glance">
 <a class="hm hm-streak" href="#analytics"><span class="hm-k">Streak</span><b>${st.days}<small> day${st.days === 1 ? "" : "s"}</small></b><span class="hm-s">${st.today ? "Today counts ✓" : st.need ? st.need + " more answers today" : "Study today to keep it"}</span></a>
-<a class="hm" href="#tracker"><span class="hm-k">ARE progress</span><b>${pct(ov.readiness)}</b>${bar(ov.readiness)}<span class="hm-s">Readiness estimate</span></a>
+<a class="hm" href="#readiness"><span class="hm-k">Readiness evidence</span><b>${pct(ov.readiness)}</b>${bar(ov.readiness)}<span class="hm-s">What your answers show</span></a>
 <a class="hm hm-plan" href="#today"><span class="hm-k">Today's goal</span><b>${plan ? done + "/" + plan.steps.length : "Plan"}<small>${plan ? " steps" : ""}</small></b>${plan ? bar(done / plan.steps.length, "var(--ok)") : ""}<span class="hm-s">${plan ? (plan.finished ? "Done for today ✓" : "Continue your plan") : "Build a 15–60 min session"}</span></a>
 <a class="hm" href="#flashcards"><span class="hm-k">Needs review</span><b>${due}</b><span class="hm-s">${notes} learning note${notes === 1 ? "" : "s"} open</span></a>
 ${next ? `<a class="hm hm-wide" href="#lesson-${next.id}"><span class="hm-k">Next lesson</span><b class="hm-t">${esc(next.title)}</b><span class="hm-s">${divCode(next.div)} · ${next.minutes} min</span></a>` : ""}
@@ -150,6 +150,7 @@ ${b.pairs.length ? sec("≠", "Don't confuse", b.pairs.map(p => `<div class="scr
 ${sec(8, "Visual reference", b.visual ? `<div class="figure lfig nfig">${b.visual.svg}</div><p class="muted" style="font-size:.85rem">From the lesson “${esc(b.lesson.title)}”. Schematic, not a construction detail.</p>` : (b.pairs.length ? "" : `<p class="muted">No diagram for this objective yet.</p>`))}
 ${sec(9, "Knowledge reinforcement", `${b.quick.map((qq, qi) => `<div class="panel stack qq" data-qq="${qi}" data-lesson="${b.lesson ? b.lesson.id : ""}"><b>${esc(qq.q)}</b><div class="opts">${qq.opts.map((o, oi) => `<button class="opt" data-act="nqq" data-qi="${qi}" data-oi="${oi}"><span class="mk">${String.fromCharCode(65 + oi)}</span><span>${esc(o)}</span></button>`).join("")}</div><div class="qq-fb" hidden></div></div>`).join("")}${b.reinforce.length ? `<button class="btn primary" data-act="qset" data-ids="${b.reinforce.join(",")}">Answer ${b.reinforce.length} check questions</button>` : ""}`)}
 ${sec(10, "Source references", `<ul class="src">${[b.sources.obj].concat(b.sources.hb.map(r => "AIA Architect's Handbook of Professional Practice, 15th ed., §" + r[0] + " p. " + r[1] + " — " + r[2])).concat(b.sources.refs.map(r => L.strip(r.t))).map(x => `<li>${esc(x)}</li>`).join("")}</ul>${b.lesson ? `<a class="btn small" href="#lesson-${b.lesson.id}">Open lesson: ${esc(b.lesson.title)}</a>` : ""}`)}
+${(n.saved || []).length ? `<section class="nsec"><h3><span class="nnum">❏</span>Saved passages</h3>${n.saved.slice().reverse().map((x, i) => `<div class="saved-p"><span class="eyebrow">${esc(x.src)}</span><p>${esc(x.text)}</p><div class="row">${x.href ? `<a class="btn small ghost" href="${x.href}">Open source</a>` : ""}<button class="btn small ghost" data-act="delpassage" data-obj="${n.obj}" data-i="${n.saved.length - 1 - i}">Remove</button></div></div>`).join("")}</section>` : ""}
 ${n.ai.length ? `<section class="nsec"><h3><span class="nnum">✦</span>Explained differently (AI)</h3>${n.ai.slice().reverse().map(a => `<div class="aibox"><div class="tu-md">${AI.md(a.text)}</div><p class="muted" style="font-size:0.8125rem">${fmtDate(a.t)} · ${esc(AI.label(a.provider))} · AI-written: verify against the lesson and primary sources.</p></div>`).join("")}</section>` : ""}
 <section class="nsec"><h3><span class="nnum">✎</span>My edits &amp; comments</h3><label class="f">Rewrite this note in your own words<textarea data-lnedit="${obj}" placeholder="Your version of the note">${esc(n.edit)}</textarea></label><label class="f">Comment<textarea data-lncomment="${obj}" placeholder="Questions, project examples, reminders">${esc(n.comment)}</textarea></label>
 <div class="row"><button class="btn small" data-act="nunder" data-obj="${obj}">${n.understood ? "✓ Marked understood" : "I understand this now"}</button><button class="btn small ${st.ready && !n.archived ? "primary" : ""}" data-act="narch" data-obj="${obj}" ${st.ready || n.archived ? "" : "disabled"}>${n.archived ? "Reopen note" : "Archive note"}</button></div>
@@ -158,6 +159,7 @@ ${n.ai.length ? `<section class="nsec"><h3><span class="nnum">✦</span>Explaine
 </div></div>`;
 }
 ACTS.lnf = (t) => { UI.lnF = t.dataset.f; rer(); };
+ACTS.delpassage = (t) => { const n = E.S.lnotes[t.dataset.obj]; if (n && n.saved) { n.saved.splice(+t.dataset.i, 1); E.save(); rer(); } };
 ACTS.nbm = (t) => { const n = E.S.lnotes[t.dataset.obj]; n.bm = !n.bm; E.save(); rer(); };
 ACTS.nunder = (t) => { const n = E.S.lnotes[t.dataset.obj]; n.understood = !n.understood ? Date.now() : false; E.save(); toast(n.understood ? "Noted. It will archive once your answers confirm it." : "Unmarked"); rer(); };
 ACTS.narch = (t) => { const n = E.S.lnotes[t.dataset.obj]; if (n.archived) { n.archived = false; } else { if (!L.noteStatus(n).ready) return; n.archived = Date.now(); L.addXP(40, "Closed a knowledge gap"); L.checkBadges(); } E.save(); rer(); };
@@ -261,6 +263,7 @@ const inClaude = () => !!(window.claude && window.claude.use) && window.top !== 
 function vSettings() {
   const p = ARE.prefs, c = AI.cfg, act = AI.active();
   return `<div class="stack" style="gap:6px"><span class="eyebrow">Everything here is free</span><h1>Settings</h1></div>
+<section class="panel row between"><div class="stack" style="gap:4px"><h2 style="margin:0">Content quality</h2><span class="muted">Automated checks of every question and lesson, items to verify against your jurisdiction, and the independent review log.</span></div><a class="btn" href="#quality">Open report</a></section>
 <section class="panel stack"><h2>Appearance &amp; accessibility</h2>
 <div class="row"><span style="min-width:110px">Theme</span>${[["auto", "Match device"], ["light", "Light"], ["dark", "Dark"]].map(([k, t]) => `<button class="chip ${p.theme === k ? "on" : ""}" data-act="pref" data-k="theme" data-v="${k}">${t}</button>`).join("")}</div>
 <div class="row"><span style="min-width:110px">Text size</span>${[100, 115, 130, 150, 175].map(v => `<button class="chip ${p.text === v ? "on" : ""}" data-act="pref" data-k="text" data-v="${v}" aria-label="Text size ${v}%">${v}%</button>`).join("")}</div>
@@ -459,5 +462,5 @@ ACTS.snaprestore = async (t) => {
 };
 /* daily-challenge completion + video plan-step completion */
 E.hooks.finish.push((s) => { if (s.title === "Daily challenge") { const ch = L.dailyChallenge(); ch.done = Date.now(); ch.score = s.correct; L.addXP(25, "Daily challenge"); E.save(); } });
-ARE.boot();
+/* boot moved to boot.js so later view modules register first */
 })();

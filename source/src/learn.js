@@ -42,6 +42,15 @@ function noteFor(obj) {
   if (!N[obj]) N[obj] = { id: obj, obj, created: Date.now(), updated: Date.now(), triggers: [], miss: [], bm: false, comment: "", edit: "", understood: false, archived: false, ai: [], checks: [] };
   return N[obj];
 }
+L.savePassage = (obj, src, text, href) => {
+  if (!ARE.OBJ[obj] || !text) return null;
+  const n = noteFor(obj); n.saved = n.saved || [];
+  if (n.saved.some(x => x.text === text)) return n;
+  n.saved.push({ t: Date.now(), src, text: String(text).slice(0, 2000), href: href || "" });
+  if (n.saved.length > 30) n.saved = n.saved.slice(-30);
+  n.updated = Date.now(); if (n.archived) { n.archived = false; n.reopened = Date.now(); }
+  return n;
+};
 L.addTrigger = (obj, kind, data) => {
   if (!ARE.OBJ[obj]) return null;
   const n = noteFor(obj);
@@ -293,10 +302,18 @@ L.buildToday = (minutes) => {
   plan.steps.push({ k: "practice", t: "Practice", d: "Questions on " + (minutes >= 30 ? nextLesson.title : "your weakest topics") + ", difficulty matched to your level.", objs: minutes >= 30 ? pObjs : null, n: Math.max(4, Math.round(6 * scale)), min: Math.round(6 * scale) });
   // 5 weak areas: from learning notes / weak objectives
   const notes = L.activeNotes().slice(0, 4).map(n => n.obj);
-  const weak = notes.length ? notes : Object.keys(ARE.OBJ).map(k => E.comp(k)).filter(c => c.n >= 3 && c.score < 0.7).sort((a, b) => a.score - b.score).slice(0, 3).map(c => c.key);
+  let weak;
+  if (ARE.R) {
+    // misconceptions first, then learning notes, then recall-only objectives (known facts not yet applied)
+    const ev = Object.keys(ARE.OBJ).map(k => ARE.R.obj(k));
+    const mis = ev.filter(e => e.status === "weak").sort((a, b) => b.misconceptions.length - a.misconceptions.length || (a.acc || 0) - (b.acc || 0)).map(e => e.key);
+    const rec = ev.filter(e => e.status === "recall").map(e => e.key);
+    weak = Array.from(new Set(mis.concat(notes, rec))).slice(0, 3);
+  } else weak = notes.length ? notes : Object.keys(ARE.OBJ).map(k => E.comp(k)).filter(c => c.n >= 3 && c.score < 0.7).sort((a, b) => a.score - b.score).slice(0, 3).map(c => c.key);
   if (weak.length) plan.steps.push({ k: "weak", t: "Weak-area review", d: "Revisit concepts you previously missed: " + weak.map(k => ARE.OBJ[k].div.toUpperCase() + " " + ARE.OBJ[k].code).join(", ") + ".", objs: weak, n: Math.max(3, Math.round(5 * scale)), min: Math.round(5 * scale) });
   // 6 retention check: interleaved, due reviews + older material
-  plan.steps.push({ k: "retain", t: "Retention check", d: "An interleaved mix across divisions, including items due for spaced review.", n: Math.max(4, Math.round(6 * scale)), min: Math.round(5 * scale) });
+  const stale = ARE.R ? Object.keys(ARE.OBJ).filter(k => ARE.R.obj(k).stale).length : 0;
+  plan.steps.push({ k: "retain", t: "Retention check", d: "An interleaved mix across divisions, including items due for spaced review" + (stale ? " and " + stale + " topic" + (stale === 1 ? "" : "s") + " not practised for three weeks" : "") + ".", n: Math.max(4, Math.round(6 * scale)), min: Math.round(5 * scale) });
   plan.steps.forEach((s, i) => { s.i = i; s.done = false; });
   E.S.today = plan;
   return plan;

@@ -1153,6 +1153,47 @@ h3.sub{font-size:var(--t-md, 1.06rem); margin:22px 0 8px}
 @media (max-width:980px){ .lesson{grid-template-columns:minmax(0,1fr)} .lesson-toc{display:none} }
 body.tutor-docked .lesson{grid-template-columns:minmax(0,1fr)}
 .sec{grid-template-columns:minmax(0,1fr)}
+/* ---------- v20 readiness ---------- */
+.rtabs{gap:6px; flex-wrap:wrap} .rtabs .chip.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.st-pill{display:inline-block; padding:2px 8px; border-radius:999px; font:600 .8125rem var(--f-body); white-space:nowrap; border:1px solid transparent}
+.st-none{background:var(--surface2, #EEE); color:var(--muted)} .st-thin{background:#EFE9DA; color:#6B5A2E}
+.st-weak{background:var(--bad-soft); color:var(--bad)} .st-recall{background:#F4E7CF; color:#7A4E12}
+.st-applied{background:var(--ok-soft); color:var(--ok)} .st-retained{background:var(--ok); color:#fff}
+.stbar{display:flex; height:12px; border-radius:6px; overflow:hidden; background:var(--surface2, #EEE)}
+.stbar span{display:block; min-width:3px}
+.stbar .st-none{background:var(--line)} .stbar .st-thin{background:#D9CFB4} .stbar .st-weak{background:var(--bad)} .stbar .st-recall{background:#D9A24A} .stbar .st-applied{background:#7FB08F} .stbar .st-retained{background:var(--ok)}
+.stlegend{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:var(--t-sm); color:var(--muted)}
+.stlegend i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:-1px}
+.stlegend i.st-none{background:var(--line)} .stlegend i.st-thin{background:#D9CFB4} .stlegend i.st-weak{background:var(--bad)} .stlegend i.st-recall{background:#D9A24A} .stlegend i.st-applied{background:#7FB08F} .stlegend i.st-retained{background:var(--ok)}
+.kv{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px} .kv div{display:grid} .kv b{font-size:1.35rem} .kv span{color:var(--muted); font-size:var(--t-sm)}
+.spark{width:100%; height:auto; max-height:90px}
+.rtbl td{vertical-align:top}
+.gap-row{border-top:1px solid var(--line); padding-top:10px} .gap-row:first-child{border-top:0; padding-top:0}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .st-thin{background:#3A3528; color:#E5D8B5} :root:not([data-theme="light"]) .st-recall{background:#3D2F1A; color:#F0C98A} }
+:root[data-theme="dark"] .st-thin{background:#3A3528; color:#E5D8B5} :root[data-theme="dark"] .st-recall{background:#3D2F1A; color:#F0C98A}
+.qaf-row{border-top:1px solid var(--line); padding:8px 0} .qaf-row > summary{cursor:pointer; line-height:1.6}
+/* ---------- v20 simulations ---------- */
+.sim-meters{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px 18px}
+.sm{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 8px; align-items:center}
+.sm-k{grid-column:1 / -1; font-size:var(--t-sm); color:var(--muted)} .sm-k i{font-style:normal}
+.sm-bar{height:8px; border-radius:4px; background:var(--surface2, #EEE); overflow:hidden} .sm-bar span{display:block; height:100%; transition:width .4s}
+.sm-d{font:600 .8125rem var(--f-mono); min-width:2.2em; text-align:right} .sm-d.up{color:var(--ok)} .sm-d.down{color:var(--bad)}
+.sim-node .opt.dim{opacity:.55} .sim-node .opt.picked{border-color:var(--accent); background:var(--accent-soft, var(--surface2))}
+.sim-doc > summary{cursor:pointer}
+.sim-card h2{font-size:1.15rem}
+.qfig{margin:12px 0 4px} .qfig svg{width:100%; height:auto; max-height:360px}
+.qcard, .quiz > .stack, .qcard .qstem{min-width:0} .figure{max-width:100%}
+@media (max-width:760px){ .qfig svg, #hotFig svg{min-width:34rem} }
+#hotFig, .qfig{display:block; width:100%; max-width:100%; overflow-x:auto} .qcard > *{min-width:0; max-width:100%}
+/* ---------- v20 calculations ---------- */
+.calc > summary{cursor:pointer; line-height:1.6} .calc-body{display:grid; gap:14px; margin-top:12px}
+.calc-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px} .calc-grid p, .calc-grid ul{margin:4px 0 0} .calc-grid ul{padding-left:18px}
+.calc-practice p{margin:6px 0} .calc-practice input{max-width:160px}
+.calc-fb{margin:8px 0 0; padding:8px 10px; border-radius:var(--r, 8px)} .calc-fb.ok{background:var(--ok-soft); color:var(--ok)} .calc-fb.bad{background:var(--bad-soft); color:var(--bad)}
+.savesec{font-size:.8125rem; padding:2px 8px; min-height:0; margin-left:8px; vertical-align:middle; font-weight:500}
+.saved-p{border-left:3px solid var(--accent); padding:4px 0 4px 12px; margin:10px 0} .saved-p p{margin:4px 0}
+@media (pointer:coarse){ .savesec{min-height:32px; padding:6px 10px} }
+.savesec{min-height:30px}
 
 </style>
 </head><body><div id="app"><p style="padding:24px">Loading ARE Academy…</p></div>
@@ -14216,7 +14257,253 @@ Object.assign(ARE.QFIX, {
 }
 });
 
-ARE.applyQfix();
+/* ---------- v20 content validation fixes ----------
+   1) Replace four duplicate questions found by the duplicate check with new questions on the same objective.
+   2) Expand explanations the rationale check flagged as too short.
+   3) Replace generic reference labels with named sources. */
+Object.assign(ARE.QFIX, {
+  "q-ppd-w13": { q: "A sprinklered Group B office floor under the 2021 IBC has a corridor that dead-ends 65 ft past the last exit-access door. Which change brings it into compliance most directly?",
+    opts: { A: "Reduce the dead end to 50 ft or less, for example by extending the corridor to connect to another exit path", B: "Add illuminated exit signs at the end of the dead-end corridor", C: "Widen the dead-end portion of the corridor to 72 in", D: "Add smoke detectors along the dead-end portion" },
+    why: { A: "Correct. In sprinklered Group B buildings the dead-end limit is 50 ft (§1020.5 exception); otherwise 20 ft.", B: "Signs do not change the length of the dead end.", C: "Width does not change the dead-end limit.", D: "Detection does not change the dead-end limit." },
+    ans: "A", explain: "Dead ends trap people who walk the wrong way. The general limit is 20 ft; the exception for sprinklered Groups B, E, F, I-1, M, R-1, R-2, S and U allows 50 ft. The fix is to shorten the dead end or give it a second way out.", ref: "2021 IBC §1020.5" },
+  "q-ce-z01": { q: "A CCD under A201–2017 adds work but the contractor disagrees with the method for adjusting the contract sum. How is the adjustment determined?",
+    opts: { A: "The contractor's proposed price governs until a Claim is decided", B: "The architect determines it from reasonable expenditures and savings attributable to the change, plus overhead and profit as set in the agreement", C: "The owner sets the price, and the contractor must accept it", D: "No adjustment is made until a change order is signed" },
+    why: { A: "The contractor's price is not binding on the owner.", B: "Correct. §7.3.4 sets this method when the contractor disagrees or does not respond.", C: "The owner cannot set the price unilaterally.", D: "The work proceeds under the CCD; the architect determines the adjustment meanwhile." },
+    ans: "B", explain: "A CCD lets the work proceed before the price is agreed. If the contractor disagrees with the method, the architect determines the adjustment on the basis of reasonable expenditures and savings, with overhead and profit as set in the agreement (§7.3.4). Either party can still pursue a Claim.", ref: "AIA A201–2017, §7.3.3 and §7.3.4" },
+  "q-ce-x07": { q: "On a routine site visit, the architect sees workers on a roof edge with no fall protection. What should the architect do?",
+    opts: { A: "Nothing, because jobsite safety is solely the contractor's responsibility under A201", B: "Direct the workers to stop and install guardrails before continuing", C: "Order the whole project to stop until a safety plan is submitted", D: "Point out the hazard to the contractor's superintendent at once and record it in writing to the contractor and owner" },
+    why: { A: "Safety is the contractor's responsibility, but ignoring an obvious hazard to life is not acceptable professional conduct.", B: "Directing the workers takes control of means, methods and safety, which shifts responsibility to the architect.", C: "The architect has no authority to stop the work; that right belongs to the owner (§2.4).", D: "Correct. Notify the party responsible for safety immediately and document it, without taking control of the work." },
+    ans: "D", explain: "A201 makes the contractor solely responsible for safety (§3.3.1, §10.1), and the architect does not control safety (§4.2.2). The architect's duty to protect the public still means warning the responsible party at once and documenting it.", ref: "AIA A201–2017, §3.3.1, §4.2.2 and Article 10" },
+  "q-pa-x17": { q: "On a grading plan, a proposed contour is drawn uphill of the existing contour with the same elevation. What does this indicate at the area between them?",
+    opts: { A: "Fill: the ground is being raised", B: "No change in grade", C: "Cut: the ground is being lowered", D: "A retaining wall is required" },
+    why: { A: "Moving a contour downhill shows fill.", B: "A moved contour always means a change in grade.", C: "Correct. If the line for an elevation moves uphill, the ground where it used to be is now lower.", D: "A wall is needed only where grades change abruptly; contours alone do not show one." },
+    ans: "C", explain: "Compare the dashed existing contour with the solid proposed contour of the same elevation. Moved uphill means cut; moved downhill means fill.", ref: "Strom, Nathan & Woland, Site Engineering for Landscape Architects" },
+
+  "q-pdd-y18": { q: "An accessible entrance is 24 in above the adjacent walk. Using the steepest slope the 2010 ADA Standards allow for a ramp, what is the minimum horizontal length of the ramp run, not counting landings?",
+    opts: { A: "12 ft", B: "20 ft", C: "24 ft", D: "30 ft" },
+    why: { A: "That is a 1:6 slope, far too steep.", B: "That is a 1:10 slope, too steep.", C: "Correct. 24 in × 12 = 288 in = 24 ft at 1:12; the 24 in rise is within the 30 in limit for one run.", D: "That is longer than the minimum (a 1:15 slope)." },
+    ans: "C", explain: "Maximum ramp slope is 1:12 (§405.2), so run = rise × 12. A rise over 30 in would need an intermediate landing (§405.6), 60 in long (§405.7).", ref: "2010 ADA Standards §405.2, §405.6 and §405.7" },
+  "q-pjm-14": { explain: "Quality assurance builds the systems that prevent errors before they happen: standards, checklists, training, templates. Quality control checks finished work to find errors: peer reviews, coordination overlays, schedule checks." },
+  "q-pjm-y18": { explain: "Quality assurance builds the systems that prevent errors (standards, training). Quality control checks work already produced (checklists before issue, redlines, peer reviews)." },
+  "q-pdd-17": { explain: "Uniform load on a beam = floor load × tributary width: 80 psf × 10 ft = 800 lb per linear foot. The span is used next, to find moment (wL²/8) and shear (wL/2).", ref: "Onouye & Kane, Statics and Strength of Materials for Architecture and Building Construction" },
+  "q-pdd-v01": { explain: "Airflow = area × velocity (Q = A × V), so area = 1,600 cfm ÷ 800 fpm = 2.0 sf. Lower velocity means a larger, quieter duct.", ref: "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings" },
+  "q-pdd-v02": { explain: "One ton of cooling is 12,000 Btu/h, so 180,000 ÷ 12,000 = 15 tons.", ref: "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings" },
+  "q-pdd-v11": { explain: "SectionFormat: Part 1 General (administrative and submittals), Part 2 Products (materials and manufacturers), Part 3 Execution (installation, field quality control, cleaning)." },
+  "q-pjm-v06": { explain: "B101–2017 §3.2.6 requires a preliminary estimate of the Cost of the Work at SD; it is updated at DD (§3.3.2) and CD (§3.4.4). A detailed quantity estimate is a Supplemental Service." },
+  "q-pjm-v13": { explain: "Identify every authority having jurisdiction early. Food service needs health department plan review in most jurisdictions, in addition to the building permit; other reviews depend on location (historic districts, airports, floodplains).", ref: "Local health and building regulations (jurisdiction-specific)" },
+  "q-ppd-v14": { explain: "Compare options against the owner's own criteria: program fit, budget, schedule, site response and sustainability goals. Single measures such as area or cost hide trade-offs the owner needs to see.", ref: "AIA, Architect's Handbook of Professional Practice — design phase services" },
+  "q-pdd-u02": { explain: "Room volume = 30 × 20 × 12 = 7,200 cf. Airflow = volume × air changes per hour ÷ 60 = 7,200 × 4 ÷ 60 = 480 cfm.", ref: "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings" },
+  "q-ce-u13": { explain: "Before final payment A201 §9.10.2 requires consent of surety, if any. On AIA G707 the surety agrees to final payment and confirms its bond obligations are not released by it." }
+});
+
+/* Named sources for generic reference labels (applied after QFIX). */
+ARE.REFMAP = {
+  "Drawing conventions": "US National CAD Standard; Ching, Architectural Graphics",
+  "Civil drawing conventions": "US National CAD Standard; Strom, Nathan & Woland, Site Engineering for Landscape Architects",
+  "Site grading drafting standards": "Strom, Nathan & Woland, Site Engineering for Landscape Architects",
+  "Site analysis drawing conventions": "LaGro, Site Analysis; Ching, Architectural Graphics",
+  "Site analysis graphics": "LaGro, Site Analysis",
+  "Site analysis method": "LaGro, Site Analysis",
+  "Site planning principles": "Lynch & Hack, Site Planning; LaGro, Site Analysis",
+  "Programming graphics": "Peña & Parshall, Problem Seeking",
+  "Programming principles": "Peña & Parshall, Problem Seeking; Cherry, Programming for Design",
+  "Programming method": "Peña & Parshall, Problem Seeking",
+  "Systems integration principles": "Bachman, Integrated Buildings; AIA, Architect's Handbook of Professional Practice",
+  "Design principles": "Ching, Architecture: Form, Space and Order",
+  "Building science": "Straube & Burnett, Building Science for Building Enclosures",
+  "Building science principles": "Straube & Burnett, Building Science for Building Enclosures",
+  "Critical path method": "PMI, PMBOK Guide — schedule management",
+  "Earned value management": "PMI, PMBOK Guide — earned value management",
+  "Structural formulas": "AISC Steel Construction Manual, beam diagrams and formulas; Onouye & Kane, Statics and Strength of Materials",
+  "Simple beam formulas": "AISC Steel Construction Manual, beam diagrams and formulas",
+  "Structural load method": "Onouye & Kane, Statics and Strength of Materials for Architecture and Building Construction",
+  "Structural rules of thumb": "Ching, Onouye & Zuberbuhler, Building Structures Illustrated",
+  "Structural principles": "Ching, Onouye & Zuberbuhler, Building Structures Illustrated",
+  "Schematic sizing rule of thumb": "Ching, Onouye & Zuberbuhler, Building Structures Illustrated",
+  "Decision analysis method": "AIA, Architect's Handbook of Professional Practice — design evaluation",
+  "Feasibility budgeting method": "AIA, Architect's Handbook of Professional Practice — project budgeting; RSMeans Square Foot Costs",
+  "Health-care planning principles": "FGI, Guidelines for Design and Construction of Hospitals",
+  "HVAC rules of thumb": "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings",
+  "HVAC duct sizing": "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings",
+  "HVAC units": "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings",
+  "HVAC calculation": "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings",
+  "Q = A × V": "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings",
+  "Division 01 substitution procedures": "CSI, Project Delivery Practice Guide; AIA A201–2017 §3.4.2",
+  "Public procurement law": "State and local public procurement statutes (jurisdiction-specific)",
+  "Local regulations": "Local building, zoning and health regulations (jurisdiction-specific)",
+  "Local design regulations": "Local design-review regulations (jurisdiction-specific)",
+  "Scheduling practice": "PMI, PMBOK Guide — schedule management",
+  "Design evaluation practice": "AIA, Architect's Handbook of Professional Practice — design phase services"
+};
+ARE.applyRefmap = () => { const all = (ARE.Q || []).concat(...(ARE.CASES || []).map(c => c.questions || [])); all.forEach(q => { if (q.ref && ARE.REFMAP[q.ref]) q.ref = ARE.REFMAP[q.ref]; }); };
+
+/* References for case-study items that had none (v20 source check). */
+Object.assign(ARE.QFIX, {
+  "cs-lib-1": { ref: "Peña & Parshall, Problem Seeking (net-to-gross efficiency)" },
+  "cs-lib-2": { ref: "Case zoning data; local zoning ordinance (FAR)" },
+  "cs-lib-3": { ref: "Case zoning data; local zoning ordinance (parking ratio)" },
+  "cs-lib-4": { ref: "2021 IBC Table 1004.5, §1006.2.1 and §1007.1.1" },
+  "cs-cl-1": { ref: "AIA, Architect's Handbook of Professional Practice — project financial management" },
+  "cs-cl-2": { ref: "AIA, Architect's Handbook of Professional Practice — project financial management" },
+  "cs-cl-3": { ref: "PMI, PMBOK Guide — earned value management" },
+  "cs-cl-4": { ref: "PMI, PMBOK Guide — earned value management" },
+  "cs-rec-1": { ref: "2021 IBC §1404.3; Straube & Burnett, Building Science for Building Enclosures" },
+  "cs-rec-2": { ref: "ASTM E2112 (window installation); Straube & Burnett, Building Science for Building Enclosures" },
+  "cs-rec-3": { ref: "CSI, Project Delivery Practice Guide — coordinating drawings and specifications" },
+  "cs-fs-1": { ref: "AIA, Architect's Handbook of Professional Practice — financial management" },
+  "cs-fs-2": { ref: "AIA, Architect's Handbook of Professional Practice — financial management" },
+  "cs-fs-3": { ref: "AIA, Architect's Handbook of Professional Practice — financial management" },
+  "cs-fs-4": { ref: "AIA, Architect's Handbook of Professional Practice — financial management" },
+  "cs-ch-1": { ref: "2021 IBC §506.3" },
+  "cs-ch-2": { ref: "2021 IBC §506.2 and Table 506.2" },
+  "cs-ch-3": { ref: "2021 IBC §506 and §706" },
+  "cs-ch-4": { ref: "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings" },
+  "cs-ch-5": { ref: "2021 IPC Table 2902.1" },
+  "cs-ch-6": { ref: "AIA, Architect's Handbook of Professional Practice — construction cost management" }
+});
+
+ARE.applyQfix(); if (ARE.applyRefmap) ARE.applyRefmap();
+
+/* ---------- v20 new questions: visual problem-solving and multiple-response application items ----------
+   Original questions and original diagrams. Code values cite the 2021 IBC and 2010 ADA Standards. */
+(function () {
+const Q = (o) => ARE.Q.push(o);
+const fig = (svg) => `<div class="figure qfig">${svg}</div>`;
+
+/* ---------- Visual problem-solving ---------- */
+Q({ id: "q-ppd-n01", div: "ppd", obj: "ppd-2.2", lesson: "ppd-egress", type: "mc", diff: 3, fmt: "Diagram interpretation",
+  q: "The plan shows one floor of a Group B office building that is <b>not</b> sprinklered. Two exits are required. Does the exit arrangement meet the 2021 IBC remoteness rule?" + fig(`<svg viewBox="0 0 520 300" role="img" aria-label="Floor plan 160 by 90 feet with a 184 foot diagonal and two exits 70 feet apart along the south wall"><g class="dg-text" font-size="13">
+<rect x="40" y="40" width="440" height="220" class="dg-soft"/><line x1="40" y1="40" x2="480" y2="260" class="dg-leader" stroke-dasharray="6 4"/>
+<text x="250" y="138" text-anchor="middle" transform="rotate(26 250 138)">diagonal 184 ft</text>
+<rect x="150" y="252" width="26" height="16" class="dg-accent"/><rect x="342" y="252" width="26" height="16" class="dg-accent"/>
+<text x="163" y="290" text-anchor="middle">Exit 1</text><text x="355" y="290" text-anchor="middle">Exit 2</text>
+<line x1="163" y1="236" x2="355" y2="236" class="dg-line"/><text x="259" y="230" text-anchor="middle">70 ft between exits</text>
+<text x="260" y="30" text-anchor="middle">160 ft</text><text x="20" y="155" text-anchor="middle" transform="rotate(-90 20 155)">90 ft</text></g></svg>`),
+  opts: ["Yes. Exits must be at least one-third of the diagonal apart, which is about 61 ft", "No. Without sprinklers, exits must be at least one-half of the diagonal apart, which is 92 ft", "Yes. Any two exits on different sides of the corridor comply", "No. Exits must be at least the full diagonal apart, which is 184 ft"],
+  ans: 1, why: ["One-third applies only when the building is sprinklered throughout.", "Correct. §1007.1.1: half the overall diagonal without sprinklers; 70 ft is less than 92 ft.", "Remoteness is measured, not judged by side.", "No rule requires the full diagonal."],
+  explain: "Measure the separation in a straight line between exits and compare it with half the diagonal of the area served (one-third if sprinklered throughout). Here 184 ÷ 2 = 92 ft is needed; move an exit or sprinkler the building.", ref: "2021 IBC §1007.1.1" });
+
+Q({ id: "q-pdd-n01", div: "pdd", obj: "pdd-1.3", lesson: "pdd-sizing", type: "mc", diff: 3, fmt: "Diagram interpretation",
+  q: "The framing plan shows beam B1 supporting joists that span 24 ft on each side. Dead load is 60 psf and live load is 40 psf. What is the uniform load on B1?" + fig(`<svg viewBox="0 0 520 260" role="img" aria-label="Framing plan: beam B1 down the middle with joists spanning 24 feet to each side; tributary width shaded"><g class="dg-text" font-size="13">
+<rect x="40" y="40" width="440" height="180" class="dg-soft"/>
+<rect x="150" y="40" width="220" height="180" class="dg-accent2"/>
+<line x1="260" y1="40" x2="260" y2="220" class="dg-line" stroke-width="4"/><text x="268" y="34">B1</text>
+${[60, 80, 100, 120, 140, 160, 180, 200].map(y => `<line x1="40" y1="${y}" x2="480" y2="${y}" class="dg-leader"/>`).join("")}
+<line x1="40" y1="236" x2="260" y2="236" class="dg-line"/><text x="150" y="252" text-anchor="middle">joist span 24 ft</text>
+<line x1="260" y1="236" x2="480" y2="236" class="dg-line"/><text x="370" y="252" text-anchor="middle">joist span 24 ft</text>
+<text x="260" y="132" text-anchor="middle" class="dg-ontint" font-size="12">tributary</text></g></svg>`),
+  opts: ["1,200 plf", "4,800 plf", "2,400 plf", "2,880 plf"],
+  ans: 2, why: ["Uses half of one joist span (12 ft) only.", "Uses the full 48 ft of both spans.", "Correct. Tributary width = 24/2 + 24/2 = 24 ft; (60 + 40) × 24 = 2,400 plf.", "Adds an extra 20% that the stem does not call for."],
+  explain: "A beam carries half the span of the joists on each side. Tributary width × total load (psf) gives the uniform load in pounds per linear foot.", ref: "Onouye & Kane, Statics and Strength of Materials for Architecture and Building Construction" });
+
+Q({ id: "q-pa-n01", div: "pa", obj: "pa-3.3", lesson: "pa-site", type: "hot", diff: 3, fmt: "Hotspot",
+  q: "The plan shows spot elevations around a new building with a finished floor of 100.00. Grade next to the wall and grade 10 ft away are given on each side. Under 2021 IBC §1804.4, which side does <b>not</b> slope away adequately? Click it.",
+  svg: `<svg viewBox="0 0 520 320" role="img" aria-label="Building plan with spot elevations on four sides"><g class="dg-text" font-size="13">
+<rect x="170" y="100" width="180" height="120" class="dg-accent2"/><text x="260" y="165" text-anchor="middle">FF 100.00</text>
+<text x="260" y="92" text-anchor="middle">99.50</text><text x="260" y="40" text-anchor="middle">99.00</text>
+<text x="260" y="238" text-anchor="middle">99.50</text><text x="260" y="290" text-anchor="middle">98.90</text>
+<text x="160" y="164" text-anchor="end">99.50</text><text x="70" y="164" text-anchor="middle">99.30</text>
+<text x="360" y="164">99.50</text><text x="450" y="164" text-anchor="middle">98.95</text>
+<g class="hs" data-hs="N" tabindex="0" role="button" aria-label="North side"><circle cx="300" cy="60" r="16" class="hs-dot"/><text x="300" y="65" text-anchor="middle">N</text></g>
+<g class="hs" data-hs="S" tabindex="0" role="button" aria-label="South side"><circle cx="300" cy="266" r="16" class="hs-dot"/><text x="300" y="271" text-anchor="middle">S</text></g>
+<g class="hs" data-hs="W" tabindex="0" role="button" aria-label="West side"><circle cx="110" cy="210" r="16" class="hs-dot"/><text x="110" y="215" text-anchor="middle">W</text></g>
+<g class="hs" data-hs="E" tabindex="0" role="button" aria-label="East side"><circle cx="410" cy="210" r="16" class="hs-dot"/><text x="410" y="215" text-anchor="middle">E</text></g>
+<text x="20" y="312" font-size="12">Each side: grade at wall (inner) and 10 ft away (outer)</text></g></svg>`,
+  ans: "W",
+  explain: "The code requires a 5% fall (6 in in 10 ft) away from the foundation. North falls 0.50 ft, south 0.60 ft, east 0.55 ft; west falls only 0.20 ft (2.4 in), so water can pond against the wall. Impervious surfaces may slope at 2% under the code's exception; this grade is not paved.", ref: "2021 IBC §1804.4" });
+
+Q({ id: "q-ppd-n02", div: "ppd", obj: "ppd-2.3", lesson: "ppd-access", type: "hot", diff: 3, fmt: "Hotspot",
+  q: "This single-user toilet room is drawn to the dimensions shown. Which labeled condition does <b>not</b> comply with the 2010 ADA Standards? Click it.",
+  svg: `<svg viewBox="0 0 520 330" role="img" aria-label="Toilet room plan with four labeled conditions A to D"><g class="dg-text" font-size="13">
+<rect x="60" y="30" width="300" height="270" class="dg-soft"/>
+<rect x="72" y="50" width="34" height="56" class="dg-accent2"/><text x="122" y="70">WC</text>
+<line x1="60" y1="78" x2="89" y2="78" class="dg-line"/><text x="74" y="126" font-size="12">20 in to centerline</text>
+<rect x="64" y="130" width="6" height="110" class="dg-accent"/><text x="78" y="190" font-size="12">grab bar 42 in long</text>
+<rect x="260" y="40" width="80" height="44" class="dg-accent2"/><text x="300" y="104" text-anchor="middle" font-size="12">lavatory rim 34 in</text>
+<path d="M360 300 L360 236 A64 64 0 0 0 296 300" class="dg-line"/><text x="380" y="280" font-size="12">door 34 in clear</text>
+<g class="hs" data-hs="A" tabindex="0" role="button" aria-label="A: water closet centerline 20 inches from side wall"><circle cx="40" cy="78" r="15" class="hs-dot"/><text x="40" y="83" text-anchor="middle">A</text></g>
+<g class="hs" data-hs="B" tabindex="0" role="button" aria-label="B: side grab bar 42 inches long"><circle cx="40" cy="185" r="15" class="hs-dot"/><text x="40" y="190" text-anchor="middle">B</text></g>
+<g class="hs" data-hs="C" tabindex="0" role="button" aria-label="C: lavatory rim 34 inches"><circle cx="390" cy="62" r="15" class="hs-dot"/><text x="390" y="67" text-anchor="middle">C</text></g>
+<g class="hs" data-hs="D" tabindex="0" role="button" aria-label="D: door 34 inches clear"><circle cx="470" cy="276" r="15" class="hs-dot"/><text x="470" y="281" text-anchor="middle">D</text></g></g></svg>`,
+  ans: "A",
+  explain: "The water closet centerline must be 16–18 in from the side wall (§604.2); 20 in puts the side grab bar out of reach. A 42 in side grab bar (§604.5.1), a 34 in lavatory rim (§606.3) and a 34 in clear door (32 in minimum, §404.2.3) all comply.", ref: "2010 ADA Standards §§604.2, 604.5.1, 606.3, 404.2.3" });
+
+Q({ id: "q-pdd-n02", div: "pdd", obj: "pdd-1.5", lesson: "pdd-envelope", type: "mc", diff: 3, fmt: "Detail diagnosis",
+  q: "The window head detail below is from a rainscreen wall. What is wrong with it?" + fig(`<svg viewBox="0 0 520 280" role="img" aria-label="Window head section: water-resistive barrier tucked behind the head flashing"><g class="dg-text" font-size="13">
+<rect x="150" y="20" width="18" height="240" class="dg-hatch"/><text x="140" y="36" text-anchor="end">sheathing</text>
+<path d="M170 20 L170 150" class="dg-accentline" stroke-width="3"/><text x="180" y="60">WRB (from above)</text>
+<path d="M164 128 L164 152 L250 152 L258 160" class="dg-line" stroke-width="3"/><text x="262" y="150">head flashing</text>
+<path d="M170 128 L170 150" stroke="var(--bad)" stroke-width="3" fill="none"/><text x="180" y="118" fill="var(--bad)">WRB ends behind flashing</text>
+<rect x="160" y="170" width="70" height="40" class="dg-soft"/><text x="240" y="196">window frame</text>
+<path d="M300 40 L300 140" class="dg-leader" stroke-dasharray="4 3"/><text x="306" y="96">water running down the WRB</text></g></svg>`),
+  opts: ["The flashing should be set in sealant only, with no WRB involvement", "The window frame should project beyond the flashing", "Nothing; the flashing is above the window", "The WRB stops behind the flashing's vertical leg, so water on the WRB is directed behind the flashing; the WRB must lap over the flashing"],
+  ans: 3, why: ["Sealant alone is not a reliable water barrier.", "Frame projection does not fix the lap.", "Position alone is not enough; the laps decide where water goes.", "Correct. Upper layers lap over lower ones so water drains out at every joint."],
+  explain: "Trace a drop of water down the face of each layer: it must never meet an upturned edge or be directed behind a lower layer. At a head, the WRB above laps over the head flashing.", ref: "ASTM E2112; Straube & Burnett, Building Science for Building Enclosures" });
+
+Q({ id: "q-pa-n02", div: "pa", obj: "pa-2.2", lesson: "pa-zoning", type: "hot", diff: 2, fmt: "Hotspot",
+  q: "The site plan shows a 100 ft × 150 ft lot. Zoning requires a 25 ft front setback, 10 ft side setbacks and a 20 ft rear setback. Which labeled edge of the building violates a setback? Click it.",
+  svg: `<svg viewBox="0 0 520 330" role="img" aria-label="Site plan of lot with building; labeled building edges A to D"><g class="dg-text" font-size="13">
+<rect x="130" y="20" width="200" height="300" class="dg-soft"/><text x="230" y="14" text-anchor="middle">REAR</text><text x="230" y="335" text-anchor="middle" font-size="12">FRONT (street)</text>
+<rect x="164" y="64" width="150" height="196" class="dg-accent2"/>
+<line x1="314" y1="160" x2="330" y2="160" class="dg-line"/><text x="336" y="164" font-size="12">8 ft</text>
+<line x1="130" y1="160" x2="164" y2="160" class="dg-line"/><text x="100" y="164" font-size="12" text-anchor="middle">17 ft</text>
+<line x1="230" y1="20" x2="230" y2="64" class="dg-line"/><text x="236" y="46" font-size="12">22 ft</text>
+<line x1="230" y1="260" x2="230" y2="320" class="dg-line"/><text x="236" y="296" font-size="12">30 ft</text>
+<g class="hs" data-hs="A" tabindex="0" role="button" aria-label="A: rear wall"><circle cx="290" cy="80" r="14" class="hs-dot"/><text x="290" y="85" text-anchor="middle">A</text></g>
+<g class="hs" data-hs="B" tabindex="0" role="button" aria-label="B: east side wall"><circle cx="296" cy="200" r="14" class="hs-dot"/><text x="296" y="205" text-anchor="middle">B</text></g>
+<g class="hs" data-hs="C" tabindex="0" role="button" aria-label="C: front wall"><circle cx="190" cy="244" r="14" class="hs-dot"/><text x="190" y="249" text-anchor="middle">C</text></g>
+<g class="hs" data-hs="D" tabindex="0" role="button" aria-label="D: west side wall"><circle cx="182" cy="120" r="14" class="hs-dot"/><text x="182" y="125" text-anchor="middle">D</text></g></g></svg>`,
+  ans: "B",
+  explain: "The east wall is 8 ft from the side lot line where 10 ft is required. The rear (22 ft ≥ 20), front (30 ft ≥ 25) and west side (17 ft ≥ 10) comply. Fix by narrowing the building or seeking a variance.", ref: "Local zoning ordinance (setbacks)" });
+
+Q({ id: "q-pjm-n01", div: "pjm", obj: "pjm-2.2", lesson: "pjm-schedule", type: "mc", diff: 3, fmt: "Diagram interpretation",
+  q: "In the schedule network below (durations in days), how much total float does activity B have?" + fig(`<svg viewBox="0 0 520 220" role="img" aria-label="Network: Start to A 5 days; A to B 3 days and A to C 6 days; B and C to D 4 days"><g class="dg-text" font-size="14">
+<rect x="20" y="90" width="80" height="44" rx="6" class="dg-soft"/><text x="60" y="117" text-anchor="middle">A · 5</text>
+<rect x="200" y="30" width="80" height="44" rx="6" class="dg-soft"/><text x="240" y="57" text-anchor="middle">B · 3</text>
+<rect x="200" y="150" width="80" height="44" rx="6" class="dg-soft"/><text x="240" y="177" text-anchor="middle">C · 6</text>
+<rect x="400" y="90" width="80" height="44" rx="6" class="dg-soft"/><text x="440" y="117" text-anchor="middle">D · 4</text>
+<path d="M100 104 L200 56" class="dg-line"/><path d="M100 120 L200 170" class="dg-line"/><path d="M280 56 L400 104" class="dg-line"/><path d="M280 170 L400 120" class="dg-line"/></g></svg>`),
+  opts: ["0 days", "3 days", "6 days", "9 days"],
+  ans: 1, why: ["B is not on the critical path.", "Correct. Path A–C–D is 15 days; A–B–D is 12 days; B can slip 15 − 12 = 3 days.", "That is C's duration, not B's float.", "That adds durations rather than comparing paths."],
+  explain: "Find the longest path (the critical path): A–C–D = 5 + 6 + 4 = 15 days. An activity's total float is how long it can slip without delaying completion: here 15 − 12 = 3 days for B.", ref: "PMI, PMBOK Guide — schedule management" });
+
+/* ---------- Multiple-response application ---------- */
+Q({ id: "q-ce-n01", div: "ce", obj: "ce-3.3", lesson: "ce-payapps", type: "ms", diff: 3, fmt: "Check all that apply", pick: 3,
+  q: "Under A201–2017 §9.5.1, which three are grounds on which the architect may withhold certification for payment, to the extent needed to protect the owner? Check the three that apply.",
+  opts: ["The contractor has not paid its subcontractors for work included in earlier payments", "The owner's own financing for the project is late", "Defective work has not been remedied", "The contractor declined a substitution the architect suggested", "There is reasonable evidence the work cannot be completed for the unpaid balance of the contract sum", "The superintendent missed one OAC meeting"],
+  ans: [0, 2, 4], why: ["Correct. §9.5.1.3.", "The owner's financing is not a ground to withhold the contractor's payment.", "Correct. §9.5.1.1.", "Substitutions are the contractor's to propose, not a payment issue.", "Correct. §9.5.1.4.", "Not a listed ground."],
+  explain: "Withholding is limited to the reasons in §9.5.1 and only to the extent needed to protect the owner. The architect notifies the contractor and owner in writing of the reasons (§9.4.1).", ref: "AIA A201–2017, §9.5.1 and §9.4.1" });
+
+Q({ id: "q-pjm-n02", div: "pjm", obj: "pjm-3.1", lesson: "pjm-changes", type: "ms", diff: 2, fmt: "Check all that apply", pick: 2,
+  q: "After approving design development, the owner asks the architect to add a second floor of offices. Under B101–2017, which two steps should the architect take? Check the two that apply.",
+  opts: ["Proceed with the redesign and bill it at the end of the phase", "Notify the owner promptly that this is an Additional Service, with its effect on fee and schedule", "Absorb the change because the owner approved the fee", "Wait for the owner's written authorization before proceeding with the redesign", "Ask the contractor to price the change first", "Treat it as a minor change under A201 §7.4"],
+  ans: [1, 3], why: ["Billing without notice and authorization invites a fee dispute.", "Correct. §4.2.1: notify with reasonable promptness and explain the facts and circumstances.", "A change to previous approvals is an Additional Service, not part of the base fee.", "Correct. §4.2.1: do not proceed until written authorization.", "There may be no contractor yet, and pricing does not authorize design work.", "A201 governs construction changes, not the architect's services."],
+  explain: "A change to work the owner already approved is an Additional Service under B101 §4.2.1.1. The architect notifies the owner promptly and does not proceed until it receives written authorization.", ref: "AIA B101–2017, §4.2.1" });
+
+Q({ id: "q-ppd-n03", div: "ppd", obj: "ppd-4.1", lesson: "ppd-envelope", type: "ms", diff: 2, fmt: "Check all that apply", pick: 3,
+  q: "An office in a hot, sunny climate has large west-facing windows that overheat the space every afternoon. Which three changes would most reduce the cooling load? Check the three that apply.",
+  opts: ["Exterior vertical fins or exterior operable shades", "Glass with a higher solar heat gain coefficient (SHGC)", "Glass with a lower SHGC", "Reduce the west glazing area", "A dark-colored façade around the windows", "Enlarge the windows to improve daylight"],
+  ans: [0, 2, 3], why: ["Correct. Low western sun is blocked best by vertical or exterior adjustable shading.", "Higher SHGC lets in more solar heat.", "Correct.", "Correct. Less west glass means less low-angle solar gain.", "Dark surfaces absorb more heat.", "More glass adds solar gain."],
+  explain: "West sun is low in the afternoon, so horizontal overhangs do little. Block it outside the glass, choose low-SHGC glazing, and limit west glass area.", ref: "Brown & DeKay, Sun, Wind & Light" });
+
+Q({ id: "q-pdd-n03", div: "pdd", obj: "pdd-4.1", lesson: "pdd-firerated", type: "ms", diff: 3, fmt: "Check all that apply", pick: 2,
+  q: "A 2-hour shaft enclosure in a four-story building has a door opening and a supply duct penetration. Under the 2021 IBC, which two are generally required? Check the two that apply.",
+  opts: ["A 20-minute door assembly", "A 1½-hour fire door assembly", "A 3-hour fire door assembly", "Fire and smoke dampers where the duct penetrates the shaft, unless an exception applies", "No damper, because the duct is galvanized steel", "A smoke partition instead of a fire barrier"],
+  ans: [1, 3], why: ["20-minute doors are for corridors and smoke barriers.", "Correct. Table 716.1(2): 2-hour shaft enclosures need 1½-hour doors.", "3-hour doors protect 4-hour walls such as some fire walls.", "Correct. §717.5.3 generally requires fire and smoke dampers at shaft penetrations.", "Duct material does not remove the damper requirement.", "Shafts connecting four or more stories need a 2-hour fire barrier."],
+  explain: "Shafts connecting four or more stories need 2-hour enclosures (§713.4). Openings get 1½-hour doors, and duct penetrations generally need fire and smoke dampers unless an exception in §717.5.3 applies.", ref: "2021 IBC §713.4, Table 716.1(2) and §717.5.3" });
+
+Q({ id: "q-pcm-n01", div: "pcm", obj: "pcm-1.4", lesson: "pcm-ethics", type: "ms", diff: 3, fmt: "Check all that apply", pick: 2,
+  q: "The owner insists on deleting the required second exit from a mezzanine to save space, against your advice. Which two responses are appropriate? Check the two that apply.",
+  opts: ["Advise the owner in writing that the change would violate the building code and endanger occupants", "Make the change, since the owner makes the final design decisions", "Refuse to incorporate the code violation in your documents, even if it means ending the engagement", "Seal the drawings with a note disclaiming responsibility for the exit", "Let the building official catch it at plan review", "Ask the contractor to add the exit during construction"],
+  ans: [0, 2], why: ["Correct. Document your advice clearly.", "Owners decide many things, but not to violate life-safety requirements.", "Correct. Licensing rules and the AIA Code put public safety ahead of the client's wishes.", "A disclaimer does not make sealing non-compliant work acceptable.", "Knowingly submitting a violation is a professional conduct issue.", "Shifting a known violation to construction does not fix it."],
+  explain: "When a client's decision would endanger public safety, the architect advises against it in writing and does not incorporate it; boards' rules of conduct may also require notifying the building official.", ref: "NCARB Model Rules of Conduct; AIA Code of Ethics and Professional Conduct" });
+
+Q({ id: "q-ce-n02", div: "ce", obj: "ce-4.1", lesson: "ce-payment", type: "ms", diff: 2, fmt: "Check all that apply", pick: 2,
+  q: "The contractor tells you the work is substantially complete and asks for an inspection. Under A201–2017 §9.8, which two statements are correct? Check the two that apply.",
+  opts: ["The contractor prepares and submits a comprehensive list of items to be completed or corrected", "The architect prepares the punch list from scratch before the contractor does anything", "If the inspection shows the work is not substantially complete, the contractor completes more work and asks for another inspection", "Final payment is due when the Certificate of Substantial Completion is issued", "Consent of surety for final payment must be received first", "Warranties begin at final completion in all cases"],
+  ans: [0, 2], why: ["Correct. §9.8.2.", "The contractor's list comes first; the architect inspects and may add items.", "Correct. §9.8.3.", "Final payment follows final completion (§9.10).", "Consent of surety is a final-payment requirement.", "Warranties generally start at substantial completion unless the documents say otherwise (§9.8.4)."],
+  explain: "Substantial completion: the contractor submits its list, the architect inspects, more work if needed, then the Certificate of Substantial Completion sets responsibilities and starts warranties.", ref: "AIA A201–2017, §9.8.2–§9.8.4" });
+})();
 
 /* ============================================================
    ALGORITHMIC QUESTION GENERATORS
@@ -14433,7 +14720,7 @@ E.blank = () => ({
   results: [], time: [], packs: { lessons: [], questions: [], glossary: [] },
   planner: { examDate: "", divs: [], hours: 8, goals: [], sessions: [] },
   weakFlags: {}, touch: {}, fc: {},
-  lnotes: {}, game: { xp: 0, days: {}, badges: {}, bests: {}, log: [] }, cards: [], videos: {}, ailog: {}, today: null, pod: {},
+  lnotes: {}, rtrend: {}, sims: {}, game: { xp: 0, days: {}, badges: {}, bests: {}, log: [] }, cards: [], videos: {}, ailog: {}, today: null, pod: {},
   ui: {}
 });
 E.S = E.blank();
@@ -14515,8 +14802,8 @@ function saveDurable(json, okLS) {
 E.flush = () => { clearTimeout(idbTimer); saveDurable(JSON.stringify(E.S), true); };
 window.addEventListener("pagehide", () => { if (E._dirty) E.flush(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && E._dirty) E.flush(); });
-function compactAttempts(a) { return a.slice(-3000).map(x => [x.q, x.ok ? 1 : 0, x.d || 1, x.t, x.m || "q", x.c || 0, x.ch === undefined ? -1 : x.ch]); }
-function expandAttempts(a) { return (a || []).map(x => { const o = { q: x[0], ok: !!x[1], d: x[2], t: x[3], m: x[4] }; if (x[5]) o.c = x[5]; if (x[6] !== undefined && x[6] !== -1) o.ch = x[6]; return o; }); }
+function compactAttempts(a) { return a.slice(-3000).map(x => [x.q, x.ok ? 1 : 0, x.d || 1, x.t, x.m || "q", x.c || 0, x.ch === undefined ? -1 : x.ch, x.s || 0, x.v || 0]); }
+function expandAttempts(a) { return (a || []).map(x => { const o = { q: x[0], ok: !!x[1], d: x[2], t: x[3], m: x[4] }; if (x[5]) o.c = x[5]; if (x[6] !== undefined && x[6] !== -1) o.ch = x[6]; if (x[7]) o.s = x[7]; if (x[8]) o.v = x[8]; return o; }); }
 const DOCS = ["core", "attempts", "notes", "packs", "learn", "media"];
 function splitDocs(S) {
   const core = Object.assign({}, S); ["attempts", "notes", "packs", "lnotes", "game", "cards", "videos", "ailog"].forEach(k => delete core[k]);
@@ -14599,6 +14886,7 @@ E.rebuild = () => {
   Object.keys(ARE.OBJ).forEach(k => { E.objLessons[k] = []; E.objQ[k] = []; E.objQAll[k] = []; });
   E.lessons.forEach(l => (l.obj || []).forEach(k => E.objLessons[k] && E.objLessons[k].push(l.id)));
   Object.values(E.QMAP).forEach(q => { if (!E.objQAll[q.obj]) return; E.objQAll[q.obj].push(q.id); if (!q.case) E.objQ[q.obj].push(q.id); });
+  E.questions.forEach(q => { const l = q.lesson && E.LMAP[q.lesson]; if (l && !(l.obj || []).includes(q.obj)) { const alt = E.objLessons[q.obj][0]; if (alt) q.lesson = alt; } });
   E._memo = null;
 };
 
@@ -14712,10 +15000,10 @@ E.divStats = (divId) => {
   const coverage = w ? v / w : 0;
   const recent = E.S.results.filter(r => r.div === divId && (r.mode === "exam" || r.mode === "case" || r.mode === "official") && Date.now() - r.t < 30 * DAY);
   const examPct = recent.length ? recent.reduce((s, r) => s + r.correct / r.n, 0) / recent.length : null;
-  const readiness = examPct === null ? coverage : 0.65 * coverage + 0.35 * examPct;
+  const readiness = ARE.R ? ARE.R.div(divId).evidence : coverage;
   return { coverage, examPct, readiness, dist, n, ok, acc: n ? ok / n : null };
 };
-E.readyLabel = (r) => r < 0.4 ? "Early" : r < 0.65 ? "Building" : r < 0.8 ? "Approaching" : "Exam-ready";
+E.readyLabel = (r) => ARE.R ? ARE.R.evidenceLabel(r) : "";
 E.overall = () => {
   let tot = 0, wsum = 0;
   ARE.DIVISIONS.forEach(d => { const s = E.divStats(d.id); tot += s.readiness; wsum += 1; });
@@ -14730,6 +15018,7 @@ E.record = (qid, ok, mode, extra) => {
   const prev = E.S.srs[qid] ? Object.assign({}, E.S.srs[qid]) : null;
   const a = { q: qid, ok, d: q.diff || 1, t, m: mode, v: 2 };
   if (extra && extra.conf) a.c = extra.conf;
+  if (extra && extra.ms > 0) a.s = Math.max(1, Math.round(Math.min(extra.ms, 900000) / 1000));
   if (extra && extra.chosen !== undefined && extra.chosen !== null && typeof extra.chosen === "number") a.ch = extra.chosen;
   E.S.attempts.push(a);
   if (E.S.attempts.length > 6000) E.S.attempts = E.S.attempts.slice(-6000);
@@ -14938,6 +15227,692 @@ E.plan = () => {
 })();
 
 /* ============================================================
+   Readiness engine (v20)
+   Evidence-based view of what the learner has DEMONSTRATED for each NCARB objective.
+   It never predicts a pass probability: NCARB scores the ARE on a scaled cut score that
+   is not published per item, so no defensible conversion exists from practice data.
+   ============================================================ */
+(function () {
+const E = ARE.E, DAY = 864e5;
+const R = ARE.R = {};
+
+/* ---------- cognitive level of each question ----------
+   recall: remember a fact or definition
+   apply:  use a rule, method or calculation in a stated situation
+   analyze: interpret drawings, data, documents or a case to find the issue
+   judge:  choose the best professional action among defensible options */
+R.LEVELS = { recall: "Recall", apply: "Application", analyze: "Analysis", judge: "Professional judgment" };
+R.LEVEL_W = { recall: 0.6, apply: 1, analyze: 1.15, judge: 1.15 };
+ARE.QLEVEL = ARE.QLEVEL || {};
+const judgeRx = /\b(should the architect|what should|best (response|course|action|way|first step)|most appropriate|first step|recommend|advise the owner|what is the best|how should|which action|next step)\b/i;
+const recallRx = /^(what is (a|an|the)\b|which (term|document|of the following (is|are) (called|defined|known))|define\b|what does\b.*\b(mean|stand for)|.*\b(is called|refers to|is known as)\b)/i;
+const sceneRx = /\b(in an? [a-z-]+(,? [a-z-]+)? (climate|region|zone)|for (a|an) [a-z-]+ (building|project|office|school|clinic|library|room|wall|roof|site)|is surrounded|the drawings show|the specifications|when reviewing|reviewing an?|most appropriate|most important|should prioritize|a client|an owner|the owner|the architect|a contractor|the contractor|during (construction|design|bidding)|a firm|your firm|a project|the project|\$\s?\d|\d[\d,]*\s?(sf|ft|in|psf|cfm|%))/i;
+R.level = (q) => {
+  if (ARE.QLEVEL[q.id]) return ARE.QLEVEL[q.id];
+  if (q._lvl) return q._lvl;
+  const f = q.fmt || "", stem = String(q.q || "").replace(/<[^>]+>/g, " ");
+  let l;
+  if (q.case || q.type === "hot" || /Diagram|Hotspot|Detail diagnosis|Bid analysis|Report synthesis|Drag and place|Code interpretation/.test(f)) l = "analyze";
+  else if (/Ethics|Risk/.test(f)) l = "judge";
+  else if (q.type === "calc" || /Calculation/.test(f)) l = "apply";
+  else if (judgeRx.test(stem) && (sceneRx.test(stem) || /Scenario/.test(f))) l = "judge";
+  else if (/Scenario/.test(f) || q.type === "order") l = "apply";
+  else if (recallRx.test(stem.trim()) || q.type === "match") l = "recall";
+  else if (sceneRx.test(stem) || stem.length > 160) l = "apply";
+  else l = "recall";
+  q._lvl = l; return l;
+};
+
+/* ---------- per-objective evidence ---------- */
+let memoKey = null, memo = {};
+const keyNow = () => E.S.attempts.length + ":" + (E.S.attempts.length ? E.S.attempts[E.S.attempts.length - 1].t : 0) + ":" + Object.keys(E.S.lessons).length + ":" + new Date().toDateString();
+const median = (a) => { if (!a.length) return null; const s = a.slice().sort((x, y) => x - y); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+
+R.STATUS = {
+  none: { t: "No evidence", d: "Not attempted yet.", pts: 0, cls: "st-none" },
+  thin: { t: "Insufficient evidence", d: "Too few answers, or all on one day, to judge.", pts: 0.1, cls: "st-thin" },
+  weak: { t: "Not yet understood", d: "Recent accuracy is low or misconceptions are unresolved.", pts: 0.15, cls: "st-weak" },
+  recall: { t: "Recall only", d: "Facts are known, but application, analysis or judgment questions are not yet answered reliably.", pts: 0.4, cls: "st-recall" },
+  applied: { t: "Demonstrated", d: "Answers application-level questions correctly across more than one session.", pts: 0.8, cls: "st-applied" },
+  retained: { t: "Demonstrated and retained", d: "Demonstrated, and still answered correctly a week or more later.", pts: 1, cls: "st-retained" }
+};
+
+R.obj = (key) => {
+  const k = keyNow(); if (k !== memoKey) { memoKey = k; memo = {}; }
+  if (memo[key]) return memo[key];
+  const now = Date.now();
+  const at = E.objAttempts(key).filter(a => E.QMAP[a.q]);
+  const c = E.comp(key);
+  const r = { key, n: at.length, acc: c.score, lvl: { recall: [0, 0], apply: [0, 0], analyze: [0, 0], judge: [0, 0] }, misconceptions: [], guesses: 0, secs: [], retest: [0, 0], last: c.last, days: c.days, lessonDone: c.lessonDone, status: "none", why: [] };
+  const byQ = {};
+  at.forEach(a => {
+    const q = E.QMAP[a.q], L = R.level(q);
+    r.lvl[L][0]++; if (a.ok) r.lvl[L][1]++;
+    if (a.c === 1 && a.ok) r.guesses++;
+    if (a.s) r.secs.push(a.s);
+    (byQ[a.q] = byQ[a.q] || []).push(a);
+  });
+  // misconceptions: confident and wrong, or the same wrong choice picked twice, and not since answered correctly
+  Object.entries(byQ).forEach(([qid, list]) => {
+    list.sort((x, y) => x.t - y.t);
+    const lastA = list[list.length - 1];
+    const wrongCh = {}; let confWrong = false;
+    list.forEach(a => { if (!a.ok) { if (a.ch !== undefined) wrongCh[a.ch] = (wrongCh[a.ch] || 0) + 1; if (a.c === 3) confWrong = true; } });
+    const repeated = Object.entries(wrongCh).find(([, n]) => n >= 2);
+    if ((confWrong || repeated) && !lastA.ok) {
+      const q = E.QMAP[qid]; const ch = repeated ? +repeated[0] : lastA.ch;
+      r.misconceptions.push({ q: qid, stem: String(q.q).replace(/<[^>]+>/g, " ").slice(0, 160), chosen: q.opts && ch !== undefined && ch >= 0 ? String(q.opts[ch]).replace(/<[^>]+>/g, "") : null, confident: confWrong, repeated: !!repeated });
+    }
+    // retention: a correct answer followed by another attempt 7+ days later
+    for (let i = 0; i < list.length; i++) {
+      if (!list[i].ok) continue;
+      const later = list.slice(i + 1).find(b => b.t - list[i].t >= 7 * DAY);
+      if (later) { r.retest[0]++; if (later.ok) r.retest[1]++; break; }
+    }
+  });
+  r.medSec = median(r.secs);
+  const hi = ["apply", "analyze", "judge"].reduce((s, L) => [s[0] + r.lvl[L][0], s[1] + r.lvl[L][1]], [0, 0]);
+  r.hi = hi; r.hiAcc = hi[0] ? hi[1] / hi[0] : null;
+  r.loAcc = r.lvl.recall[0] ? r.lvl.recall[1] / r.lvl.recall[0] : null;
+  r.staleDays = r.last ? Math.floor((now - r.last) / DAY) : null;
+  // status
+  if (!r.n) r.status = "none";
+  else if (r.n < 4 || r.days < 2) { r.status = "thin"; r.why.push(r.n < 4 ? `${r.n} answer${r.n === 1 ? "" : "s"} so far; at least 4 needed` : "all answers on one day"); }
+  else if ((r.acc !== null && r.acc < 0.6) || r.misconceptions.length >= 2) { r.status = "weak"; if (r.acc < 0.6) r.why.push(`recent weighted accuracy ${Math.round(r.acc * 100)}%`); if (r.misconceptions.length) r.why.push(`${r.misconceptions.length} unresolved misconception${r.misconceptions.length === 1 ? "" : "s"}`); }
+  else if (hi[1] < 2 || (r.hiAcc !== null && r.hiAcc < 0.65)) { r.status = "recall"; r.why.push(hi[0] ? `application-level accuracy ${Math.round((r.hiAcc || 0) * 100)}% on ${hi[0]}` : "no application-level answers yet"); }
+  else if (r.retest[0] && r.retest[1] / r.retest[0] >= 0.75 && !r.misconceptions.length) r.status = "retained";
+  else { r.status = "applied"; if (!r.retest[0]) r.why.push("not yet re-tested after a week"); }
+  if (r.staleDays !== null && r.staleDays > 21 && (r.status === "applied" || r.status === "retained" || r.status === "recall")) r.stale = true;
+  if (r.guesses >= 2) r.why.push(`${r.guesses} correct answers marked as guesses`);
+  memo[key] = r; return r;
+};
+
+/* ---------- division report ---------- */
+R.div = (divId) => {
+  const d = ARE.DIV[divId];
+  const objs = d.objectives.map(o => ({ o, e: R.obj(o.key) }));
+  let w = 0, ev = 0; const dist = {}; Object.keys(R.STATUS).forEach(s => dist[s] = 0);
+  objs.forEach(({ o, e }) => { w += o.w; ev += o.w * R.STATUS[e.status].pts; dist[e.status]++; });
+  const lessons = E.lessons.filter(l => l.div === divId);
+  const done = lessons.filter(l => E.S.lessons[l.id] && E.S.lessons[l.id].done).length;
+  const bank = E.questions.filter(q => q.div === divId);
+  const seen = new Set(E.S.attempts.filter(a => E.QMAP[a.q] && E.QMAP[a.q].div === divId).map(a => a.q));
+  const exams = E.S.results.filter(r => r.div === divId && (r.mode === "exam" || r.mode === "official") && r.n >= 20).sort((a, b) => b.t - a.t);
+  const secs = [].concat(...objs.map(x => x.e.secs));
+  const lv = { recall: [0, 0], apply: [0, 0], analyze: [0, 0], judge: [0, 0] };
+  objs.forEach(({ e }) => Object.keys(lv).forEach(L => { lv[L][0] += e.lvl[L][0]; lv[L][1] += e.lvl[L][1]; }));
+  return {
+    d, objs, dist,
+    evidence: w ? ev / w : 0,
+    progress: { lessons: [done, lessons.length], questions: [seen.size, bank.length], objectivesPracticed: objs.filter(x => x.e.n).length },
+    exams, lastExam: exams[0] || null,
+    medSec: median(secs), lv,
+    gaps: objs.filter(x => ["none", "thin", "weak", "recall"].includes(x.e.status)).sort((a, b) => b.o.w - a.o.w || R.STATUS[a.e.status].pts - R.STATUS[b.e.status].pts),
+    misconceptions: [].concat(...objs.map(x => x.e.misconceptions.map(m => Object.assign({ obj: x.o.key }, m)))),
+    stale: objs.filter(x => x.e.stale)
+  };
+};
+R.evidenceLabel = (v) => v < 0.25 ? "Little shown yet" : v < 0.5 ? "Partly shown" : v < 0.75 ? "Mostly shown" : "Broadly shown";
+
+/* ---------- daily trend snapshots (one per division per day, kept 180 days) ---------- */
+R.snapshot = () => {
+  const day = E.dayKey(Date.now()); E.S.rtrend = E.S.rtrend || {}; let changed = false;
+  ARE.DIVISIONS.forEach(d => {
+    const rep = R.div(d.id); const arr = E.S.rtrend[d.id] = E.S.rtrend[d.id] || [];
+    const v = Math.round(rep.evidence * 1000) / 1000, p = rep.progress.lessons[1] ? Math.round(rep.progress.lessons[0] / rep.progress.lessons[1] * 1000) / 1000 : 0;
+    const last = arr[arr.length - 1];
+    if (!last || last[0] !== day) { if (E.S.attempts.length || p) { arr.push([day, v, p]); changed = true; } }
+    else if (last[1] !== v || last[2] !== p) { last[1] = v; last[2] = p; changed = true; }
+    if (arr.length > 180) arr.splice(0, arr.length - 180);
+  });
+  if (changed) setTimeout(() => E.save(), 0);
+};
+
+/* ---------- recommendations for one objective ---------- */
+R.recommend = (key) => {
+  const e = R.obj(key), lessons = E.objLessons[key] || [];
+  const out = [];
+  const lid = lessons[0];
+  if (e.status === "none") out.push(lid ? { t: "Study the lesson", href: "#lesson-" + lid } : null, { t: "Answer a first set of questions", act: "quiz" });
+  else if (e.status === "thin") out.push({ t: "Answer more questions on another day", act: "quiz" });
+  else if (e.status === "weak") out.push(lid ? { t: "Re-study the lesson", href: "#lesson-" + lid } : null, e.misconceptions.length && E.S.lnotes[key] ? { t: "Review your misconceptions", href: "#note-" + key } : null, { t: "Targeted quiz", act: "quiz" });
+  else if (e.status === "recall") out.push({ t: "Practise application questions", act: "quiz" }, lid ? { t: "Work the lesson's example", href: "#lesson-" + lid } : null);
+  else if (e.stale || e.status === "applied") out.push({ t: e.stale ? "Retention check (it's been a while)" : "Retention check after a week", act: "quiz" });
+  return out.filter(Boolean);
+};
+})();
+
+/* ============================================================
+   Content validation (v20)
+   Automated checks over every question and lesson. They flag items for a
+   human to look at; a flag is not proof of an error, and a clean result is
+   not proof of accuracy. Independent human/AI reviews are logged in QA_LOG.
+   ============================================================ */
+(function () {
+const E = ARE.E, QA = ARE.QA = {};
+const strip = (s) => String(s || "").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ").trim();
+const STOP = new Set("a an the of to in on for and or is are be by with as at from that this which what who when where how it its their there into under over than then not no can may must should would will does do did has have had any each all".split(" "));
+const toks = (s) => strip(s).toLowerCase().replace(/[^a-z0-9§.%/ -]/g, " ").split(/\s+/).filter(w => w.length > 2 && !STOP.has(w));
+const jacc = (a, b) => { const A = new Set(a), B = new Set(b); if (!A.size || !B.size) return 0; let i = 0; A.forEach(x => { if (B.has(x)) i++; }); return i / (A.size + B.size - i); };
+
+QA.CODE_RX = /\b(IBC|IECC|IEBC|IPC|IMC|NEC|NFPA|ADA|ABA|ICC A117|ASCE|ASHRAE|FHA|Fair Housing)\b/;
+QA.SOURCE_RX = /\b(AIA|[ABCG]\d{3}|IBC|IECC|IEBC|IPC|IMC|NEC|NFPA|ADA|ABA|ICC|ASCE|ASHRAE|ASTM|AAMA|UL|NCARB|Handbook|CSI|MasterFormat|SectionFormat|UniFormat|FEMA|IES|OSHA|FLSA|EEOC|Brooks Act|Miller Act|National CAD Standard|Secretary of the Interior|Ching|Allen|Brown|DeKay|Mehta|Lechner|Peña|Pena|International (Building|Existing Building|Fire|Mechanical|Energy Conservation|Plumbing) Code|PMI|PMBOK|Brick Industry|Grondzik|FGI|RSMeans|IRS|Department of Labor|DOL|HUD|EPA|CFR|Clean Water Act|NRCA|Occupational Safety|Age Discrimination|Carbon Leadership|Architecture 2030|SITES|Planning and Urban Design Standards|ordinance|statutes?|registration laws|regulations|Strom|LaGro|Lynch|Bachman|Straube|Onouye|AISC|Cherry|WaterSense|ENERGY STAR)\b/i;
+
+/* Log of independent reviews (factual history of this project). */
+QA.LOG = [
+  { date: "2026-11-05", scope: "All 930 questions and 6 case studies", method: "Six independent reviewers checked keys, rationales, citations (AIA text grep) and distractors; every finding triaged by the author", result: "1 wrong key corrected (q-ce-z10); several factual errors fixed (A201 testing costs, supplanting, supplier compensation, accessible routes, dampers); about 300 restated or giveaway distractors rewritten" },
+  { date: "2026-11-05", scope: "New lesson text added in v19 (about 6,500 words across 38 lessons)", method: "Three independent reviewers checked AIA citations against document text, recomputed every worked example and checked code values (some from reviewer knowledge, not code text)", result: "11 corrections applied (2 medium, 9 low); no high-severity errors" }
+];
+
+QA.questions = () => {
+  const ids = new Set(E.questions.map(q => q.id)); const qs = E.questions.concat(...(ARE.CASES || []).map(c => (c.questions || []).filter(q => !ids.has(q.id)).map(q => E.QMAP[q.id] || q))), out = [];
+  const add = (q, check, sev, msg) => out.push({ id: q.id, div: q.div, obj: q.obj, check, sev, msg });
+  // per-question checks
+  qs.forEach(q => {
+    const stem = strip(q.q);
+    const isChoice = (q.type === "mc" || q.type === "ms") && Array.isArray(q.opts);
+    // key validity
+    if (q.type === "mc" && !(Number.isInteger(q.ans) && q.ans >= 0 && q.ans < (q.opts || []).length)) add(q, "key", "high", "Answer key is not a valid choice.");
+    if (q.type === "ms" && !(Array.isArray(q.ans) && q.ans.length && q.ans.every(i => i >= 0 && i < q.opts.length))) add(q, "key", "high", "Multiple-response key is not valid.");
+    if (q.type === "ms" && q.pick && Array.isArray(q.ans) && q.pick !== q.ans.length) add(q, "key", "high", `Stem asks for ${q.pick} but ${q.ans.length} are keyed.`);
+    if (q.type === "ms" && Array.isArray(q.ans)) { const m = /\b(two|three|four)\b[^.?]*\b(apply|that apply)/i.exec(stem); const n = m ? { two: 2, three: 3, four: 4 }[m[1].toLowerCase()] : null; if (n && n !== q.ans.length) add(q, "key", "high", `Stem says ${m[1]} apply but ${q.ans.length} are keyed.`); }
+    if (q.type === "calc" && (typeof q.ans !== "number" || isNaN(q.ans))) add(q, "key", "high", "Calculation answer is not a number.");
+    // objective alignment
+    const O = ARE.OBJ[q.obj];
+    if (!O) add(q, "objective", "high", "Objective does not exist.");
+    else if (O.div !== q.div) add(q, "objective", "high", "Objective belongs to another division.");
+    if (q.lesson && E.LMAP[q.lesson] && O && !(E.LMAP[q.lesson].obj || []).includes(q.obj)) add(q, "objective", "low", "Linked lesson does not list this objective.");
+    // source / rationale
+    if (!q.ref) add(q, "source", "medium", "No reference given.");
+    else if (!QA.SOURCE_RX.test(q.ref)) add(q, "source", "low", "Cites a general principle rather than a named source; the rationale and the linked lesson's references apply.");
+    if (!q.explain || strip(q.explain).length < 25) add(q, "rationale", "medium", "Explanation is missing or very short.");
+    // ambiguous wording
+    if (/\b(all|none) of the above\b/i.test(stem + " " + (q.opts || []).join(" "))) add(q, "wording", "medium", "Uses 'all/none of the above'.");
+    if (/\b(NOT|EXCEPT)\b/.test(stem) && /\bnot\b/i.test(stem.replace(/\bNOT\b/, ""))) add(q, "wording", "medium", "Possible double negative.");
+    if (/\b(not|except)\b/.test(stem) && !/\b(NOT|EXCEPT)\b/.test(stem) && /\bwhich\b[^?]*\b(not|except)\b/i.test(stem)) add(q, "wording", "low", "Negative stem; consider emphasizing NOT/EXCEPT.");
+    if (isChoice) {
+      const opts = q.opts.map(strip), keys = Array.isArray(q.ans) ? q.ans : [q.ans];
+      // weak distractors
+      for (let i = 0; i < opts.length; i++) for (let j = i + 1; j < opts.length; j++) {
+        if (opts[i].toLowerCase() === opts[j].toLowerCase()) add(q, "distractor", "high", `Choices ${String.fromCharCode(65 + i)} and ${String.fromCharCode(65 + j)} are identical.`);
+        else if (opts[i].length > 25 && jacc(toks(opts[i]), toks(opts[j])) >= 0.8) add(q, "distractor", "low", `Choices ${String.fromCharCode(65 + i)} and ${String.fromCharCode(65 + j)} use very similar wording; check that they differ in a meaningful way (a deliberate reversal is fine).`);
+      }
+      if (q.type === "mc") {
+        const L = opts.map(o => o.length), k = q.ans, others = L.filter((_, i) => i !== k);
+        if (L[k] > 1.6 * Math.max(...others) && L[k] > 40) add(q, "distractor", "low", "Correct answer is much longer than every distractor (length cue).");
+        const abs = /\b(always|never|only|all|none|every|guarantees?)\b/i;
+        const absD = opts.filter((o, i) => i !== k && abs.test(o)).length;
+        if (absD === opts.length - 1 && !abs.test(opts[k])) add(q, "distractor", "low", "Every distractor uses an absolute word and the key does not (wording cue).");
+      }
+      // explanation supports key
+      if (Array.isArray(q.why)) {
+        keys.forEach(k => { const w = strip(q.why[k]); if (/^(incorrect|wrong|no\b|not correct|false)/i.test(w)) add(q, "rationale", "high", `Rationale for the keyed choice ${String.fromCharCode(65 + k)} reads as wrong.`); });
+        q.why.forEach((w, i) => { if (!keys.includes(i) && /^correct\b/i.test(strip(w))) add(q, "rationale", "high", `Rationale for distractor ${String.fromCharCode(65 + i)} says "Correct".`); });
+        if (q.why.length !== q.opts.length) add(q, "rationale", "medium", "Rationale count does not match the number of choices.");
+      } else add(q, "rationale", "medium", "No per-choice rationales.");
+    }
+  });
+  // duplicate stems within a division
+  const all = qs.map(q => ({ q, t: toks(q.q), k: q.type === "mc" && q.opts ? strip(q.opts[q.ans]).toLowerCase() : null }));
+  [all].forEach(list => {
+    for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
+      const a = list[i], b = list[j];
+      if (a.t.length < 4 || b.t.length < 4) continue;
+      const s = jacc(a.t, b.t);
+      if (s >= 0.75 && (a.q.div === b.q.div || (a.k && a.k === b.k))) out.push({ id: a.q.id, div: a.q.div, obj: a.q.obj, check: "duplicate", sev: "medium", msg: `Stem is ${Math.round(s * 100)}% similar to ${b.q.id}${a.q.div !== b.q.div ? " (another division)" : ""}.`, other: b.q.id });
+      else if (s >= 0.55 && a.k && a.k === b.k && a.q.obj === b.q.obj) out.push({ id: a.q.id, div: a.q.div, obj: a.q.obj, check: "duplicate", sev: "low", msg: `Tests the same point as ${b.q.id} (same objective, same keyed answer, similar stem).`, other: b.q.id });
+    }
+  });
+  return out;
+};
+
+QA.lessons = () => E.lessons.map(l => {
+  const deep = (ARE.DEEP || {})[l.id] || {};
+  const words = strip(l.body + " " + (deep.sections || []).map(s => s.html).join(" ")).split(" ").length;
+  const terms = E.glossary.filter(g => g.lesson === l.id).length;
+  const qn = (l.obj || []).map(k => (E.objQ[k] || []).length);
+  const code = QA.CODE_RX.test(strip(l.body + " " + (deep.sections || []).map(s => s.html).join(" ") + " " + (l.refs || []).map(r => r.t).join(" ")));
+  const issues = [];
+  if (!(l.objectives || []).length) issues.push("No learning objectives");
+  if (!(l.refs || []).length) issues.push("No references");
+  if (words < 500) issues.push(`Short (${words} words)`);
+  if (terms < 3) issues.push(`Only ${terms} key terms`);
+  if (!l.example || !l.example.html) issues.push("No worked example");
+  if ((l.mistakes || []).length < 3) issues.push("Fewer than 3 common mistakes");
+  if (qn.some(n => n < 6)) issues.push("An objective has fewer than 6 questions");
+  if (!l.diagram) issues.push("No diagram");
+  return { id: l.id, div: l.div, title: l.title, words, terms, diagram: !!l.diagram, refs: (l.refs || []).length, deep: (deep.sections || []).length, code, issues };
+});
+
+QA.summary = () => {
+  const f = QA.questions(); const by = {}; f.forEach(x => { by[x.check] = by[x.check] || { high: 0, medium: 0, low: 0 }; by[x.check][x.sev]++; });
+  const codeQ = QA.all().filter(q => QA.CODE_RX.test((q.ref || "") + " " + strip(q.q))).length;
+  return { findings: f, by, codeQ, lessons: QA.lessons() };
+};
+QA.all = () => { const ids = new Set(E.questions.map(q => q.id)); return E.questions.concat(...(ARE.CASES || []).map(c => (c.questions || []).filter(q => !ids.has(q.id)).map(q => E.QMAP[q.id] || q))); };
+QA.isCode = (q) => QA.CODE_RX.test((q.ref || "") + " " + strip(q.q));
+})();
+
+/* ============================================================
+   Project simulations (v20)
+   Branching scenarios: each decision changes five meters and can change
+   what happens next. Meters run 0–10 and start at 5. For "risk", lower is better.
+   Clause references are to AIA B101–2017 and A201–2017 and were checked against the document text.
+   ============================================================ */
+ARE.SIM_METERS = [
+  ["client", "Client trust"], ["risk", "Firm risk exposure"], ["fee", "Fee health"], ["schedule", "Schedule"], ["quality", "Quality & compliance"]
+];
+ARE.SIMS = [
+/* ---------------------------------------------------------- */
+{ id: "sim-library", title: "Riverside Branch Library: winning and setting up the project", divs: ["pcm", "pjm"],
+  objs: ["pcm-3.1", "pcm-3.3", "pcm-2.2", "pcm-3.2", "pjm-1.1", "pjm-2.1", "pjm-3.1"],
+  role: "You are a project architect at a 25-person firm. A town library board wants a 12,000 sf branch library with a community room.",
+  brief: "Take the project from the first meeting to a signed agreement and a working team. Each decision affects the client relationship, your firm's risk, the fee, the schedule and quality.",
+  start: "l1",
+  nodes: {
+    l1: { phase: "Project initiation", title: "The first meeting",
+      situation: "<p>The board chair says: \"We have $4.2 million in total and we want to open in 18 months. We'd like you to start drawings next week so we can show the council.\" Recent libraries of this size in the region have cost about $430/sf to build.</p>",
+      docs: [{ name: "Board's notes", html: "<ul><li>Program: 12,000 sf, community room for 120, children's area, 40 parking spaces.</li><li>Total funds: $4.2M (includes everything).</li><li>Target opening: 18 months from now.</li><li>Site: town-owned lot, survey not yet done.</li></ul>" }],
+      prompt: "What do you do first?",
+      choices: [
+        { t: "Start schematic sketches next week as asked, to keep the board's enthusiasm", fx: { client: 1, risk: 2, quality: -1 }, next: "l2", rate: "poor",
+          out: "<p>The board likes the sketches, but nobody has tested the numbers. 12,000 sf × $430 = $5.16M for construction alone, before fees, furniture and contingency. The budget gap will surface later, when it is more expensive and embarrassing to fix.</p>" },
+        { t: "Explain that you need to test program, budget and schedule against each other first, and propose a short feasibility study", fx: { client: 1, risk: -1, quality: 2 }, next: "l2", rate: "best",
+          out: "<p>B101–2017 §3.2.2 asks the architect to evaluate the owner's program, schedule, budget and site \"each in terms of the other\". A quick check already shows construction alone would be about $5.16M against $4.2M total. Raising it now lets the board decide with facts.</p>" },
+        { t: "Tell the board the budget is impossible and decline the project", fx: { client: -2, fee: -2, risk: -1 }, next: "l2", rate: "ok",
+          out: "<p>Declining avoids risk but also gives up a client you could have helped. Boards rarely know construction costs; your job is to show the options (smaller program, phasing, more funding), not to walk away at the first gap.</p>" }
+      ] },
+    l2: { phase: "Project initiation", title: "Closing the budget gap",
+      situation: "<p>Your quick feasibility check: construction at $430/sf for 12,000 sf is $5.16M. With design fees, furniture, permits, testing and a 5% owner contingency (about 23% of the total), the $4.2M total supports only about $3.23M of construction.</p>",
+      docs: [{ name: "Feasibility summary", html: "<table class='tbl'><tr><td>Total funds</td><td>$4,200,000</td></tr><tr><td>Soft costs (≈23%)</td><td>$966,000</td></tr><tr><td>Available for construction</td><td>$3,234,000</td></tr><tr><td>At $430/sf</td><td>≈ 7,500 gsf</td></tr></table>" }],
+      prompt: "How do you present this to the board?",
+      choices: [
+        { t: "Present three options: reduce to about 7,500 sf, phase the building, or raise more funds; give the cost and program effect of each", fx: { client: 2, risk: -1, quality: 1 }, next: "l3", rate: "best",
+          out: "<p>The board chooses a 9,000 sf first phase with the community room, and starts fundraising for a later children's wing. Presenting options keeps the decision with the owner, where it belongs, and records the basis for the budget.</p>" },
+        { t: "Keep 12,000 sf and use lower-cost materials to make it fit", fx: { client: 1, risk: 2, quality: -2 }, next: "l3", rate: "poor",
+          out: "<p>A 37% cost gap cannot be closed by cheaper finishes. When bids come in high, B101 §6.7 may require you to redesign at no extra fee if the overrun is not due to market conditions. You have set the project up to fail.</p>" },
+        { t: "Ask the board to hire a cost consultant before you say anything more", fx: { client: -1, fee: -1, schedule: -1 }, next: "l3", rate: "ok",
+          out: "<p>A cost consultant helps later, but the board needed a clear message now. A preliminary estimate is part of your own services (B101 §3.2.6 at schematic design), and an order-of-magnitude check during feasibility is reasonable professional judgment.</p>" }
+      ] },
+    l3: { phase: "Agreement", title: "The board's contract",
+      situation: "<p>The town attorney sends its standard agreement instead of an AIA form. Two clauses stand out.</p>",
+      docs: [{ name: "Clause 7.2", html: "<p>\"The Architect shall defend, indemnify and hold harmless the Town from any and all claims arising out of the Project.\"</p>" }, { name: "Clause 9.1", html: "<p>\"The Architect warrants that the Project will be completed within the Town's budget.\"</p>" }],
+      prompt: "What do you do?",
+      choices: [
+        { t: "Sign it; municipal clients rarely negotiate and the clauses are standard", fx: { fee: 1, risk: 3 }, next: "l4", flag: "badContract", rate: "poor",
+          out: "<p>Both clauses go beyond the standard of care. An indemnity for \"any and all claims\" with a duty to defend, and a warranty of the budget, are generally not covered by professional liability insurance. You may now carry uninsured risk for the life of the project.</p>" },
+        { t: "Ask your insurer's contract review service, then propose: indemnity limited to the extent caused by your negligence, no duty to defend, and replace the budget warranty with the owner's budget and B101-style cost provisions", fx: { client: 1, risk: -2, quality: 1 }, next: "l4", rate: "best",
+          out: "<p>The attorney accepts most of it: negligence-based indemnity, and cost estimating described as professional judgment rather than a guarantee. Many insurers review agreements for free, and owners usually accept reasonable, insurable terms.</p>" },
+        { t: "Insist on switching to AIA B101 or you will not proceed", fx: { client: -2, risk: -1, schedule: -1 }, next: "l4", rate: "ok",
+          out: "<p>You get better terms, but the relationship starts on a hard note and a month is lost. Many public owners must use their own forms; negotiating specific clauses usually gets the same protection with less friction.</p>" }
+      ] },
+    l4: { phase: "Fee", title: "Pricing the work",
+      situation: "<p>The board asks for a stipulated sum fee. Your work plan estimates 4,600 hours. Your average direct salary rate is $48/h, overhead rate 1.6, and target profit 15% of fee. Consultants (structural, MEP, civil, landscape) will cost $160,000.</p>",
+      docs: [{ name: "Fee build-up", html: "<table class='tbl'><tr><td>Direct labor</td><td>4,600 × $48 = $220,800</td></tr><tr><td>Overhead</td><td>220,800 × 1.6 = $353,280</td></tr><tr><td>Cost</td><td>$574,080</td></tr><tr><td>Fee for 15% profit</td><td>574,080 ÷ 0.85 ≈ $675,400</td></tr><tr><td>Plus consultants</td><td>$160,000</td></tr><tr><td>Total</td><td>≈ $835,400</td></tr></table>" }],
+      prompt: "What do you propose?",
+      choices: [
+        { t: "Propose ≈ $835,000 with a defined scope, listed exclusions (surveys, geotech, LEED documentation) and hourly Additional Services", fx: { fee: 2, client: 0, risk: -1 }, next: "l5", rate: "best",
+          out: "<p>The board accepts after one meeting. A clear scope protects the fee: B101 §4.1 lists Supplemental Services you can select or exclude, and §4.2 covers Additional Services that arise later.</p>" },
+        { t: "Cut the fee to $650,000 to be sure you win, and absorb the difference", fx: { fee: -3, client: 1, quality: -1 }, next: "l5", rate: "poor",
+          out: "<p>You win, but your labor budget now covers only about 3,500 hours. Either the firm loses money or the team cuts corners on coordination and CA. Low fees are a leading cause of quality problems and claims.</p>" },
+        { t: "Propose 8% of construction cost without checking hours", fx: { fee: 0, risk: 1 }, next: "l5", rate: "ok",
+          out: "<p>8% of about $3.9M is about $312,000, less than half of what the work requires. Percentage fees are a useful check, but always build the fee up from the work plan.</p>" }
+      ] },
+    l5: { phase: "Delivery", title: "Choosing a delivery method",
+      situation: "<p>The board must open in 18 months and is nervous about bids coming in high. State law allows design-bid-build or CM at risk for town buildings.</p>",
+      prompt: "What do you recommend?",
+      choices: [
+        { t: "CM at risk: hire the CM during design for estimates and constructability, and set a GMP when documents allow", fx: { schedule: 2, risk: -1, client: 1 }, next: "l6", rate: "best",
+          out: "<p>The CM's estimates at each phase catch overruns early, and early bid packages (site work, steel) save time. The architect still serves the owner under B101, with added coordination with the CM.</p>" },
+        { t: "Design-bid-build, because it gives the lowest price", fx: { schedule: -1, risk: 1 }, next: "l6", rate: "ok",
+          out: "<p>DBB gives a firm price on complete documents, but no contractor input during design and the longest timeline. With an 18-month target and budget anxiety, it is a weaker fit, though defensible.</p>" },
+        { t: "Fast-track design-bid-build: issue foundations for bid before the design is finished", fx: { schedule: 1, risk: 2, quality: -1 }, next: "l6", rate: "poor",
+          out: "<p>Fast-tracking DBB creates several prime contracts on incomplete documents with no one managing the overlap. Changes and claims are likely. Fast-tracking works best with a CM.</p>" }
+      ] },
+    l6: { phase: "Team", title: "Kickoff with consultants",
+      situation: "<p>Your MEP consultant proposes to skip the coordination meetings during design development to save fee, and to \"sort out conflicts during CDs\".</p>",
+      prompt: "How do you respond?",
+      choices: [
+        { t: "Hold to biweekly coordination with model exchanges, and add a clash review at 50% CDs in the work plan", fx: { quality: 2, schedule: 1, fee: -1 }, next: "end", rate: "best",
+          out: "<p>Coordination costs a little fee now and saves much more in RFIs and change orders later. As the prime design professional you are responsible for coordinating your consultants' work; B101 Article 3 includes their services in your Basic Services.</p>" },
+        { t: "Agree, to keep the consultant's fee down", fx: { fee: 1, quality: -2, risk: 1 }, next: "end", rate: "poor",
+          out: "<p>Late coordination pushes conflicts into construction, where they become change orders and claims against the architect.</p>" },
+        { t: "Let the CM coordinate the consultants directly", fx: { quality: -1, risk: 1 }, next: "end", rate: "poor",
+          out: "<p>The CM gives constructability input, but coordinating the design team is the architect's responsibility. Handing it off blurs responsibility.</p>" }
+      ] }
+  },
+  endings: [
+    { if: (m, f) => f.badContract, t: "Project underway, with uninsured exposure", d: "The design is going well, but the agreement you signed carries obligations your insurance does not cover. If anything goes wrong in construction, the firm's own assets are exposed. Next time, have contracts reviewed before signing." },
+    { if: (m) => m.risk <= 4 && m.fee >= 6 && m.quality >= 6, t: "Strong start", d: "Realistic budget, insurable contract, a fee that pays for the work, the right delivery method and a coordinated team. This is what good project initiation looks like." },
+    { if: (m) => m.fee <= 3, t: "Underpriced project", d: "The project is set up, but the fee does not cover the work. Expect pressure to cut corners in CDs and construction administration." },
+    { if: () => true, t: "Workable start with gaps", d: "The project can succeed, but some decisions left risk, budget or coordination problems that will need attention." }
+  ] },
+
+/* ---------------------------------------------------------- */
+{ id: "sim-clinic", title: "Maple Street Clinic: design and documentation decisions", divs: ["pa", "ppd", "pdd"],
+  objs: ["pa-2.2", "pa-3.2", "ppd-2.2", "ppd-3.1", "ppd-4.1", "pdd-1.2", "pdd-2.1", "pdd-4.2"],
+  role: "You are the project architect for a one-story, 14,000 sf outpatient clinic (Group B) on a suburban site.",
+  brief: "Work from site analysis through construction documents. Decisions affect compliance, cost, schedule and the owner's confidence. Code references use the 2021 IBC and 2010 ADA Standards; a real project uses the jurisdiction's adopted editions.",
+  start: "c1",
+  nodes: {
+    c1: { phase: "Site analysis", title: "Reading the survey",
+      situation: "<p>The survey shows the north 60 ft of the site in FEMA Zone AE and a 25 ft drainage easement along the east line. The owner's sketch puts the parking on the south and the building in the north half, closest to the street.</p>",
+      docs: [{ name: "Survey notes", html: "<ul><li>Zone AE, base flood elevation 612.0; north half of site, existing grade 608–611.</li><li>South half grade 615–618, outside the floodplain.</li><li>25 ft drainage easement held by the county along the east line.</li></ul>" }],
+      prompt: "Where do you place the building?",
+      choices: [
+        { t: "Move the building to the higher south half and put parking in the floodplain area, outside the easement", fx: { quality: 2, risk: -1, client: 0 }, next: "c2", rate: "best",
+          out: "<p>Building above the flood zone avoids elevating the floor and flood-resistant construction. Parking can usually occupy flood-prone ground. Nothing permanent goes in the easement without the county's consent.</p>" },
+        { t: "Keep the owner's layout and raise the floor to the base flood elevation", fx: { quality: -1, schedule: -1, client: 1, risk: 1 }, next: "c2", rate: "ok",
+          out: "<p>It can be done, but the lowest floor usually has to be at or above the design flood elevation, often BFE plus freeboard, which here means filling 2–5 ft, plus flood-resistant materials and an accessible route up to the higher floor. It costs more and adds risk for no program benefit.</p>" },
+        { t: "Keep the owner's layout and let the civil engineer handle the flood zone", fx: { quality: -2, risk: 2 }, next: "c2", rate: "poor",
+          out: "<p>Siting is the architect's decision. Leaving the building in Zone AE without a plan creates a code and insurance problem that cannot be solved by drainage alone.</p>" }
+      ] },
+    c2: { phase: "Code analysis", title: "Construction type and sprinklers",
+      situation: "<p>The owner wants the least expensive structure. For Group B, Table 506.2 gives type V-B an allowable area of 9,000 sf nonsprinklered and 36,000 sf sprinklered for a one-story building. The clinic is 14,000 sf.</p>",
+      prompt: "What do you propose?",
+      choices: [
+        { t: "Type V-B with an NFPA 13 sprinkler system throughout", fx: { quality: 2, client: 1, fee: 0 }, next: "c3", rate: "best",
+          out: "<p>Sprinklers raise the allowable area well above 14,000 sf and also relax other requirements (travel distance, exit separation). It is usually cheaper than upgrading the construction type.</p>" },
+        { t: "Type V-B without sprinklers, divided by a fire wall into two buildings of 7,000 sf", fx: { quality: 0, schedule: -1, client: -1 }, next: "c3", rate: "ok",
+          out: "<p>It complies, but a fire wall through a clinic splits the plan, needs rated openings and continuity to the roof, and gives up the other benefits of sprinklers.</p>" },
+        { t: "Type V-B without sprinklers; 14,000 sf is close enough", fx: { quality: -3, risk: 3 }, next: "c3", rate: "poor",
+          out: "<p>14,000 sf exceeds the 9,000 sf nonsprinklered limit (frontage could add some area, but not this much). The plans reviewer will reject it, or worse, it gets built non-compliant.</p>" }
+      ] },
+    c3: { phase: "Systems", title: "Choosing the HVAC system",
+      situation: "<p>The program has 30 exam rooms, procedure rooms, offices and a waiting room. The owner wants individual comfort control, quiet exam rooms and low energy use. Ceiling space is limited to 24 in.</p>",
+      prompt: "Which system do you recommend to the owner?",
+      choices: [
+        { t: "Variable refrigerant flow with a dedicated outdoor air system", fx: { quality: 2, client: 1, fee: 0 }, next: "c4", rate: "best",
+          out: "<p>VRF gives many small zones with small refrigerant piping, which suits a shallow ceiling, and the DOAS handles ventilation. Health-care ventilation rates come from ASHRAE 170 and the FGI Guidelines where adopted.</p>" },
+        { t: "Two large packaged rooftop units with constant-volume ducts", fx: { quality: -1, client: -1 }, next: "c4", rate: "ok",
+          out: "<p>Cheap and simple, but two zones cannot give 30 exam rooms individual control, and large ducts are hard to fit in 24 in.</p>" },
+        { t: "Through-wall units in each exam room", fx: { quality: -2, client: -1 }, next: "c4", rate: "poor",
+          out: "<p>Noisy, hard to ventilate properly and a poor fit for clinical spaces.</p>" }
+      ] },
+    c4: { phase: "Design development", title: "A coordination conflict",
+      situation: "<p>The 50% DD model shows the main supply duct crossing a steel beam at the corridor, leaving 7 ft 2 in to the corridor ceiling. The program requires 8 ft 6 in.</p>",
+      prompt: "What do you do?",
+      choices: [
+        { t: "Meet with the structural and mechanical engineers: reroute the duct over a lower-load area, or use a web opening the engineer designs, and record the decision", fx: { quality: 2, schedule: 0 }, next: "c5", rate: "best",
+          out: "<p>Resolving clashes in design is the cheapest point to fix them. Holes in steel beams need the structural engineer's design; never note \"field coordinate\".</p>" },
+        { t: "Lower the corridor ceiling to 7 ft 2 in without telling the owner", fx: { quality: -1, client: -2, risk: 1 }, next: "c5", rate: "poor",
+          out: "<p>Changing an approved program requirement without the owner's agreement undermines trust and may trigger a claim.</p>" },
+        { t: "Leave it for the contractor to resolve in the field", fx: { quality: -2, risk: 2 }, next: "c5", rate: "poor",
+          out: "<p>Known conflicts left in the documents become RFIs, change orders and possibly a claim against the architect for coordination errors.</p>" }
+      ] },
+    c5: { phase: "Construction documents", title: "QC review finds problems",
+      situation: "<p>Your 90% CD review finds: the accessible toilet room plan shows the water closet centerline 20 in from the side wall; Section 08 71 00 specifies lever hardware but the door schedule shows knobs on four doors; the reflected ceiling plan omits sprinkler heads in two procedure rooms.</p>",
+      prompt: "How do you handle the findings?",
+      choices: [
+        { t: "Correct all three before issue, log them in the QC record, and check every similar condition (other toilet rooms, every door, every room's ceiling)", fx: { quality: 3, schedule: -1, risk: -1 }, next: "end", rate: "best",
+          out: "<p>The ADA requires the centerline 16–18 in from the side wall (§604.2), and knobs are not accessible hardware (§404.2.7). An error found once usually repeats; checking similar conditions is what makes QC effective.</p>" },
+        { t: "Fix the toilet room only; the rest can be handled with RFIs", fx: { quality: -1, risk: 1 }, next: "end", rate: "ok",
+          out: "<p>Known errors issued to bidders become RFIs and possibly change orders. Fixing them now costs a few hours.</p>" },
+        { t: "Issue on schedule and fix them in an addendum if bidders ask", fx: { quality: -2, risk: 2, schedule: 1 }, next: "end", rate: "poor",
+          out: "<p>Issuing documents with known accessibility errors falls below the standard of care.</p>" }
+      ] }
+  },
+  endings: [
+    { if: (m) => m.quality >= 9 && m.risk <= 4, t: "Compliant, coordinated documents", d: "Good siting, a sound code strategy, the right systems and a QC process that catches errors before bidding. Expect few RFIs." },
+    { if: (m) => m.quality <= 3 || m.risk >= 8, t: "Documents at risk", d: "Code, coordination or accessibility problems remain. Expect plan review comments, RFIs and change orders, and possible claims." },
+    { if: () => true, t: "Workable documents with soft spots", d: "Most decisions were sound, but some issues will surface as RFIs or change orders during construction." }
+  ] },
+
+/* ---------------------------------------------------------- */
+{ id: "sim-firehall", title: "Station 3 Fire Hall: construction administration", divs: ["ce"],
+  objs: ["ce-1.1", "ce-2.1", "ce-2.2", "ce-3.1", "ce-3.2", "ce-3.3", "ce-4.1"],
+  role: "You are the architect administering a design-bid-build contract (AIA A101/A201–2017) for a $6.2M fire hall.",
+  brief: "Handle the issues that come up during construction. A201 sets your role: you act for the owner, interpret the documents impartially, and do not control the contractor's means and methods or safety.",
+  start: "f1",
+  nodes: {
+    f1: { phase: "Construction", title: "An RFI that is really a change",
+      situation: "<p>RFI 14 asks whether the apparatus bay floor drains can be moved 6 ft east \"to suit the trench drain supplier's standard lengths\". Moving them changes slab slopes and adds about $9,000 of work. The fire chief likes the idea.</p>",
+      prompt: "How do you respond?",
+      choices: [
+        { t: "Answer that the change affects cost, so it needs a proposal request; issue one and let the owner decide with the price in hand", fx: { quality: 1, client: 1, risk: -1 }, next: "f2", rate: "best",
+          out: "<p>An RFI response cannot change the contract sum or time. Changes go by change order, or CCD if the price is not agreed (A201 Article 7). The owner decides; you advise.</p>" },
+        { t: "Approve it in the RFI response since the chief likes it", fx: { client: 1, risk: 2, fee: -1 }, next: "f2", rate: "poor",
+          out: "<p>The contractor later submits a $9,000 change order claim citing your RFI response. You authorized a change you had no authority to make, and the owner is unhappy about the surprise cost.</p>" },
+        { t: "Reject it: the drawings govern", fx: { client: -1, quality: 0 }, next: "f2", rate: "ok",
+          out: "<p>Defensible, but the owner wanted to consider it. The better answer is to price it and let the owner decide.</p>" }
+      ] },
+    f2: { phase: "Construction", title: "Shop drawing with a hidden change",
+      situation: "<p>The steel fabricator's shop drawings show the apparatus bay roof beams at W21 where the structural drawings show W24. The contractor's transmittal says nothing about the change. The contractor stamped the submittal as reviewed.</p>",
+      prompt: "What do you do?",
+      choices: [
+        { t: "Send it to the structural engineer for review, mark the deviation \"Revise and resubmit\", and remind the contractor that deviations must be identified in writing", fx: { quality: 2, risk: -1 }, next: "f3", rate: "best",
+          out: "<p>A201 §3.12.8: approval of a submittal does not relieve the contractor of responsibility for deviations it did not specifically identify in writing. Still, catching it now prevents an under-designed roof.</p>" },
+        { t: "Approve it; the contractor is responsible for deviations anyway", fx: { quality: -2, risk: 2 }, next: "f3", rate: "poor",
+          out: "<p>Technically the contractor remains responsible, but an architect who notices a structural deviation and approves it anyway has a hard time defending that review.</p>" },
+        { t: "Change the beam size to W21 in an ASI to match", fx: { quality: -3, risk: 3 }, next: "f3", rate: "poor",
+          out: "<p>You changed a structural design without the engineer. Never do this.</p>" }
+      ] },
+    f3: { phase: "Construction", title: "A substitution request",
+      situation: "<p>Three months after award, the contractor asks to substitute a different overhead door manufacturer: 6% cheaper, 10-week shorter lead time, but a 2-year warranty instead of the specified 10-year warranty on the operator.</p>",
+      prompt: "How do you handle it?",
+      choices: [
+        { t: "Evaluate it against the specification, tell the owner the warranty is not equal, and recommend acceptance only with a credit and a matching warranty; the owner decides by change order", fx: { client: 2, quality: 1, risk: -1 }, next: "f4", rate: "best",
+          out: "<p>After award, substitutions need the owner's consent, after evaluation by the architect, through a change order or CCD (A201 §3.4.2). Unequal products can be accepted, but the owner should get the value back.</p>" },
+        { t: "Accept it; it saves time and money", fx: { schedule: 1, quality: -2, risk: 1 }, next: "f4", rate: "poor",
+          out: "<p>You accepted a lesser warranty on the owner's behalf without telling them. In two years the operator fails and the owner pays.</p>" },
+        { t: "Reject it automatically because substitutions are only allowed before bid", fx: { client: -1, schedule: -1 }, next: "f4", rate: "ok",
+          out: "<p>A201 allows substitutions after award with the owner's consent. Rejecting without evaluation may cost the owner a real schedule benefit.</p>" }
+      ] },
+    f4: { phase: "Construction", title: "Application for payment No. 5",
+      situation: "<p>The application claims 90% complete on masonry. On site you see the masonry is roughly 65% complete. It also includes $40,000 of rooftop units stored at the supplier's yard in another town, with no bill of sale or insurance certificate.</p>",
+      prompt: "What do you certify?",
+      choices: [
+        { t: "Certify masonry at the percentage you can support, exclude the off-site units until the A201 §9.3.2 conditions are met, and notify the contractor and owner of the reasons in writing within 7 days", fx: { quality: 2, risk: -1, client: 1 }, next: "f5", rate: "best",
+          out: "<p>A201 §9.4.1 gives you seven days to certify or withhold with reasons. Off-site stored materials need the owner's advance approval and proof of insurance and title (§9.3.2).</p>" },
+        { t: "Certify the full amount to keep the contractor happy", fx: { risk: 3, client: -2 }, next: "f5", rate: "poor",
+          out: "<p>Your certificate is a representation to the owner. Certifying work that is not in place exposes you if the contractor defaults.</p>" },
+        { t: "Withhold the whole application until the contractor revises it", fx: { client: 0, schedule: -1, risk: 1 }, next: "f5", rate: "ok",
+          out: "<p>You may withhold only to the extent reasonably necessary to protect the owner (§9.5.1). Withholding everything could trigger the contractor's right to stop work for nonpayment (§9.7).</p>" }
+      ] },
+    f5: { phase: "Construction", title: "Deficient work",
+      situation: "<p>Concrete cylinder breaks for the apparatus bay slab come back at 3,200 psi against a specified 4,000 psi. The slab is already placed and the contractor wants to keep going.</p>",
+      prompt: "What do you do?",
+      choices: [
+        { t: "Notify the owner and contractor that the results do not meet the specification, require further testing (cores) and the structural engineer's evaluation before accepting or rejecting the slab", fx: { quality: 2, risk: -1 }, next: "f6", rate: "best",
+          out: "<p>Low cylinder results start an investigation, not an automatic tear-out. You have authority to reject nonconforming work and require additional testing (A201 §4.2.6, §13.4.2). If the work does not conform, the contractor pays for the testing and correction (§13.4.3).</p>" },
+        { t: "Order the slab removed immediately", fx: { schedule: -2, client: -1, risk: 1 }, next: "f6", rate: "ok",
+          out: "<p>Premature. Cores may show adequate strength, or the engineer may accept it with a credit. Investigate first.</p>" },
+        { t: "Accept it; 80% of design strength is probably fine", fx: { quality: -3, risk: 3 }, next: "f6", rate: "poor",
+          out: "<p>Accepting nonconforming structural work without the engineer's evaluation is a serious professional failure.</p>" }
+      ] },
+    f6: { phase: "Construction", title: "A delay claim",
+      situation: "<p>The contractor gives written notice of a Claim for 15 days and $48,000, citing the owner's late approval of the apparatus bay door color and the concrete testing. The notice arrives 30 days after the color approval and 12 days after the core results.</p>",
+      prompt: "As Initial Decision Maker, how do you approach it?",
+      choices: [
+        { t: "Review each part separately: note that notice of the color delay came after the 21-day limit (§15.1.3.1), check the critical-path effect of each event, and render a written, impartial decision with reasons", fx: { quality: 2, client: 1, risk: -1 }, next: "end", rate: "best",
+          out: "<p>As IDM you must be impartial, even though the owner pays you. Late notice can bar part of a Claim. The testing delay depends on the results: if the slab did not conform, it is the contractor's delay.</p>" },
+        { t: "Reject it outright to protect the owner", fx: { client: 1, risk: 2, quality: -1 }, next: "end", rate: "poor",
+          out: "<p>Siding with the owner without analysis breaches your duty of impartiality and invites mediation and arbitration you will lose.</p>" },
+        { t: "Grant it in full to keep the project moving", fx: { client: -2, fee: 0, risk: 1 }, next: "end", rate: "poor",
+          out: "<p>You gave away the owner's money without checking notice, causation or the critical path.</p>" }
+      ] }
+  },
+  endings: [
+    { if: (m) => m.quality >= 9 && m.risk <= 3, t: "Well-administered project", d: "You stayed inside your A201 role: impartial, documented, protecting the owner's interests without taking control of the contractor's work." },
+    { if: (m) => m.risk >= 8, t: "Exposure for the architect", d: "Several decisions went beyond your authority or certified things you could not support. Expect the owner or contractor to look to you for losses." },
+    { if: () => true, t: "Completed with friction", d: "The building gets finished, but some decisions cost the owner money or time that careful administration would have saved." }
+  ] }
+];
+
+/* ============================================================
+   Calculations centre (v20)
+   Each entry: what it determines, when it is used, inputs, formula, worked example,
+   common mistakes, a practice problem (numeric, checked with a tolerance) and its source.
+   Code-dependent entries name the model code edition; adopted editions vary by jurisdiction.
+   ============================================================ */
+ARE.CALCS = [
+{ id: "occload", cat: "Codes & life safety", name: "Occupant load", code: true, lesson: "ppd-egress",
+  what: "The number of people the code assumes will occupy a space, which drives exits, egress width and plumbing fixtures.",
+  when: "Schematic design onward, for every room or floor; recheck when uses change.",
+  inputs: ["Floor area of the space (gross or net, as the table specifies)", "Function of space", "Occupant load factor from IBC Table 1004.5"],
+  formula: "Occupant load = area ÷ occupant load factor (round up)",
+  example: "<p>A 3,000 sf (net) classroom area: Table 1004.5 gives 20 net sf per occupant for classrooms. 3,000 ÷ 20 = <b>150 occupants</b>.</p><p>A 12,000 sf business floor at 150 gross: 12,000 ÷ 150 = <b>80 occupants</b>.</p>",
+  mistakes: ["Using net area where the table says gross (or the reverse)", "Rounding down", "Using one factor for a mixed-use floor instead of calculating each area"],
+  practice: { q: "An assembly room with tables and chairs has 2,250 sf net. The unconcentrated assembly factor is 15 net sf per occupant. What is the occupant load?", ans: 150, tol: 0, unit: "occupants", sol: "2,250 ÷ 15 = 150." },
+  source: "2021 IBC §1004.5 and Table 1004.5" },
+{ id: "egresswidth", cat: "Codes & life safety", name: "Egress width", code: true, lesson: "ppd-egress",
+  what: "The minimum clear width of stairs, doors and corridors to move the occupant load out.",
+  when: "Once occupant loads are known, for each egress component.",
+  inputs: ["Occupant load served", "Width factor: 0.3 in per occupant for stairs, 0.2 in for other components (2021 IBC §1005.3)", "Code minimum widths for each component"],
+  formula: "Required width = occupant load × width factor; use the larger of this and the code minimum",
+  example: "<p>A floor of 300 occupants, two stairs, not sprinklered. Total stair width = 300 × 0.3 = 90 in, so 45 in per stair if split evenly. Minimum stair width is 44 in, so <b>45 in</b> governs. Doors: 300 × 0.2 = 60 in total.</p>",
+  mistakes: ["Forgetting that calculated width is often below the minimum, which then governs", "Not checking the loss-of-one-exit rule (§1005.5: no exit may provide more than half the required capacity)", "Using stair factors for doors"],
+  practice: { q: "A floor with 240 occupants is served by two stairs. What total stair width is required by the 0.3 in per occupant factor?", ans: 72, tol: 0, unit: "in", sol: "240 × 0.3 = 72 in total (36 in each, so the 44 in minimum governs each stair)." },
+  source: "2021 IBC §1005.3, §1005.5 and §1011.2" },
+{ id: "exitsep", cat: "Codes & life safety", name: "Exit separation (remoteness)", code: true, lesson: "ppd-egress",
+  what: "How far apart two required exits must be.",
+  when: "Laying out stairs and exits in schematic design.",
+  inputs: ["Overall diagonal of the area served", "Whether the building is sprinklered throughout (NFPA 13 or 13R)"],
+  formula: "Separation ≥ ½ × diagonal (⅓ × diagonal if sprinklered throughout)",
+  example: "<p>Diagonal 210 ft, sprinklered: 210 ÷ 3 = <b>70 ft</b> minimum between exits.</p>",
+  mistakes: ["Measuring along the corridor instead of in a straight line between the closest points of the exits", "Using ⅓ when the building is not fully sprinklered"],
+  practice: { q: "A nonsprinklered floor has a diagonal of 150 ft. What is the minimum exit separation?", ans: 75, tol: 0, unit: "ft", sol: "150 ÷ 2 = 75 ft." },
+  source: "2021 IBC §1007.1.1" },
+{ id: "plumbing", cat: "Codes & life safety", name: "Plumbing fixture count", code: true, lesson: "pdd-mepsizing",
+  what: "The minimum number of water closets, lavatories and other fixtures.",
+  when: "Schematic design, to size toilet rooms.",
+  inputs: ["Occupant load, usually split 50/50 by sex", "Fixture ratios for the occupancy from the plumbing code table"],
+  formula: "Fixtures = occupants ÷ ratio, applied in the tiers the table sets, rounded up",
+  example: "<p>Group B, 100 women. Water closets: 1 per 25 for the first 50 = 2, then 1 per 50 for the remainder = 1. Total <b>3</b>.</p>",
+  mistakes: ["Applying one ratio to the whole load when the table has tiers", "Forgetting to split by sex (unless single-user rooms are used)", "Rounding down"],
+  practice: { q: "Group B, 150 men. Using 1 per 25 for the first 50 and 1 per 50 for the remainder, how many water closets (urinals not substituted)?", ans: 4, tol: 0, unit: "", sol: "50 ÷ 25 = 2; remaining 100 ÷ 50 = 2; total 4." },
+  source: "2021 IPC Table 2902.1 (Group B)" },
+{ id: "ramp", cat: "Accessibility", name: "Ramp length", code: true, lesson: "ppd-access",
+  what: "The horizontal length of ramp needed to climb a given rise, and the landings required.",
+  when: "Site and entrance design, and any change in floor level on an accessible route.",
+  inputs: ["Total rise", "Maximum slope 1:12", "Maximum rise per run 30 in; landings 60 in long"],
+  formula: "Run length = rise × 12; number of runs = rise ÷ 30 in (round up)",
+  example: "<p>Rise 42 in: runs needed = 42 ÷ 30 → 2 runs (for example 21 in each). Ramp length = 42 × 12 = 504 in = <b>42 ft</b> of sloped run, plus an intermediate 60 in landing and landings at top and bottom.</p>",
+  mistakes: ["Forgetting intermediate landings when the rise exceeds 30 in", "Using 1:20, which is the walk/ramp threshold, not the ramp limit"],
+  practice: { q: "A ramp must rise 18 in at the maximum slope. What is the minimum horizontal run in feet, excluding landings?", ans: 18, tol: 0, unit: "ft", sol: "18 in × 12 = 216 in = 18 ft." },
+  source: "2010 ADA Standards §405.2, §405.6 and §405.7" },
+{ id: "heatloss", cat: "Envelope & energy", name: "Conductive heat loss", code: false, lesson: "ppd-envelope",
+  what: "The rate of heat flow through an assembly at design conditions.",
+  when: "Comparing envelope options and sizing heating in early design.",
+  inputs: ["U-factor (Btu/h·ft²·°F) or total R-value (U = 1 ÷ R)", "Area (ft²)", "Indoor minus outdoor design temperature (°F)"],
+  formula: "Q = U × A × ΔT (Btu/h)",
+  example: "<p>Wall with R-20 total: U = 0.05. 1,500 sf, ΔT = 65°F: Q = 0.05 × 1,500 × 65 = <b>4,875 Btu/h</b>.</p>",
+  mistakes: ["Adding U-factors of layers (add R-values, then invert)", "Mixing SI and IP units"],
+  practice: { q: "Windows: U = 0.35, 400 sf, ΔT = 60°F. What is Q in Btu/h?", ans: 8400, tol: 0, unit: "Btu/h", sol: "0.35 × 400 × 60 = 8,400 Btu/h." },
+  source: "ASHRAE Handbook — Fundamentals; Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings" },
+{ id: "allowarea", cat: "Codes & life safety", name: "Allowable area with frontage", code: true, lesson: "ppd-heightarea",
+  what: "The largest area allowed per story for an occupancy and construction type.",
+  when: "Code analysis in schematic design.",
+  inputs: ["Tabular area At and nonsprinklered value NS from Table 506.2", "Frontage F, perimeter P and open-space width W (≤ 30 ft used)"],
+  formula: "If = [F/P − 0.25] × W/30; Aa = At + (NS × If)",
+  example: "<p>F = 300 ft, P = 600 ft, W = 30 ft: If = (0.50 − 0.25) × 1 = 0.25. With At = 36,000 and NS = 9,000 (one story, sprinklered, values for illustration): Aa = 36,000 + 2,250 = <b>38,250 sf</b>.</p>",
+  mistakes: ["Using S1 values for multistory buildings (use SM)", "Using W over 30 ft without meeting the conditions to do so", "Forgetting that F/P must exceed 0.25 for any increase"],
+  practice: { q: "F = 200 ft, P = 500 ft, W = 30 ft. What is the frontage increase factor If? (two decimals)", ans: 0.15, tol: 0.005, unit: "", sol: "(200 ÷ 500 − 0.25) × 30/30 = 0.15." },
+  source: "2021 IBC §506.2, §506.3 and Table 506.2" },
+{ id: "beam", cat: "Structures", name: "Beam load, moment and shear", code: false, lesson: "pdd-sizing",
+  what: "The load a simple beam carries and the maximum moment and shear it must resist.",
+  when: "Early sizing and coordination of floor depth.",
+  inputs: ["Floor load (psf, dead + live)", "Tributary width (ft)", "Span L (ft)"],
+  formula: "w = load × tributary width; M = wL²/8; V = wL/2",
+  example: "<p>100 psf × 12 ft = 1,200 plf. Span 20 ft: M = 1,200 × 400 ÷ 8 = <b>60,000 ft-lb</b>; V = 1,200 × 20 ÷ 2 = <b>12,000 lb</b>.</p>",
+  mistakes: ["Using the full joist span as tributary width (it is half on each side)", "Forgetting that moment grows with the square of the span"],
+  practice: { q: "w = 800 plf, span 25 ft. What is the maximum moment in ft-lb?", ans: 62500, tol: 0, unit: "ft-lb", sol: "800 × 625 ÷ 8 = 62,500 ft-lb." },
+  source: "AISC Steel Construction Manual, beam diagrams and formulas" },
+{ id: "cooling", cat: "Mechanical", name: "Cooling, airflow and duct size", code: false, lesson: "pdd-mepsizing",
+  what: "Converts cooling loads to tons and airflow, and airflow to duct area.",
+  when: "Early system sizing and reserving space for ducts and shafts.",
+  inputs: ["Cooling load (Btu/h)", "About 400 cfm per ton (planning value)", "Duct velocity (fpm)"],
+  formula: "Tons = Btu/h ÷ 12,000; cfm ≈ tons × 400; duct area (sf) = cfm ÷ velocity",
+  example: "<p>96,000 Btu/h = 8 tons → about 3,200 cfm. At 800 fpm: 3,200 ÷ 800 = <b>4.0 sf</b> of duct area (for example 24 in × 24 in).</p>",
+  mistakes: ["Dividing by velocity in fpm but reporting in square inches", "Treating rules of thumb as design values"],
+  practice: { q: "A duct carries 2,400 cfm at 1,200 fpm. What area in square feet?", ans: 2, tol: 0, unit: "sf", sol: "2,400 ÷ 1,200 = 2.0 sf." },
+  source: "Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings" },
+{ id: "slope", cat: "Site", name: "Slope and grading", code: true, lesson: "pa-site",
+  what: "The steepness of ground or a surface, as a percentage or ratio.",
+  when: "Site analysis, parking, walks and drainage around buildings.",
+  inputs: ["Vertical rise", "Horizontal run (same units)"],
+  formula: "Slope % = rise ÷ run × 100; ratio 1:n where n = run ÷ rise",
+  example: "<p>Contours 2 ft apart vertically, 40 ft apart horizontally: 2 ÷ 40 = <b>5%</b> (1:20). IBC §1804.4 requires grade to fall at least 5% for 10 ft away from foundations (2% for impervious surfaces).</p>",
+  mistakes: ["Confusing 1:20 (5%) with 20%", "Measuring run along the slope instead of horizontally"],
+  practice: { q: "Grade falls 0.75 ft over 15 ft. What is the slope in percent?", ans: 5, tol: 0, unit: "%", sol: "0.75 ÷ 15 × 100 = 5%." },
+  source: "2021 IBC §1804.4; Strom, Nathan & Woland, Site Engineering for Landscape Architects" },
+{ id: "far", cat: "Site", name: "Floor area ratio and lot coverage", code: true, lesson: "pa-zoning",
+  what: "How much building area and footprint zoning allows on a lot.",
+  when: "Feasibility and site planning.",
+  inputs: ["Lot area", "FAR and maximum lot coverage from the zoning ordinance", "Setbacks"],
+  formula: "Max gross floor area = lot area × FAR; max footprint = lot area × coverage",
+  example: "<p>Lot 40,000 sf, FAR 1.5, coverage 40%: max floor area <b>60,000 sf</b>; max footprint <b>16,000 sf</b>; so at least 4 stories to use the full FAR.</p>",
+  mistakes: ["Applying FAR to footprint only", "Ignoring setbacks, which may limit the footprint more than coverage"],
+  practice: { q: "A 25,000 sf lot has an FAR of 2.4. What is the maximum gross floor area?", ans: 60000, tol: 0, unit: "sf", sol: "25,000 × 2.4 = 60,000 sf." },
+  source: "Local zoning ordinance (definitions vary; check how the ordinance measures floor area)" },
+{ id: "fee", cat: "Practice & project management", name: "Fee from hours and overhead", code: false, lesson: "pcm-fees",
+  what: "A fee that covers labor, overhead and a target profit.",
+  when: "Preparing a fee proposal.",
+  inputs: ["Estimated hours × salary rates (direct labor)", "Overhead rate", "Target profit as a share of fee"],
+  formula: "Cost = direct labor × (1 + overhead rate); fee = cost ÷ (1 − profit share)",
+  example: "<p>Direct labor $50,000, overhead rate 1.5: cost = $125,000. For 15% profit: 125,000 ÷ 0.85 = <b>$147,059</b>. Add consultants and reimbursables separately.</p>",
+  mistakes: ["Multiplying cost by 1.15 (that makes profit 15% of cost, not of fee)", "Leaving out consultants"],
+  practice: { q: "Cost is $170,000 and target profit is 15% of fee. What is the fee? (nearest dollar)", ans: 200000, tol: 1, unit: "$", sol: "170,000 ÷ 0.85 = $200,000." },
+  source: "AIA, Architect's Handbook of Professional Practice — financial management" },
+{ id: "ev", cat: "Practice & project management", name: "Earned value (CPI and SPI)", code: false, lesson: "pjm-schedule",
+  what: "Whether work is on budget and on schedule.",
+  when: "Monthly project reviews.",
+  inputs: ["Budget at completion (BAC)", "Planned % complete", "Actual % complete", "Actual cost"],
+  formula: "PV = planned % × BAC; EV = actual % × BAC; CPI = EV ÷ AC; SPI = EV ÷ PV; EAC = BAC ÷ CPI",
+  example: "<p>BAC $80,000, planned 50%, actual 40%, spent $36,000: PV = 40,000; EV = 32,000; CPI = 32,000 ÷ 36,000 = 0.89 (over budget); SPI = 32,000 ÷ 40,000 = 0.80 (behind); EAC = 80,000 ÷ 0.889 ≈ <b>$90,000</b>.</p>",
+  mistakes: ["Putting actual cost on top", "Using planned value in CPI"],
+  practice: { q: "EV = $45,000 and AC = $50,000. What is the CPI? (two decimals)", ans: 0.9, tol: 0.005, unit: "", sol: "45,000 ÷ 50,000 = 0.90." },
+  source: "PMI, PMBOK Guide — earned value management" },
+{ id: "payapp", cat: "Construction administration", name: "Amount due on a payment application", code: false, lesson: "ce-payapps",
+  what: "What the architect certifies for the current period.",
+  when: "Each payment application.",
+  inputs: ["Work completed to date", "Stored materials meeting A201 §9.3.2", "Retainage rate", "Previous certificates"],
+  formula: "Due = (completed + stored) × (1 − retainage) − previous certificates",
+  example: "<p>Completed $600,000, stored $40,000, 10% retainage, previous $450,000: 640,000 × 0.9 = 576,000; due = <b>$126,000</b>.</p>",
+  mistakes: ["Forgetting retainage on stored materials", "Including stored materials that do not meet the contract conditions"],
+  practice: { q: "Completed $900,000, no stored materials, 5% retainage, previous certificates $700,000. Amount due?", ans: 155000, tol: 0, unit: "$", sol: "900,000 × 0.95 = 855,000; 855,000 − 700,000 = $155,000." },
+  source: "AIA A201–2017 §9.3 and §9.4; AIA G702/G703" },
+{ id: "lumen", cat: "Lighting", name: "Lumen method", code: false, lesson: "pdd-mepsizing",
+  what: "How many luminaires give a target average illuminance.",
+  when: "Early lighting layouts and checking fixture counts.",
+  inputs: ["Target illuminance (footcandles)", "Room area (sf)", "Lumens per fixture", "Coefficient of utilization (CU)", "Light loss factor (LLF)"],
+  formula: "Fixtures = (fc × area) ÷ (lumens × CU × LLF)",
+  example: "<p>50 fc, 900 sf, 5,000 lm fixtures, CU 0.6, LLF 0.8: 45,000 ÷ 2,400 = 18.75 → <b>19 fixtures</b>.</p>",
+  mistakes: ["Forgetting the light loss factor", "Rounding down"],
+  practice: { q: "30 fc in a 1,000 sf room with 3,000 lm fixtures, CU 0.5, LLF 0.8. How many fixtures (round up)?", ans: 25, tol: 0, unit: "fixtures", sol: "30,000 ÷ (3,000 × 0.5 × 0.8) = 30,000 ÷ 1,200 = 25." },
+  source: "IES Lighting Handbook; Grondzik & Kwok, Mechanical and Electrical Equipment for Buildings" },
+{ id: "concrete", cat: "Quantities & cost", name: "Concrete quantity", code: false, lesson: "pa-budget",
+  what: "Cubic yards of concrete for a slab or footing, for estimating and ordering.",
+  when: "Quantity takeoffs and checking contractor estimates.",
+  inputs: ["Length, width and thickness (ft)", "Waste allowance (often 5–10%)"],
+  formula: "Cubic yards = (L × W × T) ÷ 27, plus waste",
+  example: "<p>Slab 60 ft × 40 ft × 6 in: 60 × 40 × 0.5 = 1,200 cf ÷ 27 = 44.4 cy; with 5% waste ≈ <b>46.7 cy</b>.</p>",
+  mistakes: ["Leaving thickness in inches", "Dividing by 9 instead of 27"],
+  practice: { q: "A slab 30 ft × 36 ft × 4 in. How many cubic yards before waste? (one decimal)", ans: 13.3, tol: 0.05, unit: "cy", sol: "30 × 36 × (4 ÷ 12) = 360 cf; 360 ÷ 27 = 13.3 cy." },
+  source: "RSMeans Building Construction Costs (quantity takeoff methods)" }
+];
+
+/* ---------- view ---------- */
+(function () {
+const H = () => ARE.H;
+ARE.calcView = () => {
+  const { esc } = H(); const E = ARE.E;
+  const cats = Array.from(new Set(ARE.CALCS.map(c => c.cat)));
+  return `<p class="muted" style="max-width:75ch">Each calculation shows what it determines, when you use it, the inputs, the formula, a worked example, common mistakes and a practice problem you can check. Code-dependent entries name the model code edition the ARE uses; on a real project, use the edition and amendments the jurisdiction has adopted.</p>
+${cats.map(cat => `<section class="stack"><h3>${esc(cat)}</h3>${ARE.CALCS.filter(c => c.cat === cat).map(c => `<details class="panel calc" id="calc-${c.id}"><summary><b>${esc(c.name)}</b> <span class="muted">· ${esc(c.what)}</span>${c.code ? ` <span class="st-pill st-thin">code-dependent</span>` : ""}</summary>
+<div class="calc-body"><div class="calc-grid"><div><span class="eyebrow">When it is used</span><p>${esc(c.when)}</p></div><div><span class="eyebrow">Inputs</span><ul>${c.inputs.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div></div>
+<div class="formula"><b>Formula</b><span><code>${esc(c.formula)}</code></span></div>
+<div><span class="eyebrow">Worked example</span><div class="prose">${c.example}</div></div>
+<div><span class="eyebrow">Common mistakes</span><ul class="traps">${c.mistakes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>
+<div class="panel calc-practice"><span class="eyebrow">Practice problem</span><p>${esc(c.practice.q)}</p><div class="row"><input type="number" step="any" inputmode="decimal" aria-label="Your answer" data-calcin="${c.id}"><span class="muted">${esc(c.practice.unit)}</span><button class="btn small" data-act="calcchk" data-id="${c.id}">Check</button></div><p class="calc-fb" id="calcfb-${c.id}" hidden></p></div>
+<p class="muted" style="font-size:var(--t-sm);margin:0">Source: ${esc(c.source)}${c.lesson && E.LMAP[c.lesson] ? ` · <a href="#lesson-${c.lesson}">Lesson: ${esc(E.LMAP[c.lesson].title)}</a>` : ""}</p></div></details>`).join("")}</section>`).join("")}`;
+};
+const bind = () => { if (!ARE.ACTS) return setTimeout(bind, 50);
+  ARE.ACTS.calcchk = (t) => { const c = ARE.CALCS.find(x => x.id === t.dataset.id); const inp = document.querySelector(`[data-calcin="${c.id}"]`); const fb = document.getElementById("calcfb-" + c.id); const v = parseFloat(String(inp.value).replace(/,/g, "")); if (isNaN(v)) { fb.hidden = false; fb.textContent = "Enter a number first."; return; } const ok = Math.abs(v - c.practice.ans) <= (c.practice.tol || 0) + 1e-9; fb.hidden = false; fb.className = "calc-fb " + (ok ? "ok" : "bad"); fb.textContent = (ok ? "Correct. " : "Not quite. ") + c.practice.sol; }; };
+bind();
+})();
+
+/* ============================================================
    LEARN: learning-science layer
    - personalized learning notes (auto-generated from performance)
    - confidence calibration (metacognition)
@@ -14981,6 +15956,15 @@ function noteFor(obj) {
   if (!N[obj]) N[obj] = { id: obj, obj, created: Date.now(), updated: Date.now(), triggers: [], miss: [], bm: false, comment: "", edit: "", understood: false, archived: false, ai: [], checks: [] };
   return N[obj];
 }
+L.savePassage = (obj, src, text, href) => {
+  if (!ARE.OBJ[obj] || !text) return null;
+  const n = noteFor(obj); n.saved = n.saved || [];
+  if (n.saved.some(x => x.text === text)) return n;
+  n.saved.push({ t: Date.now(), src, text: String(text).slice(0, 2000), href: href || "" });
+  if (n.saved.length > 30) n.saved = n.saved.slice(-30);
+  n.updated = Date.now(); if (n.archived) { n.archived = false; n.reopened = Date.now(); }
+  return n;
+};
 L.addTrigger = (obj, kind, data) => {
   if (!ARE.OBJ[obj]) return null;
   const n = noteFor(obj);
@@ -15232,10 +16216,18 @@ L.buildToday = (minutes) => {
   plan.steps.push({ k: "practice", t: "Practice", d: "Questions on " + (minutes >= 30 ? nextLesson.title : "your weakest topics") + ", difficulty matched to your level.", objs: minutes >= 30 ? pObjs : null, n: Math.max(4, Math.round(6 * scale)), min: Math.round(6 * scale) });
   // 5 weak areas: from learning notes / weak objectives
   const notes = L.activeNotes().slice(0, 4).map(n => n.obj);
-  const weak = notes.length ? notes : Object.keys(ARE.OBJ).map(k => E.comp(k)).filter(c => c.n >= 3 && c.score < 0.7).sort((a, b) => a.score - b.score).slice(0, 3).map(c => c.key);
+  let weak;
+  if (ARE.R) {
+    // misconceptions first, then learning notes, then recall-only objectives (known facts not yet applied)
+    const ev = Object.keys(ARE.OBJ).map(k => ARE.R.obj(k));
+    const mis = ev.filter(e => e.status === "weak").sort((a, b) => b.misconceptions.length - a.misconceptions.length || (a.acc || 0) - (b.acc || 0)).map(e => e.key);
+    const rec = ev.filter(e => e.status === "recall").map(e => e.key);
+    weak = Array.from(new Set(mis.concat(notes, rec))).slice(0, 3);
+  } else weak = notes.length ? notes : Object.keys(ARE.OBJ).map(k => E.comp(k)).filter(c => c.n >= 3 && c.score < 0.7).sort((a, b) => a.score - b.score).slice(0, 3).map(c => c.key);
   if (weak.length) plan.steps.push({ k: "weak", t: "Weak-area review", d: "Revisit concepts you previously missed: " + weak.map(k => ARE.OBJ[k].div.toUpperCase() + " " + ARE.OBJ[k].code).join(", ") + ".", objs: weak, n: Math.max(3, Math.round(5 * scale)), min: Math.round(5 * scale) });
   // 6 retention check: interleaved, due reviews + older material
-  plan.steps.push({ k: "retain", t: "Retention check", d: "An interleaved mix across divisions, including items due for spaced review.", n: Math.max(4, Math.round(6 * scale)), min: Math.round(5 * scale) });
+  const stale = ARE.R ? Object.keys(ARE.OBJ).filter(k => ARE.R.obj(k).stale).length : 0;
+  plan.steps.push({ k: "retain", t: "Retention check", d: "An interleaved mix across divisions, including items due for spaced review" + (stale ? " and " + stale + " topic" + (stale === 1 ? "" : "s") + " not practised for three weeks" : "") + ".", n: Math.max(4, Math.round(6 * scale)), min: Math.round(5 * scale) });
   plan.steps.forEach((s, i) => { s.i = i; s.done = false; });
   E.S.today = plan;
   return plan;
@@ -15430,7 +16422,7 @@ AI.context = () => {
     const l = E.LMAP[C.lesson]; out.lesson = l.id; out.obj = (l.obj || [])[0]; out.div = l.div;
     out.label = "Lesson · " + l.title;
     out.parts.push("CURRENT LESSON: " + l.title + " (" + ARE.DIV[l.div].code + ")\nObjectives: " + (l.obj || []).map(k => ARE.DIV[ARE.OBJ[k].div].code + " " + ARE.OBJ[k].code + " " + ARE.OBJ[k].title).join("; ") +
-      "\nSummary: " + l.summary + "\nLesson text (course material, verified):\n" + strip(l.body).slice(0, 7000) +
+      "\nSummary: " + l.summary + "\nLesson text (course material, independently reviewed):\n" + strip(l.body + " " + (((ARE.DEEP || {})[l.id] || {}).sections || []).map(x => "<h3>" + x.h + "</h3>" + x.html).join(" ")).slice(0, 11000) +
       "\nKey takeaways: " + (ARE.TAKEAWAYS[l.id] || l.takeaways || []).join(" | ") +
       ((l.formulas || []).length ? "\nFormulas: " + l.formulas.map(f => f.name + ": " + f.f).join(" | ") : "") +
       "\nHow it is tested: " + l.exam + "\nCommon mistakes: " + (l.mistakes || []).join(" | ") +
@@ -15458,6 +16450,7 @@ AI.context = () => {
   const prof = ["LEARNER PROFILE:"];
   if (weak.length) prof.push("Weakest objectives: " + weak.map(c => ARE.DIV[ARE.OBJ[c.key].div].code + " " + ARE.OBJ[c.key].code + " (" + Math.round(c.score * 100) + "%)").join(", "));
   if (out.obj) {
+    if (ARE.R) { const ev = ARE.R.obj(out.obj); prof.push("Evidence status on this objective: " + ARE.R.STATUS[ev.status].t + (ev.why.length ? " (" + ev.why.join("; ") + ")" : "") + "."); if (ev.misconceptions.length) prof.push("Recorded misconceptions: " + ev.misconceptions.slice(0, 3).map(m => "Q: " + m.stem.slice(0, 120) + (m.chosen ? " → chose “" + m.chosen.slice(0, 80) + "”" : "")).join(" || ")); }
     const c = E.comp(out.obj); prof.push("On this objective: " + c.n + " answers, " + (c.score === null ? "no score" : Math.round(c.score * 100) + "% weighted") + ", level " + E.LV[c.level] + ".");
     const n = E.S.lnotes[out.obj];
     if (n) {
@@ -15476,6 +16469,8 @@ AI.context = () => {
 AI.RULES = `You are the ARE Academy tutor: a patient, rigorous architecture tutor helping one candidate prepare for NCARB's ARE 5.0.
 Rules:
 - Teach actively. Prefer questions, hints and steps over long lectures. Keep answers focused (usually under 250 words unless asked for depth).
+- Do not simply agree with the learner. If their answer, reasoning or assumption is wrong or incomplete, say so plainly first, explain why, and show the correct reasoning. If an answer is vague, ask a follow-up question that makes them commit.
+- When the learner has a recorded misconception (see LEARNER PROFILE), address it directly.
 - Ground answers in the COURSE MATERIAL provided below. When you go beyond it, say so with the label "General explanation".
 - Never invent code section numbers, table numbers, AIA document article/clause numbers, NCARB objective wording, statistics, or quotations. If you are not certain of a citation, tell the learner which source to check (e.g. "verify in IBC 2021 Chapter 10" only if that chapter is given in the material) instead of guessing.
 - The ARE tests US practice (IBC, AIA documents). The learner also works under Ontario/Canadian practice (OBC, CCDC); keep those distinct and label any Canadian comparison as not on the ARE.
@@ -15496,6 +16491,7 @@ AI.MODES = {
   hint: { t: "Hint", p: "Give me a single hint for the current question without revealing the answer or eliminating options outright. One or two sentences." },
   guide: { t: "Guide me", p: "Guide me through the reasoning for the current question with Socratic questions. Do not give the answer; ask me what I think at each step." },
   full: { t: "Full explanation", p: "Give the full explanation for the current question: the correct answer, why it is correct, and why each other option is wrong. Then ask me one elaborative 'why' question." },
+  challenge: { t: "Challenge my reasoning", p: "Challenge my understanding of this concept like a demanding senior architect. Give me a realistic project situation, ask what I would do and why, then critique my answer honestly: what is right, what is wrong or missing, and what the consequences would be on a real project. One situation at a time." },
   why: { t: "Why are the others wrong?", p: "For the current question, explain why each wrong option is wrong and what misconception would lead someone to choose it." }
 };
 
@@ -15863,7 +16859,7 @@ T.refresh = () => {
   const p = AI.active();
   panel.querySelector("#tuProv").innerHTML = p ? `<span class="dot ok"></span>${esc(AI.label(p))}` : `<span class="dot"></span>No AI connected · <a href="#settings" data-tu="settings">Connect a free provider</a>`;
   const isQ = !!ctx.q;
-  const modes = isQ ? ["hint", "guide", "full", "why", "simple", "steps", "compare", "visual"] : ["simple", "practice", "exam", "steps", "compare", "visual", "test"];
+  const modes = isQ ? ["hint", "guide", "full", "why", "simple", "steps", "compare", "visual"] : ["simple", "practice", "exam", "steps", "compare", "visual", "test", "challenge"];
   panel.querySelector("#tuModes").innerHTML = modes.map(m => `<button class="chip" data-tu="mode" data-m="${m}">${esc(AI.MODES[m].t)}</button>`).join("");
   panel.querySelector("#tuTools").innerHTML = (ctx.obj || ctx.lesson) ? `<button class="chip" data-tu="genq">Make practice questions</button><button class="chip" data-tu="video">Make a video lesson</button><button class="chip" data-tu="confused">I don't get this</button>` : "";
   renderLog();
@@ -16358,6 +17354,8 @@ const IC = {
   exams: '<path d="M9 3h6l1 2h3v16H5V5h3zM9 11h6M9 15h4"/>',
   cases: '<path d="M3 7h18v13H3zM8 7V4h8v3M3 12h18"/>',
   tracker: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+  sims: '<path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/>',
+  readiness: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
   reference: '<path d="M5 3h11l3 3v15H5zM9 9h6M9 13h6M9 17h3"/>',
   planner: '<path d="M4 5h16v16H4zM4 10h16M9 3v4M15 3v4"/>',
   notes: '<path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/>',
@@ -16384,8 +17382,8 @@ const NAV = [["dashboard", "Home"], ["today", "Today's Study Plan"], ["library",
 const NAVG = [
   [null, [["dashboard", "Home"], ["today", "Today's Plan"]]],
   ["Learn", [["divisions", "Divisions & Lessons"], ["flashcards", "Flashcards"], ["studio", "Video Lessons"], ["podcast", "Podcast"], ["reference", "Reference Library"]]],
-  ["Practice", [["exams", "Practice Exams"], ["cases", "Case Studies"]]],
-  ["Review", [["lnotes", "Notes"], ["tracker", "Progress"], ["planner", "Study Planner"]]]
+  ["Practice", [["exams", "Practice Exams"], ["sims", "Simulations"], ["cases", "Case Studies"]]],
+  ["Review", [["lnotes", "Notes"], ["readiness", "Progress"], ["planner", "Study Planner"]]]
 ];
 const BADGE = { exams: "dueBadge", flashcards: "fcBadge", lnotes: "lnBadge" };
 let railPref = (() => { try { return JSON.parse(localStorage.getItem("are-rail") || "{}"); } catch (e) { return {}; } })();
@@ -16444,12 +17442,12 @@ E.onSync = (reloaded) => { updateSync(); if (reloaded) { toast("Progress loaded 
 
 /* ---------- routing ---------- */
 /* Pages that share one navigation item are shown with tabs. */
-const PTABS = { divisions: [["divisions", "By division"], ["library", "All lessons"]], lnotes: [["lnotes", "Learning notes"], ["notes", "My notes & bookmarks"]], tracker: [["tracker", "Competency"], ["analytics", "Analytics"]] };
-const PTAB_OF = { divisions: "divisions", library: "divisions", lnotes: "lnotes", notes: "lnotes", tracker: "tracker", analytics: "tracker" };
+const PTABS = { divisions: [["divisions", "By division"], ["library", "All lessons"]], lnotes: [["lnotes", "Learning notes"], ["notes", "My notes & bookmarks"]], readiness: [["readiness", "Readiness"], ["tracker", "Competency"], ["analytics", "Analytics"]] };
+const PTAB_OF = { divisions: "divisions", library: "divisions", lnotes: "lnotes", notes: "lnotes", readiness: "readiness", tracker: "readiness", analytics: "readiness" };
 function ptabs(h) { const g = PTAB_OF[h]; if (!g) return ""; return `<nav class="ptabs" aria-label="Section">${PTABS[g].map(([k, t]) => `<a href="#${k}" class="${k === h ? "on" : ""}" ${k === h ? 'aria-current="page"' : ""}>${t}</a>`).join("")}</nav>`; }
 function navKey(h) {
   if (PTAB_OF[h]) return PTAB_OF[h];
-  if (h.startsWith("div-")) return "divisions"; if (h.startsWith("lesson-")) return "divisions"; if (h.startsWith("note-")) return "lnotes";
+  if (h.startsWith("div-")) return "divisions"; if (h.startsWith("lesson-")) return "divisions"; if (h.startsWith("note-")) return "lnotes"; if (h.startsWith("readiness-")) return "readiness"; if (h.startsWith("sim-")) return "sims";
   if (h.startsWith("case-")) return "cases"; if (h === "quiz") return SESSION && SESSION.caseId ? "cases" : "exams"; return h;
 }
 function route() {
@@ -16662,10 +17660,10 @@ function vDashboard() {
 ${dte !== null && dte >= 0 ? `<a class="chip code" href="#planner">${dte} day${dte === 1 ? "" : "s"} to ${P.divs.map(divCode).join(", ") || "your exam"}</a>` : `<a class="btn small" href="#planner">Set an exam date</a>`}</header>
 
 <div class="dash">
-<section class="panel d-hero" aria-labelledby="nbsH">${ring(ov.readiness, "Ready")}
+<section class="panel d-hero" aria-labelledby="nbsH">${ring(ov.readiness, "Evidence")}
   <div class="stack" style="gap:10px"><span class="eyebrow">Next best study activity</span><h2 id="nbsH">${esc(top.title)}</h2><p class="why">${esc(top.why)}</p>
   <div class="row"><button class="btn primary" ${actAttrs(top.act)}>Start now</button>${recs[1] ? `<button class="btn ghost alt-btn" ${actAttrs(recs[1].act)} title="${esc(recs[1].why)}">or ${esc(recs[1].title.replace(/^Start /, "").length > 44 ? recs[1].title.replace(/^Start /, "").slice(0, 42) + "…" : recs[1].title.replace(/^Start /, ""))}</button>` : ""}</div>
-  <div class="muted" style="font-size:var(--t-xs)">${ov.n} answers · ${pct(ov.acc)} accuracy · readiness combines objective coverage with recent exam scores</div></div></section>
+  <div class="muted" style="font-size:var(--t-xs)">${ov.n} answers · ${pct(ov.acc)} accuracy · evidence of what your answers show, weighted by NCARB objective share · <a href="#readiness">readiness report</a></div></div></section>
 
 <div class="d-side">
   <a class="d-stat streak" href="#analytics"><span class="ds-i">${icon("badge")}</span><span><b>${st.days} day${st.days === 1 ? "" : "s"}</b><small>${st.today ? "Streak · today counts ✓" : "Streak · " + (st.need ? st.need + " answers to keep it today" : "study today to keep it")}</small></span><span class="ds-go">›</span></a>
@@ -16733,7 +17731,7 @@ function vDivision(id) {
   return `
 <div class="tblock"><div class="tb-main"><span class="eyebrow">Division ${d.n} of 6</span><h1>${d.name}</h1><p class="muted" style="max-width:70ch">${d.blurb}</p>
 <div class="row"><button class="btn primary" data-act="quiz" data-div="${id}">Adaptive quiz · 10</button>${formButtons(id)}<button class="btn" data-act="review-due" data-div="${id}" ${due ? "" : "disabled"}>Review due (${due})</button><button class="btn" data-act="review-missed" data-div="${id}" ${missed ? "" : "disabled"}>Missed (${missed})</button></div></div>
-<div class="tb-side"><div><small>Sheet</small><b>${d.sheet}</b><small style="margin-top:8px">Readiness</small><b>${pct(s.readiness)}</b><small>${E.readyLabel(s.readiness)}</small></div><div><small>Division</small><b>${d.code}</b></div></div></div>
+<div class="tb-side"><div><small>Sheet</small><b>${d.sheet}</b><small style="margin-top:8px">Evidence</small><b>${pct(s.readiness)}</b><small>${E.readyLabel(s.readiness)}</small></div><div><small>Division</small><b>${d.code}</b></div></div></div>
 
 <div class="grid g4"><div class="panel kpi"><b>${d.items}</b><span>Items (${d.scored} scored, ${d.pretest} pretest)</span></div><div class="panel kpi"><b>${d.time.replace(" 00 min", " h")}</b><span>Test time · break ${d.brk}</span></div><div class="panel kpi"><b>${s.n}</b><span>Questions answered here</span></div><div class="panel kpi"><b>${pct(s.acc)}</b><span>Accuracy here</span></div></div>
 
@@ -16952,9 +17950,11 @@ function startExam(div) {
    QUIZ SESSION
    ============================================================ */
 function curCase(q) { return q && q.case ? ARE.CASES.find(c => c.id === q.case) : null; }
+function durTick(s, id) { const now = Date.now(); s.dur = s.dur || {}; if (s.cur && s.cur.id) s.dur[s.cur.id] = (s.dur[s.cur.id] || 0) + Math.min(now - s.cur.t, 600000); s.cur = id ? { id, t: now } : null; }
 function vQuiz() {
   const s = SESSION;
   if (s.done) return vResults();
+  durTick(s, s.qids[s.i]);
   if (s.mode === "exam") return vExamUI();
   const id = s.qids[s.i], q = E.QMAP[id], c = curCase(q);
   const instant = s.mode === "practice" || s.mode === "check" || s.mode === "review";
@@ -16985,7 +17985,7 @@ function fmtClock(ms) { ms = Math.max(0, ms); const h = Math.floor(ms / 3600000)
 function examItemStatus(s, qid) { const q = E.QMAP[qid]; return E.answered(q, s.resp[qid]) ? "Answered" : "Not answered"; }
 function vExamUI() {
   const s = SESSION, d = s.div && ARE.DIV[s.div];
-  s.maxSeen = Math.max(s.maxSeen || 0, s.i);
+  s.maxSeen = Math.max(s.maxSeen || 0, s.i); durTick(s, s.view === "summary" ? null : s.qids[s.i]);
   const bar = `<div class="ebar"><div class="ebar-l"><b>${esc(s.title)}</b><span class="mono">${s.view === "summary" ? "Exam summary" : `Item ${s.i + 1} of ${s.qids.length}`}</span></div>
 <div class="ebar-c"><span class="etimer mono" id="timer" ${s.hideTimer ? "data-hidden=1" : ""}>--:--</span><button class="ebtn" data-act="hidetimer">${s.hideTimer ? "Show time" : "Hide time"}</button></div>
 <div class="ebar-r"><button class="ebtn" data-act="tool-calc" title="Calculator">▦ Calculator</button><button class="ebtn" data-act="tool-board" title="Whiteboard">✎ Whiteboard</button>${s.view === "item" ? `<button class="ebtn" data-act="hl" title="Select text in the question, then press">▌ Highlight</button>${(s.hl[s.qids[s.i]] || []).length ? `<button class="ebtn" data-act="hlclear">Clear highlights</button>` : ""}<button class="ebtn ${E.S.flags[s.qids[s.i]] ? "on" : ""}" data-act="flag">⚑ ${E.S.flags[s.qids[s.i]] ? "Flagged" : "Flag for review"}</button>` : ""}<button class="ebtn" data-act="summary">☰ Exam summary</button></div></div>`;
@@ -17084,9 +18084,9 @@ function feedback(q, r, s) {
   return `<div class="feedback ${ok ? "good" : "bad"}" role="status"><h3>${ok ? "✓ Correct" : "✕ Not quite"}</h3>${cal}
 <div class="fb-key"><span class="eyebrow">Key idea</span><p>${q.explain}</p></div>
 ${choices}
-<div class="fb-meta"><span class="eyebrow">What this tests</span><p><span class="chip code">${objLabel(q.obj)}</span> ${esc(ARE.OBJ[q.obj].title)}</p>${lesson ? `<a class="btn small" href="#lesson-${lesson.id}">Review the lesson: ${esc(lesson.title)}</a>` : ""}${q.ref ? `<p class="muted" style="font-size:var(--t-sm);margin-top:6px">Reference: ${refLink(q.ref)}</p>` : ""}</div>
+<div class="fb-meta"><span class="eyebrow">What this tests</span><p><span class="chip code">${objLabel(q.obj)}</span> ${esc(ARE.OBJ[q.obj].title)}${ARE.R ? ` <span class="muted">· ${ARE.R.LEVELS[ARE.R.level(q)]}</span>` : ""}</p>${lesson ? `<a class="btn small" href="#lesson-${lesson.id}">Review the lesson: ${esc(lesson.title)}</a>` : ""}${q.ref ? `<p class="muted" style="font-size:var(--t-sm);margin-top:6px">Reference: ${refLink(q.ref)}</p>` : ""}${ARE.QA && ARE.QA.isCode(q) ? `<p class="muted" style="font-size:var(--t-sm);margin-top:4px">Code-dependent: the ARE uses the model edition cited; real projects follow the edition and amendments the jurisdiction adopts.</p>` : ""}</div>
 <details class="elab"><summary>Think deeper: ${esc(elab)}</summary><textarea data-note="elab:${q.id}" placeholder="Write your explanation before moving on">${esc(E.S.notes["elab:" + q.id] || "")}</textarea></details>
-<div class="row fb-acts"><button class="btn small ghost" data-act="tutor" data-m="${ok ? "why" : "simple"}">✦ Ask the tutor</button><button class="btn small ghost" data-act="mkvideo" data-kind="question" data-id="${q.id}">Video explanation</button>${bmBtn("question", q.id, q.q.replace(/<[^>]+>/g, "").slice(0, 80))}</div></div>`;
+<div class="row fb-acts"><button class="btn small ghost" data-act="saveexpl" data-id="${q.id}">Save explanation to notes</button><button class="btn small ghost" data-act="tutor" data-m="${ok ? "why" : "simple"}">✦ Ask the tutor</button><button class="btn small ghost" data-act="mkvideo" data-kind="question" data-id="${q.id}">Video explanation</button>${bmBtn("question", q.id, q.q.replace(/<[^>]+>/g, "").slice(0, 80))}</div></div>`;
 }
 function tick() {
   if (SESSION && SESSION.onBreak) {
@@ -17145,10 +18145,10 @@ function endBreak() {
 }
 function finishSession() {
   const s = SESSION; if (!s || s.done) return;
-  let correct = 0; const byObj = {};
+  let correct = 0; const byObj = {}; durTick(s, null);
   s.qids.forEach(id => {
     const q = E.QMAP[id], r = s.resp[id], ok = E.grade(q, r);
-    if (!s.checked[id]) E.record(id, ok, s.mode === "exam" ? (q.case ? "case" : "exam") : s.mode, { conf: (s.conf || {})[id], chosen: typeof r === "number" ? r : null });
+    if (!s.checked[id]) E.record(id, ok, s.mode === "exam" ? (q.case ? "case" : "exam") : s.mode, { conf: (s.conf || {})[id], chosen: typeof r === "number" ? r : null, ms: (s.dur || {})[id] });
     if (ok) correct++;
     byObj[q.obj] = byObj[q.obj] || [0, 0]; byObj[q.obj][0]++; if (ok) byObj[q.obj][1]++;
   });
@@ -17254,14 +18254,14 @@ function vTracker() {
   const f = UI.trackFilter;
   return `
 <div class="stack" style="gap:6px"><span class="eyebrow">Measured by answers over time, not pages read</span><h1>Competency Tracker</h1></div>
-<div class="grid g4"><div class="panel kpi"><b>${pct(ov.readiness)}</b><span>Overall readiness</span></div><div class="panel kpi"><b>${dist[3] + dist[4]}<small class="muted" style="font-size:1rem">/91</small></b><span>Objectives proficient or mastered</span></div><div class="panel kpi"><b>${ov.n}</b><span>Answers recorded</span></div><div class="panel kpi"><b>${fmtMin(E.minutesSince(0))}</b><span>Total study time</span></div></div>
+<div class="grid g4"><div class="panel kpi"><b>${pct(ov.readiness)}</b><span>Readiness evidence</span></div><div class="panel kpi"><b>${dist[3] + dist[4]}<small class="muted" style="font-size:1rem">/91</small></b><span>Objectives proficient or mastered</span></div><div class="panel kpi"><b>${ov.n}</b><span>Answers recorded</span></div><div class="panel kpi"><b>${fmtMin(E.minutesSince(0))}</b><span>Total study time</span></div></div>
 <section class="panel stack"><h2>How levels are earned</h2><div class="grid g3" style="font-size:.9rem">
 <p>${lvPill(1)}<br>Lesson opened or completed, or fewer than 3 answers.</p>
 <p>${lvPill(2)}<br>At least 3 answers, but fewer than 5 or a weighted score under 60% (or 60–69%).</p>
 <p>${lvPill(3)}<br>5+ answers with a weighted score of 70% or more.</p>
 <p>${lvPill(4)}<br>85%+ over 8+ answers on 2+ different days, including a correct hardest-level item, no question still wrong on its latest try, and the lesson passed.</p>
 <p class="muted">Recent answers count more (half-weight after 45 days), harder items count more, and your latest answer to each question outweighs older ones.</p>
-<p class="muted">Readiness weights each objective by its section's exam weight. A timed exam in the last 30 days contributes 35%. It is an estimate, not a pass prediction.</p></div></section>
+<p class="muted">Evidence weights each objective by its exam share and counts what your answers demonstrate. It is not a pass prediction; open the <a href="#readiness">readiness report</a> for the method.</p></div></section>
 <div class="grid g2"><section class="panel stack"><h2>Weekly accuracy</h2>${lineChart(weeks.map(w => w[1]), weeks.map(w => w[0]), "Weekly accuracy trend")}</section>
 <section class="panel stack"><h2>All 91 objectives</h2>${distBar(dist)}<div class="list">${dist.map((n, i) => `<div class="row between">${lvPill(i)}<b class="mono">${n}</b></div>`).join("")}</div></section></div>
 <section class="stack"><div class="row between"><h2>By division</h2><div class="row"><button class="chip ${f === "all" ? "on" : ""}" data-act="tf" data-f="all">All</button><button class="chip ${f === "out" ? "on" : ""}" data-act="tf" data-f="out">Outstanding (${outstanding.length})</button>${[0, 1, 2, 3, 4].map(i => `<button class="chip ${f === String(i) ? "on" : ""}" data-act="tf" data-f="${i}">${E.LV[i]}</button>`).join("")}</div></div>
@@ -17274,7 +18274,7 @@ ${ARE.DIVISIONS.map(d => { const s = E.divStats(d.id); const objs = d.objectives
    ============================================================ */
 function vReference() {
   const t = UI.refTab;
-  const tabs = [["glossary", "Glossary"], ["formulas", "Formulas & calculators"], ["handbook", "Handbook cross-reference"], ["toc", "Handbook contents"], ["aia", "AIA documents"], ["ibc", "IBC 2021"], ["sources", "Sources & access"]];
+  const tabs = [["glossary", "Glossary"], ["formulas", "Calculations"], ["handbook", "Handbook cross-reference"], ["toc", "Handbook contents"], ["aia", "AIA documents"], ["ibc", "IBC 2021"], ["sources", "Sources & access"]];
   let body = "";
   if (t === "glossary") {
     const cats = Array.from(new Set(E.glossary.map(g => g.cat))).sort();
@@ -17284,7 +18284,7 @@ function vReference() {
 <div class="list">${items.map(g => `<div class="stack" style="gap:4px"><div class="row between"><b>${esc(g.term)}</b><span class="row" style="gap:6px"><span class="chip">${esc(g.cat)}</span>${bmBtn("term", g.term, g.term)}</span></div><span>${esc(g.def)}</span>${g.lesson && E.LMAP[g.lesson] ? `<a href="#lesson-${g.lesson}" style="font-size:.85rem">Lesson: ${esc(E.LMAP[g.lesson].title)}</a>` : ""}</div>`).join("") || '<div class="empty">No terms match.</div>'}</div>`;
   } else if (t === "formulas") {
     const cats = Array.from(new Set(ARE.FORMULAS.map(f => f.cat)));
-    body = cats.map(c => `<div class="panel stack"><h3>${c}</h3>${ARE.FORMULAS.filter(f => f.cat === c).map(f => `<div class="formula"><b>${esc(f.name)}</b><span><code>${esc(f.f)}</code>${f.note ? `<br><span class="muted" style="font-size:.85rem">${esc(f.note)}</span>` : ""}${f.lesson && E.LMAP[f.lesson] ? `<br><a href="#lesson-${f.lesson}" style="font-size:.85rem">${esc(E.LMAP[f.lesson].title)}</a>` : ""}${f.calc ? calculator(f.calc) : ""}</span></div>`).join("")}</div>`).join("");
+    body = (ARE.calcView ? ARE.calcView() + `<details class="panel"><summary><b>Quick formula list</b></summary><div style="margin-top:10px">` : "") + cats.map(c => `<div class="panel stack"><h3>${c}</h3>${ARE.FORMULAS.filter(f => f.cat === c).map(f => `<div class="formula"><b>${esc(f.name)}</b><span><code>${esc(f.f)}</code>${f.note ? `<br><span class="muted" style="font-size:.85rem">${esc(f.note)}</span>` : ""}${f.lesson && E.LMAP[f.lesson] ? `<br><a href="#lesson-${f.lesson}" style="font-size:.85rem">${esc(E.LMAP[f.lesson].title)}</a>` : ""}${f.calc ? calculator(f.calc) : ""}</span></div>`).join("")}</div>`).join("") + (ARE.calcView ? "</div></details>" : "");
   } else if (t === "handbook") {
     const H = ARE.HANDBOOK, q = UI.hbq.toLowerCase();
     const items = H.topics.filter(x => !q || (x.topic + " " + x.summary + " " + x.terms.join(" ") + " " + x.docs.join(" ") + " " + x.objs.join(" ")).toLowerCase().includes(q));
@@ -17603,7 +18603,7 @@ document.addEventListener("click", (e) => {
     case "toggle": { const id = s.qids[s.i]; const cur = (s.resp[id] || []).slice(); const i = +t.dataset.i; const k = cur.indexOf(i); k >= 0 ? cur.splice(k, 1) : cur.push(i); s.resp[id] = cur; E.saveSession(s); rerender(); break; }
     case "mv": { const id = s.qids[s.i]; const ord = (s.resp[id] || s.resp[id + "__init"]).slice(); const p = +t.dataset.pos, d = +t.dataset.d, np = p + d; if (np < 0 || np >= ord.length) break; [ord[p], ord[np]] = [ord[np], ord[p]]; s.resp[id] = ord; E.saveSession(s); rerender(); break; }
     case "confirmorder": { const id = s.qids[s.i]; s.resp[id] = s.resp[id + "__init"].slice(); E.saveSession(s); rerender(); break; }
-    case "checkans": { const id = s.qids[s.i], q = E.QMAP[id]; if (!E.answered(q, s.resp[id])) { toast("Answer the question first."); break; } s.checked[id] = true; E.record(id, E.grade(q, s.resp[id]), s.mode, { conf: (s.conf || {})[id], chosen: typeof s.resp[id] === "number" ? s.resp[id] : null }); E.save(); E.saveSession(s); rerender(); break; }
+    case "checkans": { const id = s.qids[s.i], q = E.QMAP[id]; if (!E.answered(q, s.resp[id])) { toast("Answer the question first."); break; } s.checked[id] = true; durTick(s, id); E.record(id, E.grade(q, s.resp[id]), s.mode, { conf: (s.conf || {})[id], chosen: typeof s.resp[id] === "number" ? s.resp[id] : null, ms: (s.dur || {})[id] }); E.save(); E.saveSession(s); rerender(); break; }
     case "conf": { const id = s.qids[s.i]; s.conf = s.conf || {}; s.conf[id] = +t.dataset.v; E.saveSession(s); rerender(); break; }
     case "tutor": ARE.TUTOR.ask(null, t.dataset.m || "simple"); break;
     case "confused": { const obj = t.dataset.obj || (ARE.CTX && ARE.CTX.lesson && (E.LMAP[ARE.CTX.lesson].obj || [])[0]); if (!obj) break; ARE.L.addTrigger(obj, "confused", { via: location.hash }); E.save(); toast("Added to My Learning Notes"); t.textContent = "Added to Learning Notes ✓"; t.disabled = true; break; }
@@ -17779,7 +18779,7 @@ ARE.HOME = () => {
   const ch = L.dailyChallenge();
   return `<section class="home" aria-label="Today at a glance">
 <a class="hm hm-streak" href="#analytics"><span class="hm-k">Streak</span><b>${st.days}<small> day${st.days === 1 ? "" : "s"}</small></b><span class="hm-s">${st.today ? "Today counts ✓" : st.need ? st.need + " more answers today" : "Study today to keep it"}</span></a>
-<a class="hm" href="#tracker"><span class="hm-k">ARE progress</span><b>${pct(ov.readiness)}</b>${bar(ov.readiness)}<span class="hm-s">Readiness estimate</span></a>
+<a class="hm" href="#readiness"><span class="hm-k">Readiness evidence</span><b>${pct(ov.readiness)}</b>${bar(ov.readiness)}<span class="hm-s">What your answers show</span></a>
 <a class="hm hm-plan" href="#today"><span class="hm-k">Today's goal</span><b>${plan ? done + "/" + plan.steps.length : "Plan"}<small>${plan ? " steps" : ""}</small></b>${plan ? bar(done / plan.steps.length, "var(--ok)") : ""}<span class="hm-s">${plan ? (plan.finished ? "Done for today ✓" : "Continue your plan") : "Build a 15–60 min session"}</span></a>
 <a class="hm" href="#flashcards"><span class="hm-k">Needs review</span><b>${due}</b><span class="hm-s">${notes} learning note${notes === 1 ? "" : "s"} open</span></a>
 ${next ? `<a class="hm hm-wide" href="#lesson-${next.id}"><span class="hm-k">Next lesson</span><b class="hm-t">${esc(next.title)}</b><span class="hm-s">${divCode(next.div)} · ${next.minutes} min</span></a>` : ""}
@@ -17891,6 +18891,7 @@ ${b.pairs.length ? sec("≠", "Don't confuse", b.pairs.map(p => `<div class="scr
 ${sec(8, "Visual reference", b.visual ? `<div class="figure lfig nfig">${b.visual.svg}</div><p class="muted" style="font-size:.85rem">From the lesson “${esc(b.lesson.title)}”. Schematic, not a construction detail.</p>` : (b.pairs.length ? "" : `<p class="muted">No diagram for this objective yet.</p>`))}
 ${sec(9, "Knowledge reinforcement", `${b.quick.map((qq, qi) => `<div class="panel stack qq" data-qq="${qi}" data-lesson="${b.lesson ? b.lesson.id : ""}"><b>${esc(qq.q)}</b><div class="opts">${qq.opts.map((o, oi) => `<button class="opt" data-act="nqq" data-qi="${qi}" data-oi="${oi}"><span class="mk">${String.fromCharCode(65 + oi)}</span><span>${esc(o)}</span></button>`).join("")}</div><div class="qq-fb" hidden></div></div>`).join("")}${b.reinforce.length ? `<button class="btn primary" data-act="qset" data-ids="${b.reinforce.join(",")}">Answer ${b.reinforce.length} check questions</button>` : ""}`)}
 ${sec(10, "Source references", `<ul class="src">${[b.sources.obj].concat(b.sources.hb.map(r => "AIA Architect's Handbook of Professional Practice, 15th ed., §" + r[0] + " p. " + r[1] + " — " + r[2])).concat(b.sources.refs.map(r => L.strip(r.t))).map(x => `<li>${esc(x)}</li>`).join("")}</ul>${b.lesson ? `<a class="btn small" href="#lesson-${b.lesson.id}">Open lesson: ${esc(b.lesson.title)}</a>` : ""}`)}
+${(n.saved || []).length ? `<section class="nsec"><h3><span class="nnum">❏</span>Saved passages</h3>${n.saved.slice().reverse().map((x, i) => `<div class="saved-p"><span class="eyebrow">${esc(x.src)}</span><p>${esc(x.text)}</p><div class="row">${x.href ? `<a class="btn small ghost" href="${x.href}">Open source</a>` : ""}<button class="btn small ghost" data-act="delpassage" data-obj="${n.obj}" data-i="${n.saved.length - 1 - i}">Remove</button></div></div>`).join("")}</section>` : ""}
 ${n.ai.length ? `<section class="nsec"><h3><span class="nnum">✦</span>Explained differently (AI)</h3>${n.ai.slice().reverse().map(a => `<div class="aibox"><div class="tu-md">${AI.md(a.text)}</div><p class="muted" style="font-size:0.8125rem">${fmtDate(a.t)} · ${esc(AI.label(a.provider))} · AI-written: verify against the lesson and primary sources.</p></div>`).join("")}</section>` : ""}
 <section class="nsec"><h3><span class="nnum">✎</span>My edits &amp; comments</h3><label class="f">Rewrite this note in your own words<textarea data-lnedit="${obj}" placeholder="Your version of the note">${esc(n.edit)}</textarea></label><label class="f">Comment<textarea data-lncomment="${obj}" placeholder="Questions, project examples, reminders">${esc(n.comment)}</textarea></label>
 <div class="row"><button class="btn small" data-act="nunder" data-obj="${obj}">${n.understood ? "✓ Marked understood" : "I understand this now"}</button><button class="btn small ${st.ready && !n.archived ? "primary" : ""}" data-act="narch" data-obj="${obj}" ${st.ready || n.archived ? "" : "disabled"}>${n.archived ? "Reopen note" : "Archive note"}</button></div>
@@ -17899,6 +18900,7 @@ ${n.ai.length ? `<section class="nsec"><h3><span class="nnum">✦</span>Explaine
 </div></div>`;
 }
 ACTS.lnf = (t) => { UI.lnF = t.dataset.f; rer(); };
+ACTS.delpassage = (t) => { const n = E.S.lnotes[t.dataset.obj]; if (n && n.saved) { n.saved.splice(+t.dataset.i, 1); E.save(); rer(); } };
 ACTS.nbm = (t) => { const n = E.S.lnotes[t.dataset.obj]; n.bm = !n.bm; E.save(); rer(); };
 ACTS.nunder = (t) => { const n = E.S.lnotes[t.dataset.obj]; n.understood = !n.understood ? Date.now() : false; E.save(); toast(n.understood ? "Noted. It will archive once your answers confirm it." : "Unmarked"); rer(); };
 ACTS.narch = (t) => { const n = E.S.lnotes[t.dataset.obj]; if (n.archived) { n.archived = false; } else { if (!L.noteStatus(n).ready) return; n.archived = Date.now(); L.addXP(40, "Closed a knowledge gap"); L.checkBadges(); } E.save(); rer(); };
@@ -18002,6 +19004,7 @@ const inClaude = () => !!(window.claude && window.claude.use) && window.top !== 
 function vSettings() {
   const p = ARE.prefs, c = AI.cfg, act = AI.active();
   return `<div class="stack" style="gap:6px"><span class="eyebrow">Everything here is free</span><h1>Settings</h1></div>
+<section class="panel row between"><div class="stack" style="gap:4px"><h2 style="margin:0">Content quality</h2><span class="muted">Automated checks of every question and lesson, items to verify against your jurisdiction, and the independent review log.</span></div><a class="btn" href="#quality">Open report</a></section>
 <section class="panel stack"><h2>Appearance &amp; accessibility</h2>
 <div class="row"><span style="min-width:110px">Theme</span>${[["auto", "Match device"], ["light", "Light"], ["dark", "Dark"]].map(([k, t]) => `<button class="chip ${p.theme === k ? "on" : ""}" data-act="pref" data-k="theme" data-v="${k}">${t}</button>`).join("")}</div>
 <div class="row"><span style="min-width:110px">Text size</span>${[100, 115, 130, 150, 175].map(v => `<button class="chip ${p.text === v ? "on" : ""}" data-act="pref" data-k="text" data-v="${v}" aria-label="Text size ${v}%">${v}%</button>`).join("")}</div>
@@ -18200,8 +19203,209 @@ ACTS.snaprestore = async (t) => {
 };
 /* daily-challenge completion + video plan-step completion */
 E.hooks.finish.push((s) => { if (s.title === "Daily challenge") { const ch = L.dailyChallenge(); ch.done = Date.now(); ch.score = s.correct; L.addXP(25, "Daily challenge"); E.save(); } });
-ARE.boot();
+/* boot moved to boot.js so later view modules register first */
 })();
+
+/* ============================================================
+   VIEWS-R: Readiness reports (v20)
+   ============================================================ */
+(function () {
+const E = ARE.E, R = ARE.R, H = ARE.H;
+const { esc, pct, fmtDate, bar, objLabel } = H;
+const DAY = 864e5;
+const minutes = (t) => { const m = /(\d+)\s*h\s*(\d+)?/.exec(t || ""); return m ? (+m[1]) * 60 + (+(m[2] || 0)) : null; };
+const pill = (st) => `<span class="st-pill ${R.STATUS[st].cls}" title="${esc(R.STATUS[st].d)}">${R.STATUS[st].t}</span>`;
+const ago = (t) => { if (!t) return "never"; const d = Math.floor((Date.now() - t) / DAY); return d === 0 ? "today" : d === 1 ? "yesterday" : d + " days ago"; };
+const secFmt = (s) => s === null || s === undefined ? "—" : s < 90 ? Math.round(s) + " s" : (s / 60).toFixed(1) + " min";
+
+function spark(arr, idx, color) {
+  if (!arr || arr.length < 2) return `<p class="muted" style="font-size:var(--t-sm);margin:0">The trend appears after you study on two or more days.</p>`;
+  const W = 320, Hh = 70, n = arr.length, xs = (i) => 6 + i * (W - 12) / (n - 1), ys = (v) => Hh - 6 - v * (Hh - 12);
+  const pts = arr.map((r, i) => xs(i).toFixed(1) + "," + ys(r[idx]).toFixed(1)).join(" ");
+  return `<svg viewBox="0 0 ${W} ${Hh}" class="spark" role="img" aria-label="Trend from ${arr[0][0]} to ${arr[n - 1][0]}: ${pct(arr[0][idx])} to ${pct(arr[n - 1][idx])}"><line x1="6" x2="${W - 6}" y1="${ys(0.75)}" y2="${ys(0.75)}" stroke="var(--line)" stroke-dasharray="3 3"/><polyline fill="none" stroke="${color}" stroke-width="2.5" points="${pts}"/><circle cx="${xs(n - 1)}" cy="${ys(arr[n - 1][idx])}" r="4" fill="${color}"/></svg><div class="row between muted" style="font-size:var(--t-sm)"><span>${arr[0][0]}</span><span>${arr[n - 1][0]}</span></div>`;
+}
+function distBar(dist, total) {
+  const order = ["retained", "applied", "recall", "weak", "thin", "none"];
+  return `<div class="stbar" role="img" aria-label="${order.map(s => dist[s] + " " + R.STATUS[s].t).join(", ")}">${order.map(s => dist[s] ? `<span class="${R.STATUS[s].cls}" style="flex:${dist[s]}" title="${dist[s]} · ${R.STATUS[s].t}"></span>` : "").join("")}</div>
+<div class="stlegend">${order.map(s => `<span><i class="${R.STATUS[s].cls}"></i>${R.STATUS[s].t} <b>${dist[s]}</b></span>`).join("")}</div>`;
+}
+function recoBtns(key) {
+  return R.recommend(key).map(r => r.href ? `<a class="btn small" href="${r.href}">${esc(r.t)}</a>` : `<button class="btn small" data-act="${r.act}" data-obj="${key}">${esc(r.t)}</button>`).join("");
+}
+const method = `<details class="panel"><summary><b>How this is worked out</b></summary><div class="prose" style="margin-top:10px">
+<p><b>Learning progress</b> counts what you have done: lessons completed, questions seen, objectives practised. <b>Readiness evidence</b> asks what your answers show you can do. They are kept apart because finishing lessons is not the same as being able to answer exam questions.</p>
+<p>Each question is classed by what it asks you to do: <b>recall</b> a fact, <b>apply</b> a rule or calculation, <b>analyze</b> a drawing, document or case, or make a <b>professional judgment</b>. An objective counts as <b>demonstrated</b> when you have at least 4 answers over 2 or more days, recent weighted accuracy of at least 60%, at least 2 correct application-level answers with 65%+ accuracy at that level, and fewer than 2 unresolved misconceptions. It counts as <b>retained</b> when, in addition, questions you got right were answered correctly again 7 or more days later.</p>
+<p>A <b>misconception</b> is a question you answered wrong while marking yourself sure, or where you chose the same wrong answer twice, and have not since answered correctly. Topics not practised for 21 days are flagged for a retention check.</p>
+<p>The evidence figure weights each objective by its share of the division in NCARB's exam guidelines: retained 100%, demonstrated 80%, recall only 40%, not yet understood 15%, insufficient evidence 10%, no evidence 0.</p>
+<p><b>This is not a pass probability.</b> NCARB reports a scaled pass/fail result against a cut score it does not publish per item, and practice questions here are not calibrated against real exam items, so no honest conversion exists. Use the report to decide what to study; use full-length timed practice exams (including NCARB's own) as the closest check of exam conditions.</p></div></details>`;
+
+function vReadiness(divId) {
+  R.snapshot();
+  const tabs = `<nav class="row rtabs" aria-label="Division">${[["", "All divisions"]].concat(ARE.DIVISIONS.map(d => [d.id, d.code])).map(([k, t]) => `<a class="chip ${(divId || "") === k ? "on" : ""}" href="#readiness${k ? "-" + k : ""}">${t}</a>`).join("")}</nav>`;
+  if (!divId) {
+    const reps = ARE.DIVISIONS.map(d => R.div(d.id));
+    return `<div class="stack" style="gap:6px"><span class="eyebrow">Progress</span><h1>Readiness</h1><p class="muted" style="max-width:72ch;margin:0">What you have done, and what your answers show you can do, for each division and NCARB objective. No pass probability is given; see how this is worked out below.</p></div>${tabs}
+<div class="scroll"><table class="tbl rtbl"><thead><tr><th>Division</th><th>Learning progress</th><th>Readiness evidence</th><th>Gaps</th><th>Misconceptions</th><th>Last timed exam</th></tr></thead><tbody>
+${reps.map(r => `<tr><td><a href="#readiness-${r.d.id}"><b>${r.d.code}</b> ${esc(r.d.name)}</a></td><td>${r.progress.lessons[0]}/${r.progress.lessons[1]} lessons<br><span class="muted">${r.progress.questions[0]}/${r.progress.questions[1]} questions seen</span></td><td style="min-width:150px">${bar(r.evidence)}<span class="muted">${pct(r.evidence)} · ${R.evidenceLabel(r.evidence)}</span></td><td>${r.gaps.length}/${r.objs.length}</td><td>${r.misconceptions.length}</td><td>${r.lastExam ? pct(r.lastExam.correct / r.lastExam.n) + `<br><span class="muted">${ago(r.lastExam.t)}</span>` : `<span class="muted">none</span>`}</td></tr>`).join("")}
+</tbody></table></div>
+${method}`;
+  }
+  const r = R.div(divId), d = r.d;
+  const pace = minutes(d.time) && d.items ? minutes(d.time) * 60 / d.items : null;
+  const tr = (E.S.rtrend || {})[divId] || [];
+  const lvRows = Object.entries(R.LEVELS).map(([k, t]) => { const [n, ok] = r.lv[k]; return `<tr><td>${t}</td><td>${n}</td><td>${n ? pct(ok / n) : "—"}</td><td style="min-width:120px">${n ? bar(ok / n) : ""}</td></tr>`; }).join("");
+  const recallVsHi = (() => { const lo = r.lv.recall, hi = ["apply", "analyze", "judge"].reduce((s, k) => [s[0] + r.lv[k][0], s[1] + r.lv[k][1]], [0, 0]); if (lo[0] < 5 || hi[0] < 5) return "Answer more questions at each level to compare recall with application."; const a = lo[1] / lo[0], b = hi[1] / hi[0]; return a - b > 0.15 ? `You recall facts (${pct(a)}) better than you apply them (${pct(b)}). Spend time on scenarios, calculations and case questions rather than re-reading.` : b - a > 0.1 ? `You apply concepts (${pct(b)}) better than you recall exact facts (${pct(a)}). Flashcards and the key-term lists will help.` : `Recall (${pct(a)}) and application (${pct(b)}) are balanced.`; })();
+  return `<div class="stack" style="gap:6px"><a href="#readiness" class="muted" style="font-size:.9rem">← All divisions</a><span class="eyebrow">${d.code} · Readiness report</span><h1>${esc(d.name)}</h1></div>${tabs}
+<div class="grid g2">
+<section class="panel stack"><span class="eyebrow">Learning progress</span><div class="kv"><div><b>${r.progress.lessons[0]}/${r.progress.lessons[1]}</b><span>lessons completed</span></div><div><b>${r.progress.questions[0]}/${r.progress.questions[1]}</b><span>questions seen</span></div><div><b>${r.progress.objectivesPracticed}/${r.objs.length}</b><span>objectives practised</span></div></div>${spark(tr, 2, "var(--muted)")}</section>
+<section class="panel stack"><span class="eyebrow">Readiness evidence</span><div class="row between"><b style="font-size:1.6rem">${pct(r.evidence)}</b><span class="muted">${R.evidenceLabel(r.evidence)} · weighted by NCARB objective share</span></div>${bar(r.evidence)}${distBar(r.dist)}${spark(tr, 1, "var(--accent)")}</section>
+</div>
+<div class="grid g2">
+<section class="panel stack"><h2>Understanding vs. memorizing</h2><div class="scroll"><table class="tbl"><thead><tr><th>Question level</th><th>Answers</th><th>Accuracy</th><th></th></tr></thead><tbody>${lvRows}</tbody></table></div><p style="margin:0">${recallVsHi}</p></section>
+<section class="panel stack"><h2>Exam conditions</h2>
+<p style="margin:0"><b>Pace.</b> Your median time per question in this division is <b>${secFmt(r.medSec)}</b>${pace ? `; the exam allows about <b>${secFmt(pace)}</b> per item (${d.items} items in ${esc(d.time)}), including case studies` : ""}.${r.medSec && pace ? (r.medSec > pace ? " You are slower than exam pace; practise timed sets." : " You are within exam pace.") : ""}</p>
+<p style="margin:0"><b>Last full timed exam.</b> ${r.lastExam ? `${pct(r.lastExam.correct / r.lastExam.n)} (${r.lastExam.correct}/${r.lastExam.n}), ${ago(r.lastExam.t)}.` : "None yet. A full-length timed form is the closest practice to the real exam."}</p>
+<div class="row"><a class="btn small" href="#exams">Practice exams</a></div></section>
+</div>
+${r.gaps.length ? `<section class="panel stack"><h2>Not yet demonstrated <small class="muted" style="font-weight:400">highest exam weight first</small></h2><div class="list">${r.gaps.slice(0, 12).map(({ o, e }) => `<div class="stack gap-row" style="gap:6px"><div class="row between"><span style="min-width:0"><span class="chip code">${objLabel(o.key)}</span> ${esc(ARE.OBJ[o.key].title)}</span>${pill(e.status)}</div>${e.why.length ? `<span class="muted" style="font-size:var(--t-sm)">${esc(e.why.join(" · "))}</span>` : ""}<div class="row" style="gap:6px">${recoBtns(o.key)}</div></div>`).join("")}</div></section>` : ""}
+${r.misconceptions.length ? `<section class="panel stack"><h2>Recurring misconceptions</h2><div class="list">${r.misconceptions.slice(0, 10).map(m => `<div class="stack" style="gap:4px"><span class="chip code" style="width:max-content">${objLabel(m.obj)}</span><span>${esc(m.stem)}${m.stem.length >= 160 ? "…" : ""}</span>${m.chosen ? `<span class="muted" style="font-size:var(--t-sm)">You chose: “${esc(m.chosen)}”${m.confident ? " while sure" : ""}${m.repeated ? " more than once" : ""}</span>` : ""}${E.S.lnotes[m.obj] ? `<a class="btn small" style="width:max-content" href="#note-${m.obj}">Open the learning note</a>` : (E.objLessons[m.obj] || [])[0] ? `<a class="btn small" style="width:max-content" href="#lesson-${E.objLessons[m.obj][0]}">Review the lesson</a>` : ""}</div>`).join("")}</div></section>` : ""}
+${r.stale.length ? `<section class="panel stack"><h2>Due for a retention check</h2><p class="muted" style="margin:0">Demonstrated earlier but not practised for 3+ weeks.</p><div class="row">${r.stale.map(({ o }) => `<button class="btn small" data-act="quiz" data-obj="${o.key}">${objLabel(o.key)} ${esc(ARE.OBJ[o.key].title)}</button>`).join("")}</div></section>` : ""}
+<section class="panel stack"><h2>Every objective</h2><div class="scroll"><table class="tbl rtbl"><thead><tr><th>Objective</th><th>Status</th><th>Answers</th><th>Accuracy</th><th>Application+</th><th>Retention</th><th>Last practised</th><th>Median time</th></tr></thead><tbody>
+${r.objs.map(({ o, e }) => `<tr><td><span class="chip code">${objLabel(o.key)}</span> ${esc(ARE.OBJ[o.key].title)}</td><td>${pill(e.status)}${e.stale ? ` <span class="st-pill st-thin">Due</span>` : ""}</td><td>${e.n}</td><td>${pct(e.acc)}</td><td>${e.hi[0] ? pct(e.hiAcc) + ` <span class="muted">(${e.hi[0]})</span>` : "—"}</td><td>${e.retest[0] ? e.retest[1] + "/" + e.retest[0] : "—"}</td><td>${ago(e.last)}</td><td>${secFmt(e.medSec)}</td></tr>`).join("")}
+</tbody></table></div></section>
+${method}`;
+}
+
+
+/* ---------- Content quality report ---------- */
+const CHECKS = { key: "Answer key validity", objective: "NCARB objective alignment", rationale: "Explanation supports the answer", distractor: "Distractor quality", wording: "Ambiguous wording", duplicate: "Duplicate or overlapping questions", source: "Source documentation" };
+function qPreview(id) {
+  const q = E.QMAP[id]; if (!q) return "";
+  const keys = Array.isArray(q.ans) ? q.ans : [q.ans];
+  return `<div class="stack" style="gap:6px;margin-top:8px"><p style="margin:0">${q.q}</p>${Array.isArray(q.opts) ? `<ol type="A" style="margin:0;padding-left:22px">${q.opts.map((o, i) => `<li style="${keys.includes(i) ? "font-weight:700" : ""}">${o}${q.why ? ` <span class="muted" style="font-weight:400">— ${q.why[i] || ""}</span>` : ""}</li>`).join("")}</ol>` : `<p class="muted" style="margin:0">Answer: ${esc(String(q.ans))} ${esc(q.unit || "")}</p>`}<p class="muted" style="margin:0;font-size:var(--t-sm)">${esc(String(q.explain || "").replace(/<[^>]+>/g, ""))} · Ref: ${esc(q.ref || "none")}</p></div>`;
+}
+function vQuality() {
+  const QA = ARE.QA, t0 = performance.now(), S = QA.summary(), ms = Math.round(performance.now() - t0);
+  const f = H.UI.qaf || "all";
+  const sevs = ["high", "medium", "low"];
+  const list = S.findings.filter(x => f === "all" || x.check === f);
+  const lesIssues = S.lessons.filter(l => l.issues.length);
+  return `<div class="stack" style="gap:6px"><span class="eyebrow">Settings · Content quality</span><h1>Content quality report</h1><p class="muted" style="max-width:75ch;margin:0">Automated checks over all ${ARE.QA.all().length} questions and ${E.lessons.length} lessons, run just now (${ms} ms). A flag means "look at this", not "this is wrong"; a clean check is not proof of accuracy. Independent reviews are logged below.</p></div>
+<section class="panel stack"><h2>Checks</h2><div class="scroll"><table class="tbl"><thead><tr><th>Check</th><th>High</th><th>Medium</th><th>Low</th></tr></thead><tbody>${Object.entries(CHECKS).map(([k, t]) => { const b = S.by[k] || { high: 0, medium: 0, low: 0 }; return `<tr><td>${t}</td>${sevs.map(s => `<td class="mono" style="${b[s] && s === "high" ? "color:var(--bad);font-weight:700" : ""}">${b[s]}</td>`).join("")}</tr>`; }).join("")}</tbody></table></div>
+<details><summary class="muted">What each check looks for</summary><ul class="prose" style="margin-top:8px">
+<li><b>Answer key validity</b>: the key points to a real choice; check-all items key as many answers as the stem asks for; calculations have numeric answers.</li>
+<li><b>Objective alignment</b>: the objective exists, belongs to the question's division, and the linked lesson covers it.</li>
+<li><b>Explanation supports the answer</b>: every choice has a rationale; the keyed choice's rationale does not read as wrong and no distractor's rationale says "Correct"; explanations are not one-liners.</li>
+<li><b>Distractor quality</b>: no identical or near-identical choices; the key is not conspicuously the longest; distractors are not all marked by absolute words the key lacks.</li>
+<li><b>Ambiguous wording</b>: "all/none of the above", double negatives, unemphasized NOT/EXCEPT stems.</li>
+<li><b>Duplicates</b>: stems 75%+ similar in wording, or similar stems on the same objective with the same keyed answer.</li>
+<li><b>Source documentation</b>: every question cites a reference; references that name a general principle rather than a specific document are listed so they can be upgraded.</li></ul></details></section>
+<section class="panel stack"><h2>Needs verification against your jurisdiction</h2><p style="margin:0"><b>${S.codeQ} questions</b> and <b>${S.lessons.filter(l => l.code).length} lessons</b> rely on model-code or federal values (2021 IBC/IECC/IEBC, 2010 ADA Standards and others). The ARE tests these model editions; projects follow whatever edition and amendments the jurisdiction has adopted, and Ontario projects follow the OBC instead. These items show a reminder after you answer.</p></section>
+<section class="panel stack"><h2>Independent review log</h2><div class="scroll"><table class="tbl"><thead><tr><th>Date</th><th>Scope</th><th>Method</th><th>Result</th></tr></thead><tbody>${QA.LOG.map(r => `<tr><td class="mono">${r.date}</td><td>${esc(r.scope)}</td><td>${esc(r.method)}</td><td>${esc(r.result)}</td></tr>`).join("")}</tbody></table></div></section>
+<section class="panel stack"><h2>Lessons</h2><div class="scroll"><table class="tbl"><thead><tr><th>Lesson</th><th>Words</th><th>Key terms</th><th>Diagram</th><th>Code-dependent</th><th>Open items</th></tr></thead><tbody>${S.lessons.map(l => `<tr><td><a href="#lesson-${l.id}">${esc(l.title)}</a></td><td class="mono">${l.words}</td><td class="mono">${l.terms}</td><td>${l.diagram ? "Yes" : "—"}</td><td>${l.code ? "Yes" : "—"}</td><td>${l.issues.length ? esc(l.issues.join("; ")) : `<span class="muted">none</span>`}</td></tr>`).join("")}</tbody></table></div><p class="muted" style="margin:0;font-size:var(--t-sm)">${lesIssues.length} of ${S.lessons.length} lessons have open items.</p></section>
+<section class="panel stack"><div class="row between"><h2>Flagged questions <small class="muted" style="font-weight:400">${list.length}</small></h2><select id="qaf" aria-label="Filter by check"><option value="all">All checks</option>${Object.entries(CHECKS).map(([k, t]) => `<option value="${k}" ${f === k ? "selected" : ""}>${t}</option>`).join("")}</select></div>
+<div class="list">${list.slice(0, 150).map(x => `<details class="qaf-row"><summary><span class="st-pill ${x.sev === "high" ? "st-weak" : x.sev === "medium" ? "st-recall" : "st-none"}">${x.sev}</span> <span class="chip code">${esc(x.id)}</span> ${esc(x.msg)}</summary>${qPreview(x.id)}${x.other ? `<p class="muted" style="margin:8px 0 0">Compare with ${esc(x.other)}:</p>${qPreview(x.other)}` : ""}</details>`).join("")}</div>${list.length > 150 ? `<p class="muted">Showing the first 150.</p>` : ""}</section>`;
+}
+const prevRoute = ARE.ROUTE;
+ARE.ROUTE = (h) => {
+  if (h === "readiness") return vReadiness(null);
+  if (h === "quality") return vQuality();
+  if (h.startsWith("readiness-") && ARE.DIV[h.slice(10)]) return vReadiness(h.slice(10));
+  return prevRoute(h);
+};
+ARE.vReadiness = vReadiness;
+document.addEventListener("change", (e) => { if (e.target && e.target.id === "qaf") { H.UI.qaf = e.target.value; H.rerender(); } });
+})();
+/* ---------- save lesson sections and explanations to Learning Notes (v20) ---------- */
+(function () {
+const E = ARE.E, H = ARE.H, L = ARE.L;
+const txt = (el) => (el ? el.textContent : "").replace(/\s+/g, " ").trim();
+Object.assign(ARE.ACTS, {
+  savesec: (t) => {
+    const h3 = t.closest("h3"); const id = (location.hash.match(/^#lesson-(.+)$/) || [])[1]; const l = id && E.LMAP[id]; if (!l || !h3) return;
+    let s = "", el = h3.nextElementSibling; while (el && el.tagName !== "H3") { s += " " + txt(el); el = el.nextElementSibling; }
+    const title = txt(h3).replace(/Save to notes|Saved/g, "").replace(/^\d+\s*/, "").trim();
+    const n = L.savePassage((l.obj || [])[0], "Lesson · " + l.title + " — " + title, s.trim(), "#lesson-" + id);
+    if (n) { E.save(); t.textContent = "Saved"; t.disabled = true; H.toast("Saved to your Learning Notes for " + ARE.DIV[ARE.OBJ[n.obj].div].code + " " + ARE.OBJ[n.obj].code + "."); }
+  },
+  saveexpl: (t) => {
+    const q = E.QMAP[t.dataset.id]; if (!q) return;
+    const keys = Array.isArray(q.ans) ? q.ans : [q.ans];
+    const body = String(q.explain || "").replace(/<[^>]+>/g, "") + (Array.isArray(q.opts) ? " Answer: " + keys.map(k => String(q.opts[k]).replace(/<[^>]+>/g, "")).join("; ") + "." : "") + (q.ref ? " (" + q.ref + ")" : "");
+    const n = L.savePassage(q.obj, "Question · " + String(q.q).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").slice(0, 90) + "…", body, "");
+    if (n) { E.save(); t.textContent = "Saved to notes"; t.disabled = true; }
+  }
+});
+const prevAfter = ARE.AFTER;
+ARE.AFTER = (h) => {
+  if (prevAfter) prevAfter(h);
+  if (h.startsWith("lesson-")) document.querySelectorAll("#lessonBody h3").forEach(h3 => { if (!h3.querySelector("[data-act=savesec]")) h3.insertAdjacentHTML("beforeend", ` <button class="btn tiny ghost savesec" data-act="savesec" title="Save this section to your Learning Notes">Save to notes</button>`); });
+};
+})();
+
+/* ============================================================
+   VIEWS-SIM: branching project simulations (v20)
+   ============================================================ */
+(function () {
+const E = ARE.E, H = ARE.H;
+const { esc, objLabel } = H;
+const M0 = () => { const m = {}; ARE.SIM_METERS.forEach(([k]) => m[k] = 5); return m; };
+const order = (n, seed) => { let h = 0; for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0; const a = [...Array(n).keys()]; for (let i = n - 1; i > 0; i--) { h = (h * 1103515245 + 12345) >>> 0; const j = h % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const clamp = (v) => Math.max(0, Math.min(10, v));
+const st = (id) => { E.S.sims = E.S.sims || {}; return E.S.sims[id] = E.S.sims[id] || { node: null, hist: [], m: M0(), flags: {}, pending: null, done: false, runs: [] }; };
+const sim = (id) => ARE.SIMS.find(s => s.id === id);
+const RATE = { best: ["Strong decision", "st-retained"], ok: ["Defensible, not the best", "st-recall"], poor: ["Weak decision", "st-weak"] };
+
+function meters(m, delta) {
+  return `<div class="sim-meters">${ARE.SIM_METERS.map(([k, t]) => { const v = m[k], good = k === "risk" ? 10 - v : v, d = delta && delta[k]; return `<div class="sm"><span class="sm-k">${t}${k === "risk" ? " <i class='muted'>(lower is better)</i>" : ""}</span><div class="sm-bar"><span style="width:${v * 10}%;background:${good >= 6 ? "var(--ok)" : good <= 3 ? "var(--bad)" : "var(--accent)"}"></span></div>${d ? `<b class="sm-d ${(k === "risk" ? -d : d) > 0 ? "up" : "down"}">${d > 0 ? "+" : ""}${d}</b>` : `<b class="sm-d"></b>`}</div>`; }).join("")}</div>`;
+}
+function ending(s, S) { return s.endings.find(e => e.if(S.m, S.flags || {})); }
+
+function vSims() {
+  return `<div class="stack" style="gap:6px"><span class="eyebrow">Practice</span><h1>Project simulations</h1><p class="muted" style="max-width:72ch;margin:0">Work through a project as the architect. Each decision changes the client relationship, your firm's risk, the fee, the schedule and quality, and some decisions change what happens next. Several answers are defensible; the debrief explains the trade-offs.</p></div>
+<div class="grid g3">${ARE.SIMS.map(s => { const S = (E.S.sims || {})[s.id]; const runs = S ? S.runs.length : 0; const inProg = S && S.node && !S.done; return `<article class="panel stack sim-card"><span class="eyebrow">${s.divs.map(d => ARE.DIV[d].code).join(" · ")} · ${Object.keys(s.nodes).length} decisions</span><h2 style="margin:0">${esc(s.title)}</h2><p class="muted" style="margin:0">${esc(s.role)}</p><div class="row" style="gap:6px;flex-wrap:wrap">${s.objs.slice(0, 6).map(k => `<span class="chip code">${objLabel(k)}</span>`).join("")}</div><div class="row">${inProg ? `<a class="btn primary" href="#${s.id}">Continue</a>` : `<button class="btn primary" data-act="simstart" data-id="${s.id}">${runs ? "Play again" : "Start"}</button>`}${runs ? `<span class="muted" style="font-size:var(--t-sm)">Played ${runs}× · last: ${esc(S.runs[S.runs.length - 1].ending)}</span>` : ""}</div></article>`; }).join("")}</div>`;
+}
+
+function vSim(id) {
+  const s = sim(id); if (!s) return `<div class="empty">Simulation not found. <a href="#sims">All simulations</a></div>`;
+  const S = st(id);
+  if (!S.node && !S.done) { S.node = s.start; }
+  const head = `<div class="stack" style="gap:6px"><a href="#sims" class="muted" style="font-size:.9rem">← All simulations</a><span class="eyebrow">${s.divs.map(d => ARE.DIV[d].code).join(" · ")} · Simulation</span><h1>${esc(s.title)}</h1></div>`;
+  if (S.done) {
+    const en = ending(s, S); const nodes = s.nodes;
+    return `${head}<section class="panel stack sim-end"><span class="eyebrow">Outcome</span><h2 style="margin:0">${esc(en.t)}</h2><p style="margin:0">${esc(en.d)}</p>${meters(S.m)}</section>
+<section class="panel stack"><h2>Debrief: your decisions</h2><div class="list">${S.hist.map(([nid, ci]) => { const n = nodes[nid], c = n.choices[ci], best = n.choices.find(x => x.rate === "best"); return `<div class="stack gap-row" style="gap:6px"><span class="eyebrow">${esc(n.phase)} · ${esc(n.title)}</span><div class="row between"><span><b>You chose:</b> ${esc(c.t)}</span><span class="st-pill ${RATE[c.rate][1]}">${RATE[c.rate][0]}</span></div>${c.rate !== "best" && best ? `<p style="margin:0"><b>Stronger choice:</b> ${esc(best.t)}</p><div class="prose muted" style="font-size:.95rem">${best.out}</div>` : `<div class="prose muted" style="font-size:.95rem">${c.out}</div>`}</div>`; }).join("")}</div></section>
+<section class="panel stack"><h2>Study the objectives behind this simulation</h2><div class="list">${s.objs.map(k => { const lid = (E.objLessons[k] || [])[0]; return `<div class="row between" style="flex-wrap:wrap;gap:6px"><span><span class="chip code">${objLabel(k)}</span> ${esc(ARE.OBJ[k].title)}</span><span class="row" style="gap:6px">${lid ? `<a class="btn small" href="#lesson-${lid}">Lesson</a>` : ""}<button class="btn small ghost" data-act="quiz" data-obj="${k}">Quiz</button></span></div>`; }).join("")}</div></section>
+<div class="row"><button class="btn primary" data-act="simstart" data-id="${s.id}">Play again</button><a class="btn" href="#sims">Other simulations</a></div>`;
+  }
+  const n = s.nodes[S.node];
+  const step = S.hist.length + 1, total = Object.keys(s.nodes).length;
+  const pend = S.pending !== null && S.pending !== undefined ? n.choices[S.pending] : null;
+  return `${head}
+<section class="panel stack sim-brief"><p style="margin:0"><b>Your role.</b> ${esc(s.role)}</p>${step === 1 && !pend ? `<p class="muted" style="margin:0">${esc(s.brief)}</p>` : ""}${meters(S.m, pend ? pend.fx : null)}</section>
+<section class="panel stack sim-node"><span class="eyebrow">Decision ${step} of ${total} · ${esc(n.phase)}</span><h2 style="margin:0">${esc(n.title)}</h2><div class="prose">${n.situation}</div>
+${(n.docs || []).map(d => `<details class="panel sim-doc"><summary><b>${esc(d.name)}</b></summary><div class="prose" style="margin-top:8px">${d.html}</div></details>`).join("")}
+<h3 class="sub">${esc(n.prompt)}</h3>
+<div class="opts">${order(n.choices.length, s.id + S.node).map((i, pos) => { const c = n.choices[i]; return `<button class="opt ${pend ? (i === S.pending ? "picked" : "dim") : ""}" data-act="simchoose" data-id="${s.id}" data-i="${i}" ${pend ? "disabled" : ""}><span class="mk">${String.fromCharCode(65 + pos)}</span><span>${esc(c.t)}</span></button>`; }).join("")}</div>
+${pend ? `<div class="feedback ${pend.rate === "poor" ? "bad" : "good"}" role="status"><h3>${RATE[pend.rate][0]}</h3><div class="prose">${pend.out}</div><div class="row"><button class="btn primary" data-act="simnext" data-id="${s.id}">${pend.next === "end" ? "See the outcome" : "Continue"}</button></div></div>` : ""}
+</section>
+<p class="muted" style="font-size:var(--t-sm)">Simulations are practice in professional judgment; they are not scored as ARE items and do not change your readiness evidence.</p>`;
+}
+
+Object.assign(ARE.ACTS, {
+  simstart: (t) => { const id = t.dataset.id; const S = st(id); Object.assign(S, { node: sim(id).start, hist: [], m: M0(), flags: {}, pending: null, done: false }); E.save(); if (location.hash === "#" + id) H.rerender(); else location.hash = "#" + id; },
+  simchoose: (t) => { const id = t.dataset.id, s = sim(id), S = st(id); if (S.pending !== null && S.pending !== undefined) return; const i = +t.dataset.i, c = s.nodes[S.node].choices[i]; S.pending = i; Object.entries(c.fx || {}).forEach(([k, v]) => S.m[k] = clamp(S.m[k] + v)); if (c.flag) S.flags[c.flag] = true; E.save(); H.rerender(); },
+  simnext: (t) => { const id = t.dataset.id, s = sim(id), S = st(id); const c = s.nodes[S.node].choices[S.pending]; S.hist.push([S.node, S.pending]); S.pending = null; if (c.next === "end") { S.done = true; S.node = null; const en = ending(s, S); S.runs.push({ t: Date.now(), ending: en.t, m: Object.assign({}, S.m), best: S.hist.filter(([nid, ci]) => s.nodes[nid].choices[ci].rate === "best").length, n: S.hist.length }); if (S.runs.length > 20) S.runs.shift(); } else S.node = c.next; E.save(); H.rerender(); }
+});
+const prevRoute = ARE.ROUTE;
+ARE.ROUTE = (h) => {
+  if (h === "sims") return vSims();
+  if (h.startsWith("sim-") && sim(h)) return vSim(h);
+  return prevRoute(h);
+};
+})();
+
+ARE.boot();
 
 </script>
 <script>

@@ -114,7 +114,7 @@ AI.context = () => {
     const l = E.LMAP[C.lesson]; out.lesson = l.id; out.obj = (l.obj || [])[0]; out.div = l.div;
     out.label = "Lesson · " + l.title;
     out.parts.push("CURRENT LESSON: " + l.title + " (" + ARE.DIV[l.div].code + ")\nObjectives: " + (l.obj || []).map(k => ARE.DIV[ARE.OBJ[k].div].code + " " + ARE.OBJ[k].code + " " + ARE.OBJ[k].title).join("; ") +
-      "\nSummary: " + l.summary + "\nLesson text (course material, verified):\n" + strip(l.body).slice(0, 7000) +
+      "\nSummary: " + l.summary + "\nLesson text (course material, independently reviewed):\n" + strip(l.body + " " + (((ARE.DEEP || {})[l.id] || {}).sections || []).map(x => "<h3>" + x.h + "</h3>" + x.html).join(" ")).slice(0, 11000) +
       "\nKey takeaways: " + (ARE.TAKEAWAYS[l.id] || l.takeaways || []).join(" | ") +
       ((l.formulas || []).length ? "\nFormulas: " + l.formulas.map(f => f.name + ": " + f.f).join(" | ") : "") +
       "\nHow it is tested: " + l.exam + "\nCommon mistakes: " + (l.mistakes || []).join(" | ") +
@@ -142,6 +142,7 @@ AI.context = () => {
   const prof = ["LEARNER PROFILE:"];
   if (weak.length) prof.push("Weakest objectives: " + weak.map(c => ARE.DIV[ARE.OBJ[c.key].div].code + " " + ARE.OBJ[c.key].code + " (" + Math.round(c.score * 100) + "%)").join(", "));
   if (out.obj) {
+    if (ARE.R) { const ev = ARE.R.obj(out.obj); prof.push("Evidence status on this objective: " + ARE.R.STATUS[ev.status].t + (ev.why.length ? " (" + ev.why.join("; ") + ")" : "") + "."); if (ev.misconceptions.length) prof.push("Recorded misconceptions: " + ev.misconceptions.slice(0, 3).map(m => "Q: " + m.stem.slice(0, 120) + (m.chosen ? " → chose “" + m.chosen.slice(0, 80) + "”" : "")).join(" || ")); }
     const c = E.comp(out.obj); prof.push("On this objective: " + c.n + " answers, " + (c.score === null ? "no score" : Math.round(c.score * 100) + "% weighted") + ", level " + E.LV[c.level] + ".");
     const n = E.S.lnotes[out.obj];
     if (n) {
@@ -160,6 +161,8 @@ AI.context = () => {
 AI.RULES = `You are the ARE Academy tutor: a patient, rigorous architecture tutor helping one candidate prepare for NCARB's ARE 5.0.
 Rules:
 - Teach actively. Prefer questions, hints and steps over long lectures. Keep answers focused (usually under 250 words unless asked for depth).
+- Do not simply agree with the learner. If their answer, reasoning or assumption is wrong or incomplete, say so plainly first, explain why, and show the correct reasoning. If an answer is vague, ask a follow-up question that makes them commit.
+- When the learner has a recorded misconception (see LEARNER PROFILE), address it directly.
 - Ground answers in the COURSE MATERIAL provided below. When you go beyond it, say so with the label "General explanation".
 - Never invent code section numbers, table numbers, AIA document article/clause numbers, NCARB objective wording, statistics, or quotations. If you are not certain of a citation, tell the learner which source to check (e.g. "verify in IBC 2021 Chapter 10" only if that chapter is given in the material) instead of guessing.
 - The ARE tests US practice (IBC, AIA documents). The learner also works under Ontario/Canadian practice (OBC, CCDC); keep those distinct and label any Canadian comparison as not on the ARE.
@@ -180,6 +183,7 @@ AI.MODES = {
   hint: { t: "Hint", p: "Give me a single hint for the current question without revealing the answer or eliminating options outright. One or two sentences." },
   guide: { t: "Guide me", p: "Guide me through the reasoning for the current question with Socratic questions. Do not give the answer; ask me what I think at each step." },
   full: { t: "Full explanation", p: "Give the full explanation for the current question: the correct answer, why it is correct, and why each other option is wrong. Then ask me one elaborative 'why' question." },
+  challenge: { t: "Challenge my reasoning", p: "Challenge my understanding of this concept like a demanding senior architect. Give me a realistic project situation, ask what I would do and why, then critique my answer honestly: what is right, what is wrong or missing, and what the consequences would be on a real project. One situation at a time." },
   why: { t: "Why are the others wrong?", p: "For the current question, explain why each wrong option is wrong and what misconception would lead someone to choose it." }
 };
 

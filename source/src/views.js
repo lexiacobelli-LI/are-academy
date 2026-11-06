@@ -29,6 +29,8 @@ const IC = {
   exams: '<path d="M9 3h6l1 2h3v16H5V5h3zM9 11h6M9 15h4"/>',
   cases: '<path d="M3 7h18v13H3zM8 7V4h8v3M3 12h18"/>',
   tracker: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+  sims: '<path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/>',
+  readiness: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
   reference: '<path d="M5 3h11l3 3v15H5zM9 9h6M9 13h6M9 17h3"/>',
   planner: '<path d="M4 5h16v16H4zM4 10h16M9 3v4M15 3v4"/>',
   notes: '<path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/>',
@@ -55,8 +57,8 @@ const NAV = [["dashboard", "Home"], ["today", "Today's Study Plan"], ["library",
 const NAVG = [
   [null, [["dashboard", "Home"], ["today", "Today's Plan"]]],
   ["Learn", [["divisions", "Divisions & Lessons"], ["flashcards", "Flashcards"], ["studio", "Video Lessons"], ["podcast", "Podcast"], ["reference", "Reference Library"]]],
-  ["Practice", [["exams", "Practice Exams"], ["cases", "Case Studies"]]],
-  ["Review", [["lnotes", "Notes"], ["tracker", "Progress"], ["planner", "Study Planner"]]]
+  ["Practice", [["exams", "Practice Exams"], ["sims", "Simulations"], ["cases", "Case Studies"]]],
+  ["Review", [["lnotes", "Notes"], ["readiness", "Progress"], ["planner", "Study Planner"]]]
 ];
 const BADGE = { exams: "dueBadge", flashcards: "fcBadge", lnotes: "lnBadge" };
 let railPref = (() => { try { return JSON.parse(localStorage.getItem("are-rail") || "{}"); } catch (e) { return {}; } })();
@@ -115,12 +117,12 @@ E.onSync = (reloaded) => { updateSync(); if (reloaded) { toast("Progress loaded 
 
 /* ---------- routing ---------- */
 /* Pages that share one navigation item are shown with tabs. */
-const PTABS = { divisions: [["divisions", "By division"], ["library", "All lessons"]], lnotes: [["lnotes", "Learning notes"], ["notes", "My notes & bookmarks"]], tracker: [["tracker", "Competency"], ["analytics", "Analytics"]] };
-const PTAB_OF = { divisions: "divisions", library: "divisions", lnotes: "lnotes", notes: "lnotes", tracker: "tracker", analytics: "tracker" };
+const PTABS = { divisions: [["divisions", "By division"], ["library", "All lessons"]], lnotes: [["lnotes", "Learning notes"], ["notes", "My notes & bookmarks"]], readiness: [["readiness", "Readiness"], ["tracker", "Competency"], ["analytics", "Analytics"]] };
+const PTAB_OF = { divisions: "divisions", library: "divisions", lnotes: "lnotes", notes: "lnotes", readiness: "readiness", tracker: "readiness", analytics: "readiness" };
 function ptabs(h) { const g = PTAB_OF[h]; if (!g) return ""; return `<nav class="ptabs" aria-label="Section">${PTABS[g].map(([k, t]) => `<a href="#${k}" class="${k === h ? "on" : ""}" ${k === h ? 'aria-current="page"' : ""}>${t}</a>`).join("")}</nav>`; }
 function navKey(h) {
   if (PTAB_OF[h]) return PTAB_OF[h];
-  if (h.startsWith("div-")) return "divisions"; if (h.startsWith("lesson-")) return "divisions"; if (h.startsWith("note-")) return "lnotes";
+  if (h.startsWith("div-")) return "divisions"; if (h.startsWith("lesson-")) return "divisions"; if (h.startsWith("note-")) return "lnotes"; if (h.startsWith("readiness-")) return "readiness"; if (h.startsWith("sim-")) return "sims";
   if (h.startsWith("case-")) return "cases"; if (h === "quiz") return SESSION && SESSION.caseId ? "cases" : "exams"; return h;
 }
 function route() {
@@ -333,10 +335,10 @@ function vDashboard() {
 ${dte !== null && dte >= 0 ? `<a class="chip code" href="#planner">${dte} day${dte === 1 ? "" : "s"} to ${P.divs.map(divCode).join(", ") || "your exam"}</a>` : `<a class="btn small" href="#planner">Set an exam date</a>`}</header>
 
 <div class="dash">
-<section class="panel d-hero" aria-labelledby="nbsH">${ring(ov.readiness, "Ready")}
+<section class="panel d-hero" aria-labelledby="nbsH">${ring(ov.readiness, "Evidence")}
   <div class="stack" style="gap:10px"><span class="eyebrow">Next best study activity</span><h2 id="nbsH">${esc(top.title)}</h2><p class="why">${esc(top.why)}</p>
   <div class="row"><button class="btn primary" ${actAttrs(top.act)}>Start now</button>${recs[1] ? `<button class="btn ghost alt-btn" ${actAttrs(recs[1].act)} title="${esc(recs[1].why)}">or ${esc(recs[1].title.replace(/^Start /, "").length > 44 ? recs[1].title.replace(/^Start /, "").slice(0, 42) + "…" : recs[1].title.replace(/^Start /, ""))}</button>` : ""}</div>
-  <div class="muted" style="font-size:var(--t-xs)">${ov.n} answers · ${pct(ov.acc)} accuracy · readiness combines objective coverage with recent exam scores</div></div></section>
+  <div class="muted" style="font-size:var(--t-xs)">${ov.n} answers · ${pct(ov.acc)} accuracy · evidence of what your answers show, weighted by NCARB objective share · <a href="#readiness">readiness report</a></div></div></section>
 
 <div class="d-side">
   <a class="d-stat streak" href="#analytics"><span class="ds-i">${icon("badge")}</span><span><b>${st.days} day${st.days === 1 ? "" : "s"}</b><small>${st.today ? "Streak · today counts ✓" : "Streak · " + (st.need ? st.need + " answers to keep it today" : "study today to keep it")}</small></span><span class="ds-go">›</span></a>
@@ -404,7 +406,7 @@ function vDivision(id) {
   return `
 <div class="tblock"><div class="tb-main"><span class="eyebrow">Division ${d.n} of 6</span><h1>${d.name}</h1><p class="muted" style="max-width:70ch">${d.blurb}</p>
 <div class="row"><button class="btn primary" data-act="quiz" data-div="${id}">Adaptive quiz · 10</button>${formButtons(id)}<button class="btn" data-act="review-due" data-div="${id}" ${due ? "" : "disabled"}>Review due (${due})</button><button class="btn" data-act="review-missed" data-div="${id}" ${missed ? "" : "disabled"}>Missed (${missed})</button></div></div>
-<div class="tb-side"><div><small>Sheet</small><b>${d.sheet}</b><small style="margin-top:8px">Readiness</small><b>${pct(s.readiness)}</b><small>${E.readyLabel(s.readiness)}</small></div><div><small>Division</small><b>${d.code}</b></div></div></div>
+<div class="tb-side"><div><small>Sheet</small><b>${d.sheet}</b><small style="margin-top:8px">Evidence</small><b>${pct(s.readiness)}</b><small>${E.readyLabel(s.readiness)}</small></div><div><small>Division</small><b>${d.code}</b></div></div></div>
 
 <div class="grid g4"><div class="panel kpi"><b>${d.items}</b><span>Items (${d.scored} scored, ${d.pretest} pretest)</span></div><div class="panel kpi"><b>${d.time.replace(" 00 min", " h")}</b><span>Test time · break ${d.brk}</span></div><div class="panel kpi"><b>${s.n}</b><span>Questions answered here</span></div><div class="panel kpi"><b>${pct(s.acc)}</b><span>Accuracy here</span></div></div>
 
@@ -623,9 +625,11 @@ function startExam(div) {
    QUIZ SESSION
    ============================================================ */
 function curCase(q) { return q && q.case ? ARE.CASES.find(c => c.id === q.case) : null; }
+function durTick(s, id) { const now = Date.now(); s.dur = s.dur || {}; if (s.cur && s.cur.id) s.dur[s.cur.id] = (s.dur[s.cur.id] || 0) + Math.min(now - s.cur.t, 600000); s.cur = id ? { id, t: now } : null; }
 function vQuiz() {
   const s = SESSION;
   if (s.done) return vResults();
+  durTick(s, s.qids[s.i]);
   if (s.mode === "exam") return vExamUI();
   const id = s.qids[s.i], q = E.QMAP[id], c = curCase(q);
   const instant = s.mode === "practice" || s.mode === "check" || s.mode === "review";
@@ -656,7 +660,7 @@ function fmtClock(ms) { ms = Math.max(0, ms); const h = Math.floor(ms / 3600000)
 function examItemStatus(s, qid) { const q = E.QMAP[qid]; return E.answered(q, s.resp[qid]) ? "Answered" : "Not answered"; }
 function vExamUI() {
   const s = SESSION, d = s.div && ARE.DIV[s.div];
-  s.maxSeen = Math.max(s.maxSeen || 0, s.i);
+  s.maxSeen = Math.max(s.maxSeen || 0, s.i); durTick(s, s.view === "summary" ? null : s.qids[s.i]);
   const bar = `<div class="ebar"><div class="ebar-l"><b>${esc(s.title)}</b><span class="mono">${s.view === "summary" ? "Exam summary" : `Item ${s.i + 1} of ${s.qids.length}`}</span></div>
 <div class="ebar-c"><span class="etimer mono" id="timer" ${s.hideTimer ? "data-hidden=1" : ""}>--:--</span><button class="ebtn" data-act="hidetimer">${s.hideTimer ? "Show time" : "Hide time"}</button></div>
 <div class="ebar-r"><button class="ebtn" data-act="tool-calc" title="Calculator">▦ Calculator</button><button class="ebtn" data-act="tool-board" title="Whiteboard">✎ Whiteboard</button>${s.view === "item" ? `<button class="ebtn" data-act="hl" title="Select text in the question, then press">▌ Highlight</button>${(s.hl[s.qids[s.i]] || []).length ? `<button class="ebtn" data-act="hlclear">Clear highlights</button>` : ""}<button class="ebtn ${E.S.flags[s.qids[s.i]] ? "on" : ""}" data-act="flag">⚑ ${E.S.flags[s.qids[s.i]] ? "Flagged" : "Flag for review"}</button>` : ""}<button class="ebtn" data-act="summary">☰ Exam summary</button></div></div>`;
@@ -755,9 +759,9 @@ function feedback(q, r, s) {
   return `<div class="feedback ${ok ? "good" : "bad"}" role="status"><h3>${ok ? "✓ Correct" : "✕ Not quite"}</h3>${cal}
 <div class="fb-key"><span class="eyebrow">Key idea</span><p>${q.explain}</p></div>
 ${choices}
-<div class="fb-meta"><span class="eyebrow">What this tests</span><p><span class="chip code">${objLabel(q.obj)}</span> ${esc(ARE.OBJ[q.obj].title)}</p>${lesson ? `<a class="btn small" href="#lesson-${lesson.id}">Review the lesson: ${esc(lesson.title)}</a>` : ""}${q.ref ? `<p class="muted" style="font-size:var(--t-sm);margin-top:6px">Reference: ${refLink(q.ref)}</p>` : ""}</div>
+<div class="fb-meta"><span class="eyebrow">What this tests</span><p><span class="chip code">${objLabel(q.obj)}</span> ${esc(ARE.OBJ[q.obj].title)}${ARE.R ? ` <span class="muted">· ${ARE.R.LEVELS[ARE.R.level(q)]}</span>` : ""}</p>${lesson ? `<a class="btn small" href="#lesson-${lesson.id}">Review the lesson: ${esc(lesson.title)}</a>` : ""}${q.ref ? `<p class="muted" style="font-size:var(--t-sm);margin-top:6px">Reference: ${refLink(q.ref)}</p>` : ""}${ARE.QA && ARE.QA.isCode(q) ? `<p class="muted" style="font-size:var(--t-sm);margin-top:4px">Code-dependent: the ARE uses the model edition cited; real projects follow the edition and amendments the jurisdiction adopts.</p>` : ""}</div>
 <details class="elab"><summary>Think deeper: ${esc(elab)}</summary><textarea data-note="elab:${q.id}" placeholder="Write your explanation before moving on">${esc(E.S.notes["elab:" + q.id] || "")}</textarea></details>
-<div class="row fb-acts"><button class="btn small ghost" data-act="tutor" data-m="${ok ? "why" : "simple"}">✦ Ask the tutor</button><button class="btn small ghost" data-act="mkvideo" data-kind="question" data-id="${q.id}">Video explanation</button>${bmBtn("question", q.id, q.q.replace(/<[^>]+>/g, "").slice(0, 80))}</div></div>`;
+<div class="row fb-acts"><button class="btn small ghost" data-act="saveexpl" data-id="${q.id}">Save explanation to notes</button><button class="btn small ghost" data-act="tutor" data-m="${ok ? "why" : "simple"}">✦ Ask the tutor</button><button class="btn small ghost" data-act="mkvideo" data-kind="question" data-id="${q.id}">Video explanation</button>${bmBtn("question", q.id, q.q.replace(/<[^>]+>/g, "").slice(0, 80))}</div></div>`;
 }
 function tick() {
   if (SESSION && SESSION.onBreak) {
@@ -816,10 +820,10 @@ function endBreak() {
 }
 function finishSession() {
   const s = SESSION; if (!s || s.done) return;
-  let correct = 0; const byObj = {};
+  let correct = 0; const byObj = {}; durTick(s, null);
   s.qids.forEach(id => {
     const q = E.QMAP[id], r = s.resp[id], ok = E.grade(q, r);
-    if (!s.checked[id]) E.record(id, ok, s.mode === "exam" ? (q.case ? "case" : "exam") : s.mode, { conf: (s.conf || {})[id], chosen: typeof r === "number" ? r : null });
+    if (!s.checked[id]) E.record(id, ok, s.mode === "exam" ? (q.case ? "case" : "exam") : s.mode, { conf: (s.conf || {})[id], chosen: typeof r === "number" ? r : null, ms: (s.dur || {})[id] });
     if (ok) correct++;
     byObj[q.obj] = byObj[q.obj] || [0, 0]; byObj[q.obj][0]++; if (ok) byObj[q.obj][1]++;
   });
@@ -925,14 +929,14 @@ function vTracker() {
   const f = UI.trackFilter;
   return `
 <div class="stack" style="gap:6px"><span class="eyebrow">Measured by answers over time, not pages read</span><h1>Competency Tracker</h1></div>
-<div class="grid g4"><div class="panel kpi"><b>${pct(ov.readiness)}</b><span>Overall readiness</span></div><div class="panel kpi"><b>${dist[3] + dist[4]}<small class="muted" style="font-size:1rem">/91</small></b><span>Objectives proficient or mastered</span></div><div class="panel kpi"><b>${ov.n}</b><span>Answers recorded</span></div><div class="panel kpi"><b>${fmtMin(E.minutesSince(0))}</b><span>Total study time</span></div></div>
+<div class="grid g4"><div class="panel kpi"><b>${pct(ov.readiness)}</b><span>Readiness evidence</span></div><div class="panel kpi"><b>${dist[3] + dist[4]}<small class="muted" style="font-size:1rem">/91</small></b><span>Objectives proficient or mastered</span></div><div class="panel kpi"><b>${ov.n}</b><span>Answers recorded</span></div><div class="panel kpi"><b>${fmtMin(E.minutesSince(0))}</b><span>Total study time</span></div></div>
 <section class="panel stack"><h2>How levels are earned</h2><div class="grid g3" style="font-size:.9rem">
 <p>${lvPill(1)}<br>Lesson opened or completed, or fewer than 3 answers.</p>
 <p>${lvPill(2)}<br>At least 3 answers, but fewer than 5 or a weighted score under 60% (or 60–69%).</p>
 <p>${lvPill(3)}<br>5+ answers with a weighted score of 70% or more.</p>
 <p>${lvPill(4)}<br>85%+ over 8+ answers on 2+ different days, including a correct hardest-level item, no question still wrong on its latest try, and the lesson passed.</p>
 <p class="muted">Recent answers count more (half-weight after 45 days), harder items count more, and your latest answer to each question outweighs older ones.</p>
-<p class="muted">Readiness weights each objective by its section's exam weight. A timed exam in the last 30 days contributes 35%. It is an estimate, not a pass prediction.</p></div></section>
+<p class="muted">Evidence weights each objective by its exam share and counts what your answers demonstrate. It is not a pass prediction; open the <a href="#readiness">readiness report</a> for the method.</p></div></section>
 <div class="grid g2"><section class="panel stack"><h2>Weekly accuracy</h2>${lineChart(weeks.map(w => w[1]), weeks.map(w => w[0]), "Weekly accuracy trend")}</section>
 <section class="panel stack"><h2>All 91 objectives</h2>${distBar(dist)}<div class="list">${dist.map((n, i) => `<div class="row between">${lvPill(i)}<b class="mono">${n}</b></div>`).join("")}</div></section></div>
 <section class="stack"><div class="row between"><h2>By division</h2><div class="row"><button class="chip ${f === "all" ? "on" : ""}" data-act="tf" data-f="all">All</button><button class="chip ${f === "out" ? "on" : ""}" data-act="tf" data-f="out">Outstanding (${outstanding.length})</button>${[0, 1, 2, 3, 4].map(i => `<button class="chip ${f === String(i) ? "on" : ""}" data-act="tf" data-f="${i}">${E.LV[i]}</button>`).join("")}</div></div>
@@ -945,7 +949,7 @@ ${ARE.DIVISIONS.map(d => { const s = E.divStats(d.id); const objs = d.objectives
    ============================================================ */
 function vReference() {
   const t = UI.refTab;
-  const tabs = [["glossary", "Glossary"], ["formulas", "Formulas & calculators"], ["handbook", "Handbook cross-reference"], ["toc", "Handbook contents"], ["aia", "AIA documents"], ["ibc", "IBC 2021"], ["sources", "Sources & access"]];
+  const tabs = [["glossary", "Glossary"], ["formulas", "Calculations"], ["handbook", "Handbook cross-reference"], ["toc", "Handbook contents"], ["aia", "AIA documents"], ["ibc", "IBC 2021"], ["sources", "Sources & access"]];
   let body = "";
   if (t === "glossary") {
     const cats = Array.from(new Set(E.glossary.map(g => g.cat))).sort();
@@ -955,7 +959,7 @@ function vReference() {
 <div class="list">${items.map(g => `<div class="stack" style="gap:4px"><div class="row between"><b>${esc(g.term)}</b><span class="row" style="gap:6px"><span class="chip">${esc(g.cat)}</span>${bmBtn("term", g.term, g.term)}</span></div><span>${esc(g.def)}</span>${g.lesson && E.LMAP[g.lesson] ? `<a href="#lesson-${g.lesson}" style="font-size:.85rem">Lesson: ${esc(E.LMAP[g.lesson].title)}</a>` : ""}</div>`).join("") || '<div class="empty">No terms match.</div>'}</div>`;
   } else if (t === "formulas") {
     const cats = Array.from(new Set(ARE.FORMULAS.map(f => f.cat)));
-    body = cats.map(c => `<div class="panel stack"><h3>${c}</h3>${ARE.FORMULAS.filter(f => f.cat === c).map(f => `<div class="formula"><b>${esc(f.name)}</b><span><code>${esc(f.f)}</code>${f.note ? `<br><span class="muted" style="font-size:.85rem">${esc(f.note)}</span>` : ""}${f.lesson && E.LMAP[f.lesson] ? `<br><a href="#lesson-${f.lesson}" style="font-size:.85rem">${esc(E.LMAP[f.lesson].title)}</a>` : ""}${f.calc ? calculator(f.calc) : ""}</span></div>`).join("")}</div>`).join("");
+    body = (ARE.calcView ? ARE.calcView() + `<details class="panel"><summary><b>Quick formula list</b></summary><div style="margin-top:10px">` : "") + cats.map(c => `<div class="panel stack"><h3>${c}</h3>${ARE.FORMULAS.filter(f => f.cat === c).map(f => `<div class="formula"><b>${esc(f.name)}</b><span><code>${esc(f.f)}</code>${f.note ? `<br><span class="muted" style="font-size:.85rem">${esc(f.note)}</span>` : ""}${f.lesson && E.LMAP[f.lesson] ? `<br><a href="#lesson-${f.lesson}" style="font-size:.85rem">${esc(E.LMAP[f.lesson].title)}</a>` : ""}${f.calc ? calculator(f.calc) : ""}</span></div>`).join("")}</div>`).join("") + (ARE.calcView ? "</div></details>" : "");
   } else if (t === "handbook") {
     const H = ARE.HANDBOOK, q = UI.hbq.toLowerCase();
     const items = H.topics.filter(x => !q || (x.topic + " " + x.summary + " " + x.terms.join(" ") + " " + x.docs.join(" ") + " " + x.objs.join(" ")).toLowerCase().includes(q));
@@ -1274,7 +1278,7 @@ document.addEventListener("click", (e) => {
     case "toggle": { const id = s.qids[s.i]; const cur = (s.resp[id] || []).slice(); const i = +t.dataset.i; const k = cur.indexOf(i); k >= 0 ? cur.splice(k, 1) : cur.push(i); s.resp[id] = cur; E.saveSession(s); rerender(); break; }
     case "mv": { const id = s.qids[s.i]; const ord = (s.resp[id] || s.resp[id + "__init"]).slice(); const p = +t.dataset.pos, d = +t.dataset.d, np = p + d; if (np < 0 || np >= ord.length) break; [ord[p], ord[np]] = [ord[np], ord[p]]; s.resp[id] = ord; E.saveSession(s); rerender(); break; }
     case "confirmorder": { const id = s.qids[s.i]; s.resp[id] = s.resp[id + "__init"].slice(); E.saveSession(s); rerender(); break; }
-    case "checkans": { const id = s.qids[s.i], q = E.QMAP[id]; if (!E.answered(q, s.resp[id])) { toast("Answer the question first."); break; } s.checked[id] = true; E.record(id, E.grade(q, s.resp[id]), s.mode, { conf: (s.conf || {})[id], chosen: typeof s.resp[id] === "number" ? s.resp[id] : null }); E.save(); E.saveSession(s); rerender(); break; }
+    case "checkans": { const id = s.qids[s.i], q = E.QMAP[id]; if (!E.answered(q, s.resp[id])) { toast("Answer the question first."); break; } s.checked[id] = true; durTick(s, id); E.record(id, E.grade(q, s.resp[id]), s.mode, { conf: (s.conf || {})[id], chosen: typeof s.resp[id] === "number" ? s.resp[id] : null, ms: (s.dur || {})[id] }); E.save(); E.saveSession(s); rerender(); break; }
     case "conf": { const id = s.qids[s.i]; s.conf = s.conf || {}; s.conf[id] = +t.dataset.v; E.saveSession(s); rerender(); break; }
     case "tutor": ARE.TUTOR.ask(null, t.dataset.m || "simple"); break;
     case "confused": { const obj = t.dataset.obj || (ARE.CTX && ARE.CTX.lesson && (E.LMAP[ARE.CTX.lesson].obj || [])[0]); if (!obj) break; ARE.L.addTrigger(obj, "confused", { via: location.hash }); E.save(); toast("Added to My Learning Notes"); t.textContent = "Added to Learning Notes ✓"; t.disabled = true; break; }

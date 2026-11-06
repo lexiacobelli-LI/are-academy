@@ -17,7 +17,7 @@ E.blank = () => ({
   results: [], time: [], packs: { lessons: [], questions: [], glossary: [] },
   planner: { examDate: "", divs: [], hours: 8, goals: [], sessions: [] },
   weakFlags: {}, touch: {}, fc: {},
-  lnotes: {}, game: { xp: 0, days: {}, badges: {}, bests: {}, log: [] }, cards: [], videos: {}, ailog: {}, today: null, pod: {},
+  lnotes: {}, rtrend: {}, sims: {}, game: { xp: 0, days: {}, badges: {}, bests: {}, log: [] }, cards: [], videos: {}, ailog: {}, today: null, pod: {},
   ui: {}
 });
 E.S = E.blank();
@@ -99,8 +99,8 @@ function saveDurable(json, okLS) {
 E.flush = () => { clearTimeout(idbTimer); saveDurable(JSON.stringify(E.S), true); };
 window.addEventListener("pagehide", () => { if (E._dirty) E.flush(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && E._dirty) E.flush(); });
-function compactAttempts(a) { return a.slice(-3000).map(x => [x.q, x.ok ? 1 : 0, x.d || 1, x.t, x.m || "q", x.c || 0, x.ch === undefined ? -1 : x.ch]); }
-function expandAttempts(a) { return (a || []).map(x => { const o = { q: x[0], ok: !!x[1], d: x[2], t: x[3], m: x[4] }; if (x[5]) o.c = x[5]; if (x[6] !== undefined && x[6] !== -1) o.ch = x[6]; return o; }); }
+function compactAttempts(a) { return a.slice(-3000).map(x => [x.q, x.ok ? 1 : 0, x.d || 1, x.t, x.m || "q", x.c || 0, x.ch === undefined ? -1 : x.ch, x.s || 0, x.v || 0]); }
+function expandAttempts(a) { return (a || []).map(x => { const o = { q: x[0], ok: !!x[1], d: x[2], t: x[3], m: x[4] }; if (x[5]) o.c = x[5]; if (x[6] !== undefined && x[6] !== -1) o.ch = x[6]; if (x[7]) o.s = x[7]; if (x[8]) o.v = x[8]; return o; }); }
 const DOCS = ["core", "attempts", "notes", "packs", "learn", "media"];
 function splitDocs(S) {
   const core = Object.assign({}, S); ["attempts", "notes", "packs", "lnotes", "game", "cards", "videos", "ailog"].forEach(k => delete core[k]);
@@ -183,6 +183,7 @@ E.rebuild = () => {
   Object.keys(ARE.OBJ).forEach(k => { E.objLessons[k] = []; E.objQ[k] = []; E.objQAll[k] = []; });
   E.lessons.forEach(l => (l.obj || []).forEach(k => E.objLessons[k] && E.objLessons[k].push(l.id)));
   Object.values(E.QMAP).forEach(q => { if (!E.objQAll[q.obj]) return; E.objQAll[q.obj].push(q.id); if (!q.case) E.objQ[q.obj].push(q.id); });
+  E.questions.forEach(q => { const l = q.lesson && E.LMAP[q.lesson]; if (l && !(l.obj || []).includes(q.obj)) { const alt = E.objLessons[q.obj][0]; if (alt) q.lesson = alt; } });
   E._memo = null;
 };
 
@@ -296,10 +297,10 @@ E.divStats = (divId) => {
   const coverage = w ? v / w : 0;
   const recent = E.S.results.filter(r => r.div === divId && (r.mode === "exam" || r.mode === "case" || r.mode === "official") && Date.now() - r.t < 30 * DAY);
   const examPct = recent.length ? recent.reduce((s, r) => s + r.correct / r.n, 0) / recent.length : null;
-  const readiness = examPct === null ? coverage : 0.65 * coverage + 0.35 * examPct;
+  const readiness = ARE.R ? ARE.R.div(divId).evidence : coverage;
   return { coverage, examPct, readiness, dist, n, ok, acc: n ? ok / n : null };
 };
-E.readyLabel = (r) => r < 0.4 ? "Early" : r < 0.65 ? "Building" : r < 0.8 ? "Approaching" : "Exam-ready";
+E.readyLabel = (r) => ARE.R ? ARE.R.evidenceLabel(r) : "";
 E.overall = () => {
   let tot = 0, wsum = 0;
   ARE.DIVISIONS.forEach(d => { const s = E.divStats(d.id); tot += s.readiness; wsum += 1; });
@@ -314,6 +315,7 @@ E.record = (qid, ok, mode, extra) => {
   const prev = E.S.srs[qid] ? Object.assign({}, E.S.srs[qid]) : null;
   const a = { q: qid, ok, d: q.diff || 1, t, m: mode, v: 2 };
   if (extra && extra.conf) a.c = extra.conf;
+  if (extra && extra.ms > 0) a.s = Math.max(1, Math.round(Math.min(extra.ms, 900000) / 1000));
   if (extra && extra.chosen !== undefined && extra.chosen !== null && typeof extra.chosen === "number") a.ch = extra.chosen;
   E.S.attempts.push(a);
   if (E.S.attempts.length > 6000) E.S.attempts = E.S.attempts.slice(-6000);

@@ -51,7 +51,7 @@ T.refresh = () => {
   const p = AI.active();
   panel.querySelector("#tuProv").innerHTML = p ? `<span class="dot ok"></span>${esc(AI.label(p))}` : `<span class="dot"></span>No AI connected · <a href="#settings" data-tu="settings">Connect a free provider</a>`;
   const isQ = !!ctx.q;
-  const modes = isQ ? ["hint", "guide", "full", "why", "simple", "steps", "compare", "visual"] : ["simple", "practice", "exam", "steps", "compare", "visual", "test"];
+  const modes = isQ ? ["hint", "guide", "full", "why", "simple", "steps", "compare", "visual"] : ["simple", "practice", "exam", "steps", "compare", "visual", "test", "challenge"];
   panel.querySelector("#tuModes").innerHTML = modes.map(m => `<button class="chip" data-tu="mode" data-m="${m}">${esc(AI.MODES[m].t)}</button>`).join("");
   panel.querySelector("#tuTools").innerHTML = (ctx.obj || ctx.lesson) ? `<button class="chip" data-tu="genq">Make practice questions</button><button class="chip" data-tu="video">Make a video lesson</button><button class="chip" data-tu="confused">I don't get this</button>` : "";
   renderLog();
